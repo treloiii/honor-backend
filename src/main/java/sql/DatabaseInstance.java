@@ -1,4 +1,4 @@
-package com.honor.back.honorwebapp;
+package sql;
 
 import org.springframework.stereotype.Component;
 
