@@ -9,7 +9,7 @@ import org.springframework.util.unit.DataSize;
 import javax.servlet.MultipartConfigElement;
 
 @Configuration
-@ComponentScan(basePackages = "com.honor.back.honorwebapp",basePackageClasses = ConfigClass.class)
+@ComponentScan(basePackages = {"com.honor.back.honorwebapp","dao"},basePackageClasses = ConfigClass.class)
 public class ConfigClass {
     @Bean
     MultipartConfigElement multipartConfigElement() {

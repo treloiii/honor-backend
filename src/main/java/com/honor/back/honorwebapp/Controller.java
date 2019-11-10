@@ -19,6 +19,11 @@ import java.util.List;
 public class Controller{
 //    @Autowired
 //    ResultedQuery rsq;
+    @Autowired
+    GalleryImageDAO galleryDao;
+    @Autowired
+    PostDAO postDao;
+
     @RequestMapping("/getMain")
     public List<Post> getMain() throws SQLException {
 //        ResultSet rs=rsq.getResultSet("SELECT * FROM honor_main_posts");
@@ -26,18 +31,16 @@ public class Controller{
 //            for(int i=1;i<rs.getMetaData().getColumnCount()+1;i++)
 //                System.out.println(rs.getString(i));
 //        }
-        PostDAO dao=new PostDAO();
-        return dao.getAll();
+        return postDao.getAll();
     }
     @RequestMapping("/newPost")
     public void addPost(@RequestBody Post post){
-        PostDAO dao=new PostDAO();
-        dao.save(post);
+        postDao.save(post);
     }
     @RequestMapping("/getGallery")
     public List<GalleryImage> getImages(){
-        GalleryImageDAO dao=new GalleryImageDAO();
-        return dao.getAll();
+       // galleryDao=new GalleryImageDAO();
+        return galleryDao.getAll();
     }
 
 
@@ -47,13 +50,20 @@ public class Controller{
                                                  @RequestParam("file") MultipartFile file){
         if (!file.isEmpty()&&(file.getContentType().contains("jpeg")||file.getContentType().contains("png"))) {
             try {
-                byte[] bytes = file.getBytes();
-                System.out.println(file.getContentType());
-                BufferedOutputStream stream =
-                        new BufferedOutputStream(new FileOutputStream(new File("C://cso//"+name+"."+file.getContentType().substring("image/".length()))));
-                stream.write(bytes);
-                stream.close();
-                return "Вы удачно загрузили " + name + " в " + name + "-uploaded !";
+                    String serverPath = "/home/std/honor-backend/static/";
+                    byte[] bytes = file.getBytes();
+                    System.out.println(file.getContentType());
+                    BufferedOutputStream stream =
+                            new BufferedOutputStream(new FileOutputStream(new File(serverPath + name + "." + file.getContentType().substring("image/".length()))));
+                    stream.write(bytes);
+                    stream.close();
+                    GalleryImage gi = new GalleryImage();
+                    gi.setName(name);
+                    gi.setServer_path(serverPath);
+                    gi.setDescription("ss");
+                    gi.setUrl("http://honor-webapp-server.std-763.ist.mospolytech.ru/static/" + name + "." + file.getContentType().substring("image/".length()));
+                    galleryDao.save(gi);
+                    return "Вы удачно загрузили " + name + " в " + name + "Галерею!";
             } catch (Exception e) {
                 return "Вам не удалось загрузить " + name + " => " + e.getMessage();
             }

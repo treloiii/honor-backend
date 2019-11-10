@@ -10,12 +10,13 @@ public class HibernateSessionFactory {
 
     private HibernateSessionFactory() {}
 
-    public static Session getSession() {
+    public static SessionFactory getSession() {
         if (sessionFactory == null) {
             try {
                 Configuration configuration = new Configuration().configure();
                 configuration.addAnnotatedClass(Post.class);
                 configuration.addAnnotatedClass(GalleryImage.class);
+                configuration.addAnnotatedClass(GalleryComments.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());
 
@@ -23,6 +24,6 @@ public class HibernateSessionFactory {
                 System.out.println("Исключение!" + e);
             }
         }
-        return sessionFactory.openSession();
+        return sessionFactory;
     }
 }

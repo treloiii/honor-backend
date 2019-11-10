@@ -1,6 +1,7 @@
 package com.honor.back.honorwebapp;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="honor_gallery")
@@ -16,8 +17,14 @@ public class GalleryImage {
     private String url;
     @Column
     private String server_path;
+    @OneToMany(mappedBy = "image",cascade = CascadeType.ALL,orphanRemoval = true)
+    List<GalleryComments> comments;
 
     public GalleryImage() {
+    }
+
+    public List<GalleryComments> getComments() {
+        return comments;
     }
 
     public int getId() {

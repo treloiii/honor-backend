@@ -7,9 +7,12 @@ import dao.DAOSkeleton;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Component("postDao")
+@Scope("prototype")
 public class PostDAO implements DAOSkeleton {
     @Override
     public void update(Object updatedObject) {
@@ -18,7 +21,7 @@ public class PostDAO implements DAOSkeleton {
 
     @Override
     public void save(Object savedObject) {
-        Session session=HibernateSessionFactory.getSession();
+        Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         session.save(savedObject);
         session.getTransaction().commit();
@@ -27,7 +30,7 @@ public class PostDAO implements DAOSkeleton {
 
     @Override
     public Post get(int id) {
-        return HibernateSessionFactory.getSession().get(Post.class,id);
+        return HibernateSessionFactory.getSession().openSession().get(Post.class,id);
 
     }
 
@@ -38,7 +41,8 @@ public class PostDAO implements DAOSkeleton {
 
     @Override
     public List<Post> getAll() {
-        List<Post> posts= (List<Post>) HibernateSessionFactory.getSession().createQuery("From Post").list();
+        List<Post> posts= (List<Post>) HibernateSessionFactory.getSession().openSession().createQuery("From Post").list();
+        //HibernateSessionFactory.getSession().openSession().flush();
         return posts;
     }
 }
