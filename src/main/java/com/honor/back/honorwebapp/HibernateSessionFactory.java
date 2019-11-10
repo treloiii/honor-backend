@@ -15,7 +15,7 @@ public class HibernateSessionFactory {
             try {
                 Configuration configuration = new Configuration().configure();
                 configuration.addAnnotatedClass(Post.class);
-//                configuration.addAnnotatedClass(Auto.class);
+                configuration.addAnnotatedClass(GalleryImage.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());
 
