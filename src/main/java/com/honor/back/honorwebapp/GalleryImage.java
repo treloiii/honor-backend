@@ -27,6 +27,10 @@ public class GalleryImage {
         return comments;
     }
 
+    public void addComment(GalleryComments comment){
+        comments.add(comment);
+    }
+
     public int getId() {
         return id;
     }

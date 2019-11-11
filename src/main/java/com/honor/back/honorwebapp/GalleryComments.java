@@ -16,7 +16,7 @@ public class GalleryComments {
     private BigInteger time;
     @Column
     private String comment;
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="photo_id")
     private GalleryImage image;
 
@@ -55,7 +55,7 @@ public class GalleryComments {
         this.comment = comment;
     }
 
-//    public void setImage(GalleryImage image) {
-//        this.image = image;
-//    }
+    public void setImage(GalleryImage image) {
+        this.image = image;
+    }
 }

@@ -15,7 +15,11 @@ import java.util.List;
 public class GalleryImageDAO implements DAOSkeleton {
     @Override
     public void update(Object updatedObject) {
-
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        session.update(updatedObject);
+        session.getTransaction().commit();
+        session.close();
     }
     @Override
     public void save(Object savedObject) {
@@ -27,7 +31,7 @@ public class GalleryImageDAO implements DAOSkeleton {
     }
 
     @Override
-    public Object get(int id) {
+    public GalleryImage get(int id) {
         return HibernateSessionFactory.getSession().openSession().get(GalleryImage.class,id);
     }
 
