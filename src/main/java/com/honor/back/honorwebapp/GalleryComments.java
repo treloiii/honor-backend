@@ -58,4 +58,5 @@ public class GalleryComments {
     public void setImage(GalleryImage image) {
         this.image = image;
     }
+
 }

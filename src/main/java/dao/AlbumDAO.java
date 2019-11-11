@@ -4,24 +4,24 @@ import com.honor.back.honorwebapp.GalleryAlbum;
 import com.honor.back.honorwebapp.GalleryImage;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component("galleryDao")
+@Component("albumDao")
 @Scope("prototype")
-public class GalleryImageDAO implements DAOSkeleton {
+public class AlbumDAO implements DAOSkeleton {
+
     @Override
     public void update(Object updatedObject) {
-        Session session=HibernateSessionFactory.getSession().openSession();
+        Session session= HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         session.update(updatedObject);
         session.getTransaction().commit();
         session.close();
     }
+
     @Override
     public void save(Object savedObject) {
         Session session=HibernateSessionFactory.getSession().openSession();
@@ -32,8 +32,8 @@ public class GalleryImageDAO implements DAOSkeleton {
     }
 
     @Override
-    public GalleryImage get(int id) {
-        return HibernateSessionFactory.getSession().openSession().get(GalleryImage.class,id);
+    public Object get(int id) {
+        return HibernateSessionFactory.getSession().openSession().get(GalleryAlbum.class,id);
     }
 
     @Override
@@ -42,8 +42,8 @@ public class GalleryImageDAO implements DAOSkeleton {
     }
 
     @Override
-    public List<GalleryImage> getAll() {
-            List<GalleryImage> posts = (List<GalleryImage>) HibernateSessionFactory.getSession().openSession().createQuery("From GalleryImage").list();
-            return posts;
+    public List<GalleryAlbum> getAll() {
+        List<GalleryAlbum> albums = (List<GalleryAlbum>) HibernateSessionFactory.getSession().openSession().createQuery("From GalleryAlbum").list();
+        return albums;
     }
 }

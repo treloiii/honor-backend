@@ -2,6 +2,7 @@ package com.honor.back.honorwebapp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import services.AlbumService;
 import services.GalleryService;
 import services.PostService;
 
@@ -18,15 +19,16 @@ public class Controller{
     GalleryService galleryService;
     @Autowired
     PostService postService;
+    @Autowired
+    AlbumService albumService;
 
     @RequestMapping("/getMain")
     public List<Post> getMain() throws SQLException {
-//        ResultSet rs=rsq.getResultSet("SELECT * FROM honor_main_posts");
-//        while (rs.next()){
-//            for(int i=1;i<rs.getMetaData().getColumnCount()+1;i++)
-//                System.out.println(rs.getString(i));
-//        }
         return postService.getAllPosts();
+    }
+    @RequestMapping("/getPost")
+    public Post getPost(@RequestParam("id") int id){
+        return postService.getPostById(id);
     }
     @RequestMapping("/newPost")
     public void addPost(@RequestBody Post post){
@@ -37,13 +39,21 @@ public class Controller{
        // galleryDao=new GalleryImageDAO();
         return galleryService.getAllGallery();
     }
-
+    @RequestMapping("/getImage")
+    public GalleryImage getImage(@RequestParam("id") int id){
+        return galleryService.getImageById(id);
+    }
 
     @RequestMapping("/addComment/{photo_id}")
     public String addComment(@RequestBody GalleryComments comment,@PathVariable int photo_id){
         GalleryImage image=galleryService.getImageById(photo_id);
         galleryService.addComment(image,comment);
         return "Success";
+    }
+
+    @RequestMapping("/getAlbums")
+    public List<GalleryAlbum> getAlbums(){
+        return albumService.getAllAlbums();
     }
 
 

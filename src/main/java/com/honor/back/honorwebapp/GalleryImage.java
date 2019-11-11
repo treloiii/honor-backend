@@ -17,8 +17,13 @@ public class GalleryImage {
     private String url;
     @Column
     private String server_path;
+
     @OneToMany(mappedBy = "image",cascade = CascadeType.ALL,orphanRemoval = true)
-    List<GalleryComments> comments;
+    private List<GalleryComments> comments;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="album_id")
+    private GalleryAlbum album;
 
     public GalleryImage() {
     }
@@ -66,4 +71,5 @@ public class GalleryImage {
     public void setServer_path(String server_path) {
         this.server_path = server_path;
     }
+
 }
