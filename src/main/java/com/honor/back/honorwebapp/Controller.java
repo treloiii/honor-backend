@@ -16,12 +16,18 @@ import java.util.List;
 @RestController
 public class Controller{
     @Autowired
-    GalleryService galleryService;
-    @Autowired
-    PostService postService;
-    @Autowired
-    AlbumService albumService;
+    private GalleryService galleryService;
 
+    @Autowired
+    private PostService postService;
+
+    @Autowired
+    private AlbumService albumService;
+
+    @RequestMapping("/test")
+    public String test(){
+        return "HELLO WORLD";
+    }
     @RequestMapping("/getMain")
     public List<Post> getMain() throws SQLException {
         return postService.getAllPosts();
