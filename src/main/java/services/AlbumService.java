@@ -18,4 +18,5 @@ public class AlbumService {
     public List<GalleryAlbum> getAllAlbums(){
         return dao.getAll();
     }
+    public GalleryAlbum getAlbum(int id){return dao.get(id);}
 }

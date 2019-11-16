@@ -62,6 +62,11 @@ public class Controller{
         return albumService.getAllAlbums();
     }
 
+    @RequestMapping("/getAlbum")
+    public GalleryAlbum getAlbumById(@RequestParam("id") int id){
+        return albumService.getAlbum(id);
+    }
+
 
 
     @RequestMapping(value="/upload/{content}", method= RequestMethod.POST)

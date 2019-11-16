@@ -32,7 +32,7 @@ public class AlbumDAO implements DAOSkeleton {
     }
 
     @Override
-    public Object get(int id) {
+    public GalleryAlbum get(int id) {
         return HibernateSessionFactory.getSession().openSession().get(GalleryAlbum.class,id);
     }
 
