@@ -19,6 +19,7 @@ public class HibernateSessionFactory {
             return new Configuration().configure().addAnnotatedClass(Post.class)
                     .addAnnotatedClass(GalleryImage.class)
                     .addAnnotatedClass(GalleryComments.class)
+                    .addAnnotatedClass(News.class)
                     .addAnnotatedClass(GalleryAlbum.class).buildSessionFactory();
         }
         catch (Throwable ex) {

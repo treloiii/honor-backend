@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import services.AlbumService;
 import services.GalleryService;
+import services.NewsService;
 import services.PostService;
 
 import java.io.BufferedOutputStream;
@@ -23,6 +24,9 @@ public class Controller{
 
     @Autowired
     private AlbumService albumService;
+
+    @Autowired
+    private NewsService newsService;
 
     @RequestMapping("/test")
     public String getTest(){
@@ -65,6 +69,16 @@ public class Controller{
     @RequestMapping("/getAlbum")
     public GalleryAlbum getAlbumById(@RequestParam("id") int id){
         return albumService.getAlbum(id);
+    }
+
+
+    @RequestMapping("/getAllNews")
+    public List<News> getAllNews(){
+        return newsService.getAllnews();
+    }
+    @RequestMapping("getNews")
+    public News getNews(@RequestParam("id") int id){
+        return newsService.getNewsById(id);
     }
 
 

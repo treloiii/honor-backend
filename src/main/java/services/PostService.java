@@ -10,7 +10,7 @@ import java.util.List;
 @Component("postService")
 public class PostService {
     @Autowired
-    PostDAO dao;
+    private PostDAO dao;
 
     public PostService() {
     }
