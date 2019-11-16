@@ -2,9 +2,6 @@ package dao;
 
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import com.honor.back.honorwebapp.Post;
-import dao.DAOSkeleton;
-
-import javafx.geometry.Pos;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
