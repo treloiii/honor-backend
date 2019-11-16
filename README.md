@@ -13,3 +13,7 @@
 <p>/getAlbums</p>
 <h3>Получить конкретный альбом галереии по его ID</h3>
 <p>/getAlbum?id={your_id}</p>
+<h3>Получить все новости</h3>
+<p>/getAllNews</p>
+<h3>Получить конкретную новость по ее ID</h3>
+<p>/getNews?id={your_id}</p>
