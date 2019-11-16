@@ -1,14 +1,16 @@
 package com.honor.back.honorwebapp;
 
+
+
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.List;
-
 @Entity
 @Table(name="honor_gallery_comments")
 public class GalleryComments {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private int id;
     @Column
     private String nickname;
@@ -16,7 +18,7 @@ public class GalleryComments {
     private BigInteger time;
     @Column
     private String comment;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="photo_id")
     private GalleryImage image;
 

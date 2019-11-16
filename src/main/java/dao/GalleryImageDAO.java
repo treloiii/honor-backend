@@ -4,7 +4,9 @@ import com.honor.back.honorwebapp.GalleryAlbum;
 import com.honor.back.honorwebapp.GalleryImage;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -33,7 +35,11 @@ public class GalleryImageDAO implements DAOSkeleton {
 
     @Override
     public GalleryImage get(int id) {
-        return HibernateSessionFactory.getSession().openSession().get(GalleryImage.class,id);
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        GalleryImage image=session.get(GalleryImage.class,id);
+        session.getTransaction().commit();
+        return image;
     }
 
     @Override
@@ -43,7 +49,11 @@ public class GalleryImageDAO implements DAOSkeleton {
 
     @Override
     public List<GalleryImage> getAll() {
-            List<GalleryImage> posts = (List<GalleryImage>) HibernateSessionFactory.getSession().openSession().createQuery("From GalleryImage").list();
+            Session session=HibernateSessionFactory.getSession().openSession();
+            session.beginTransaction();
+            List<GalleryImage> posts = session.createQuery("From GalleryImage c",GalleryImage.class).list();
+            session.getTransaction().commit();
+            session.close();
             return posts;
     }
 }

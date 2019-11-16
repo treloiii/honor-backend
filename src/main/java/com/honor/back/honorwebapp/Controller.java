@@ -23,6 +23,11 @@ public class Controller{
 
     @Autowired
     private AlbumService albumService;
+
+    @RequestMapping("/test")
+    public String getTest(){
+        return "Hello world!";
+    }
     @RequestMapping("/getMain")
     public List<Post> getMain() throws SQLException {
         return postService.getAllPosts();

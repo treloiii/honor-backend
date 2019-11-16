@@ -4,7 +4,9 @@ import com.honor.back.honorwebapp.HibernateSessionFactory;
 import com.honor.back.honorwebapp.Post;
 import dao.DAOSkeleton;
 
+import javafx.geometry.Pos;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -30,8 +32,12 @@ public class PostDAO implements DAOSkeleton {
 
     @Override
     public Post get(int id) {
-        return HibernateSessionFactory.getSession().openSession().get(Post.class,id);
-
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        Post post=session.get(Post.class,id);
+        session.getTransaction().commit();
+        session.close();
+        return post;
     }
 
     @Override
@@ -41,8 +47,11 @@ public class PostDAO implements DAOSkeleton {
 
     @Override
     public List<Post> getAll() {
-        List<Post> posts= (List<Post>) HibernateSessionFactory.getSession().openSession().createQuery("From Post").list();
-        //HibernateSessionFactory.getSession().openSession().flush();
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        List<Post> posts= session.createQuery("From Post", Post.class).list();
+        session.getTransaction().commit();
+        session.close();
         return posts;
     }
 }

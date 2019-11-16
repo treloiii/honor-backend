@@ -9,7 +9,7 @@ import java.util.List;
 public class GalleryAlbum {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private int id;
     @Column
     private String name;
@@ -17,7 +17,7 @@ public class GalleryAlbum {
     @Temporal(TemporalType.DATE)
     private Date creation_date;
 
-    @OneToMany(mappedBy = "album",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "album",fetch = FetchType.EAGER)
     private List<GalleryImage> images;
     public GalleryAlbum() {
     }

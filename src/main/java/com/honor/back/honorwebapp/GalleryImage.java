@@ -1,13 +1,17 @@
 package com.honor.back.honorwebapp;
 
-import javax.persistence.*;
-import java.util.List;
 
+import org.hibernate.annotations.Proxy;
+
+import javax.persistence.*;
+import javax.transaction.Transactional;
+import java.util.List;
+@Proxy(lazy =false)
 @Entity
 @Table(name="honor_gallery")
 public class GalleryImage {
     @Id
-    @GeneratedValue(strategy =GenerationType.IDENTITY)
+    @GeneratedValue
     private int id;
     @Column
     private String name;
@@ -18,10 +22,10 @@ public class GalleryImage {
     @Column
     private String server_path;
 
-    @OneToMany(mappedBy = "image",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "image",fetch = FetchType.EAGER)
     private List<GalleryComments> comments;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="album_id")
     private GalleryAlbum album;
 

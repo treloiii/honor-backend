@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component("albumDao")
-@Scope("prototype")
 public class AlbumDAO implements DAOSkeleton {
 
     @Override
@@ -33,7 +32,12 @@ public class AlbumDAO implements DAOSkeleton {
 
     @Override
     public GalleryAlbum get(int id) {
-        return HibernateSessionFactory.getSession().openSession().get(GalleryAlbum.class,id);
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        GalleryAlbum album=session.get(GalleryAlbum.class,id);
+        session.getTransaction().commit();
+        session.close();
+        return album;
     }
 
     @Override
@@ -43,7 +47,11 @@ public class AlbumDAO implements DAOSkeleton {
 
     @Override
     public List<GalleryAlbum> getAll() {
-        List<GalleryAlbum> albums = (List<GalleryAlbum>) HibernateSessionFactory.getSession().openSession().createQuery("From GalleryAlbum").list();
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        List<GalleryAlbum> albums = session.createQuery("From GalleryAlbum",GalleryAlbum.class).list();
+        session.getTransaction().commit();
+        session.close();
         return albums;
     }
 }
