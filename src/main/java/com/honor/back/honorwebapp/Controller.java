@@ -29,6 +29,9 @@ public class Controller{
     @Autowired
     private ActionsService actionsService;
 
+    @Autowired
+    private OrdensService ordensService;
+
     @RequestMapping("/test")
     public String getTest(){
         return "Hello world!";
@@ -98,6 +101,15 @@ public class Controller{
         return actionsService.getRallyById(id);
     }
 
+    @RequestMapping("/getOrdens")
+    public List<Ordens> getOrdens(){
+        return ordensService.getAllOrdens();
+    }
+
+    @RequestMapping("/getOrden")
+    public Ordens getOrden(@RequestParam("id")int id){
+        return ordensService.getOrden(id);
+    }
 
 
     @RequestMapping(value="/upload/{content}", method= RequestMethod.POST)

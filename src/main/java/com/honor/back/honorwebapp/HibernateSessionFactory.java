@@ -21,6 +21,8 @@ public class HibernateSessionFactory {
                     .addAnnotatedClass(ActionsImage.class)
                     .addAnnotatedClass(ActionsComments.class)
                     .addAnnotatedClass(ActionsType.class)
+                    .addAnnotatedClass(Ordens.class)
+                    .addAnnotatedClass(Veterans.class)
                     .addAnnotatedClass(GalleryAlbum.class).buildSessionFactory();
         }
         catch (Throwable ex) {
