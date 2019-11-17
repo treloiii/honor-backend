@@ -3,8 +3,8 @@ package Entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name="honor_rally_images")
-public class RallyImage {
+@Table(name="honor_actions_images")
+public class ActionsImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +15,7 @@ public class RallyImage {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "album_id")
-    private RallyAlbum album;
+    private ActionsAlbum album;
 
     @Column
     private String url;
@@ -23,14 +23,14 @@ public class RallyImage {
     @Column
     private String server_path;
 
-    public RallyImage() {
+    public ActionsImage() {
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setAlbum(RallyAlbum album) {
+    public void setAlbum(ActionsAlbum album) {
         this.album = album;
     }
 

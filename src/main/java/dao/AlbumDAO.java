@@ -44,7 +44,7 @@ public class AlbumDAO implements DAOSkeleton {
     }
 
     @Override
-    public List<GalleryAlbum> getAll() {
+    public List<GalleryAlbum> getAll(int id) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         List<GalleryAlbum> albums = session.createQuery("From GalleryAlbum",GalleryAlbum.class).list();

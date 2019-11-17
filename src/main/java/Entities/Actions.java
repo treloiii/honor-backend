@@ -2,16 +2,14 @@ package Entities;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="honor_rally")
-public class Rally {
+@Table(name="honor_actions")
+public class Actions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,12 +25,24 @@ public class Rally {
     @Column
     private String author;
 
-    @OneToOne(mappedBy = "rally",fetch = FetchType.EAGER)
-    private RallyAlbum album;
+    @OneToOne(mappedBy = "actions",fetch = FetchType.EAGER)
+    private ActionsAlbum album;
 
-    @OneToMany(mappedBy = "rally1",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "actions1",fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
-    private List<RallyComments> comments;
+    private List<ActionsComments> comments;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="type")
+    private ActionsType type;
+
+    public ActionsType getType() {
+        return type;
+    }
+
+    public void setType(ActionsType type) {
+        this.type = type;
+    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -42,7 +52,7 @@ public class Rally {
         this.description = description;
     }
 
-    public void setComments(List<RallyComments> comments) {
+    public void setComments(List<ActionsComments> comments) {
         this.comments = comments;
     }
 
@@ -54,7 +64,7 @@ public class Rally {
         this.author = author;
     }
 
-    public void setAlbum(RallyAlbum album) {
+    public void setAlbum(ActionsAlbum album) {
         this.album = album;
     }
 
@@ -70,7 +80,7 @@ public class Rally {
         return description;
     }
 
-    public List<RallyComments> getComments() {
+    public List<ActionsComments> getComments() {
         return comments;
     }
 
@@ -82,10 +92,10 @@ public class Rally {
         return author;
     }
 
-    public RallyAlbum getAlbum() {
+    public ActionsAlbum getAlbum() {
         return album;
     }
 
-    public Rally() {
+    public Actions() {
     }
 }

@@ -16,7 +16,7 @@ public class AlbumService {
     }
 
     public List<GalleryAlbum> getAllAlbums(){
-        return dao.getAll();
+        return dao.getAll(0);
     }
     public GalleryAlbum getAlbum(int id){return dao.get(id);}
 }

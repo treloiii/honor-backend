@@ -1,6 +1,6 @@
 package dao;
 
-import Entities.Rally;
+import Entities.Actions;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import org.hibernate.Session;
 import org.springframework.context.annotation.Scope;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 @Component("rallyDao")
 @Scope("prototype")
-public class RallyDAO implements DAOSkeleton {
+public class ActionsDAO implements DAOSkeleton {
     @Override
     public void update(Object updatedObject) {
 
@@ -21,13 +21,13 @@ public class RallyDAO implements DAOSkeleton {
     }
 
     @Override
-    public Rally get(int id) {
+    public Actions get(int id) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        Rally rally=session.get(Rally.class,id);
+        Actions actions =session.get(Actions.class,id);
         session.getTransaction().commit();
         session.close();
-        return rally;
+        return actions;
     }
 
     @Override
@@ -36,10 +36,10 @@ public class RallyDAO implements DAOSkeleton {
     }
 
     @Override
-    public List<Rally> getAll() {
+    public List<Actions> getAll(int type) {
         Session session= HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        List<Rally> rallies= session.createQuery("From Rally", Rally.class).list();
+        List<Actions> rallies= session.createQuery("From Actions WHERE type="+type, Actions.class).list();
         session.getTransaction().commit();
         session.close();
         return rallies;

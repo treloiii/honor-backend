@@ -16,10 +16,11 @@ public class HibernateSessionFactory {
                     .addAnnotatedClass(GalleryImage.class)
                     .addAnnotatedClass(GalleryComments.class)
                     .addAnnotatedClass(News.class)
-                    .addAnnotatedClass(Rally.class)
-                    .addAnnotatedClass(RallyAlbum.class)
-                    .addAnnotatedClass(RallyImage.class)
-                    .addAnnotatedClass(RallyComments.class)
+                    .addAnnotatedClass(Actions.class)
+                    .addAnnotatedClass(ActionsAlbum.class)
+                    .addAnnotatedClass(ActionsImage.class)
+                    .addAnnotatedClass(ActionsComments.class)
+                    .addAnnotatedClass(ActionsType.class)
                     .addAnnotatedClass(GalleryAlbum.class).buildSessionFactory();
         }
         catch (Throwable ex) {

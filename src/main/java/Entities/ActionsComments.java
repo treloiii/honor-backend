@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="honor_rally_comments")
-public class RallyComments {
+@Table(name="honor_actions_comments")
+public class ActionsComments {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +21,8 @@ public class RallyComments {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rally_id")
-    private Rally rally1;
-    public RallyComments() {
+    private Actions actions1;
+    public ActionsComments() {
     }
 
 
@@ -54,7 +54,7 @@ public class RallyComments {
         this.time = time;
     }
 
-    public void setRally(Rally rally1) {
-        this.rally1 = rally1;
+    public void setRally(Actions actions1) {
+        this.actions1 = actions1;
     }
 }

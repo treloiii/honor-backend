@@ -19,7 +19,7 @@ public class PostService {
         return dao.get(id);
     }
     public List<Post> getAllPosts(){
-        return dao.getAll();
+        return dao.getAll(0);
     }
     public void savePost(Post post){
         dao.save(post);

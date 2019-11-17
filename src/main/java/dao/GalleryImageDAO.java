@@ -43,7 +43,7 @@ public class GalleryImageDAO implements DAOSkeleton {
     }
 
     @Override
-    public List<GalleryImage> getAll() {
+    public List<GalleryImage> getAll(int id) {
             Session session=HibernateSessionFactory.getSession().openSession();
             session.beginTransaction();
             List<GalleryImage> posts = session.createQuery("From GalleryImage c",GalleryImage.class).list();

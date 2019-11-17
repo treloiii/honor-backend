@@ -16,7 +16,7 @@ public class NewsService {
     }
 
     public List<News> getAllnews(){
-        return dao.getAll();
+        return dao.getAll(0);
     }
     public News getNewsById(int id){
         return dao.get(id);

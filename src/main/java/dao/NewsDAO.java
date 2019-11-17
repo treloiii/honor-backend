@@ -33,7 +33,7 @@ public class NewsDAO implements DAOSkeleton {
     }
 
     @Override
-    public List<News> getAll() {
+    public List<News> getAll(int id) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         List<News> allNews = session.createQuery("From News",News.class).list();

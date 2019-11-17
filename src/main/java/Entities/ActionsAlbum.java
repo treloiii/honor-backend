@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="honor_rally_albums")
-public class RallyAlbum {
+@Table(name="honor_actions_albums")
+public class ActionsAlbum {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,12 +15,12 @@ public class RallyAlbum {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="rally_id")
-    private Rally rally;
+    private Actions actions;
 
     @OneToMany(mappedBy = "album",fetch = FetchType.EAGER)
-    private List<RallyImage> images;
+    private List<ActionsImage> images;
 
-    public RallyAlbum() {
+    public ActionsAlbum() {
     }
 
     public int getId() {
@@ -35,7 +35,7 @@ public class RallyAlbum {
 //        return rally;
 //    }
 
-    public List<RallyImage> getImages() {
+    public List<ActionsImage> getImages() {
         return images;
     }
 
@@ -43,11 +43,11 @@ public class RallyAlbum {
         this.name = name;
     }
 
-    public void setRally(Rally rally) {
-        this.rally = rally;
+    public void setActions(Actions actions) {
+        this.actions = actions;
     }
 
-    public void setImages(List<RallyImage> images) {
+    public void setImages(List<ActionsImage> images) {
         this.images = images;
     }
 }

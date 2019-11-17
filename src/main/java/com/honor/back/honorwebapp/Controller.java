@@ -27,7 +27,7 @@ public class Controller{
     private NewsService newsService;
 
     @Autowired
-    private RallyService rallyService;
+    private ActionsService actionsService;
 
     @RequestMapping("/test")
     public String getTest(){
@@ -83,14 +83,19 @@ public class Controller{
     }
 
 
-    @RequestMapping("/getRallies")
-    public List<Rally> getRallies(){
-        return rallyService.getAllRallies();
+    @RequestMapping("/getActions/{action}")
+    public List<Actions> getRallies(@PathVariable String action){
+        if(action.equals("Rallies"))
+            return actionsService.getAllRallies(1);
+        else if(action.equals("Events"))
+            return actionsService.getAllRallies(2);
+        else
+            return null;
     }
 
-    @RequestMapping("/getRally")
-    public Rally getRally(@RequestParam("id") int id){
-        return rallyService.getRallyById(id);
+    @RequestMapping("/getAction")
+    public Actions getRally(@RequestParam("id") int id){
+        return actionsService.getRallyById(id);
     }
 
 
