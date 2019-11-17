@@ -19,6 +19,7 @@ public class HibernateSessionFactory {
                     .addAnnotatedClass(Rally.class)
                     .addAnnotatedClass(RallyAlbum.class)
                     .addAnnotatedClass(RallyImage.class)
+                    .addAnnotatedClass(RallyComments.class)
                     .addAnnotatedClass(GalleryAlbum.class).buildSessionFactory();
         }
         catch (Throwable ex) {

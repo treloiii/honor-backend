@@ -1,5 +1,10 @@
 package Entities;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -17,8 +22,6 @@ public class Rally {
     @Column
     private String description;
     @Column
-    private int comments;
-    @Column
     @Temporal(value = TemporalType.DATE)
     private Date time;
     @Column
@@ -26,6 +29,10 @@ public class Rally {
 
     @OneToOne(mappedBy = "rally",fetch = FetchType.EAGER)
     private RallyAlbum album;
+
+    @OneToMany(mappedBy = "rally1",fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<RallyComments> comments;
 
     public void setTitle(String title) {
         this.title = title;
@@ -35,7 +42,7 @@ public class Rally {
         this.description = description;
     }
 
-    public void setComments(int comments) {
+    public void setComments(List<RallyComments> comments) {
         this.comments = comments;
     }
 
@@ -63,7 +70,7 @@ public class Rally {
         return description;
     }
 
-    public int getComments() {
+    public List<RallyComments> getComments() {
         return comments;
     }
 
