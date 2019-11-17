@@ -1,11 +1,9 @@
 package com.honor.back.honorwebapp;
+import Entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import services.AlbumService;
-import services.GalleryService;
-import services.NewsService;
-import services.PostService;
+import services.*;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -27,6 +25,9 @@ public class Controller{
 
     @Autowired
     private NewsService newsService;
+
+    @Autowired
+    private RallyService rallyService;
 
     @RequestMapping("/test")
     public String getTest(){
@@ -55,7 +56,7 @@ public class Controller{
     }
 
     @RequestMapping("/addComment/{photo_id}")
-    public String addComment(@RequestBody GalleryComments comment,@PathVariable int photo_id){
+    public String addComment(@RequestBody GalleryComments comment, @PathVariable int photo_id){
         GalleryImage image=galleryService.getImageById(photo_id);
         galleryService.addComment(image,comment);
         return "Success";
@@ -76,9 +77,20 @@ public class Controller{
     public List<News> getAllNews(){
         return newsService.getAllnews();
     }
-    @RequestMapping("getNews")
+    @RequestMapping("/getNews")
     public News getNews(@RequestParam("id") int id){
         return newsService.getNewsById(id);
+    }
+
+
+    @RequestMapping("/getRallies")
+    public List<Rally> getRallies(){
+        return rallyService.getAllRallies();
+    }
+
+    @RequestMapping("/getRally")
+    public Rally getRally(@RequestParam("id") int id){
+        return rallyService.getRallyById(id);
     }
 
 

@@ -1,13 +1,8 @@
 package dao;
 
-import com.honor.back.honorwebapp.GalleryAlbum;
-import com.honor.back.honorwebapp.GalleryImage;
+import Entities.GalleryImage;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

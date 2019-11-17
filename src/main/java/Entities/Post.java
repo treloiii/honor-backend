@@ -1,4 +1,4 @@
-package com.honor.back.honorwebapp;
+package Entities;
 
 import javax.persistence.*;
 

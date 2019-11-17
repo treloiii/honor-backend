@@ -1,6 +1,6 @@
 package services;
 
-import com.honor.back.honorwebapp.Post;
+import Entities.Post;
 import dao.PostDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

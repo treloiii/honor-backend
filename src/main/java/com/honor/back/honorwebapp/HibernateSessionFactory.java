@@ -1,12 +1,8 @@
 package com.honor.back.honorwebapp;
 
-import org.hibernate.Session;
+import Entities.*;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 
 public class HibernateSessionFactory {
     private static final SessionFactory sessionFactory = buildSessionFactory();
@@ -20,6 +16,9 @@ public class HibernateSessionFactory {
                     .addAnnotatedClass(GalleryImage.class)
                     .addAnnotatedClass(GalleryComments.class)
                     .addAnnotatedClass(News.class)
+                    .addAnnotatedClass(Rally.class)
+                    .addAnnotatedClass(RallyAlbum.class)
+                    .addAnnotatedClass(RallyImage.class)
                     .addAnnotatedClass(GalleryAlbum.class).buildSessionFactory();
         }
         catch (Throwable ex) {

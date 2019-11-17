@@ -1,6 +1,6 @@
 package services;
 
-import com.honor.back.honorwebapp.News;
+import Entities.News;
 import dao.NewsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

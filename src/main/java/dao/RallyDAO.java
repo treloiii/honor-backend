@@ -1,12 +1,15 @@
 package dao;
+
+import Entities.Rally;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
-import Entities.News;
 import org.hibernate.Session;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-@Component("newsDao")
-public class NewsDAO implements DAOSkeleton {
+@Component("rallyDao")
+@Scope("prototype")
+public class RallyDAO implements DAOSkeleton {
     @Override
     public void update(Object updatedObject) {
 
@@ -18,13 +21,13 @@ public class NewsDAO implements DAOSkeleton {
     }
 
     @Override
-    public News get(int id) {
-        Session session= HibernateSessionFactory.getSession().openSession();
+    public Rally get(int id) {
+        Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        News news=session.get(News.class,id);
+        Rally rally=session.get(Rally.class,id);
         session.getTransaction().commit();
         session.close();
-        return news;
+        return rally;
     }
 
     @Override
@@ -33,12 +36,12 @@ public class NewsDAO implements DAOSkeleton {
     }
 
     @Override
-    public List<News> getAll() {
-        Session session=HibernateSessionFactory.getSession().openSession();
+    public List<Rally> getAll() {
+        Session session= HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        List<News> allNews = session.createQuery("From News",News.class).list();
+        List<Rally> rallies= session.createQuery("From Rally", Rally.class).list();
         session.getTransaction().commit();
         session.close();
-        return allNews;
+        return rallies;
     }
 }

@@ -1,6 +1,6 @@
 package services;
 
-import com.honor.back.honorwebapp.GalleryAlbum;
+import Entities.GalleryAlbum;
 import dao.AlbumDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,28 +1,31 @@
-package com.honor.back.honorwebapp;
+package Entities;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "honor_news")
-public class News {
+@Table(name="honor_rally")
+public class Rally {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column
     private String title;
     @Column
     private String description;
     @Column
-    @Temporal(TemporalType.DATE)
+    private int comments;
+    @Column
+    @Temporal(value = TemporalType.DATE)
     private Date time;
     @Column
     private String author;
-    @Column
-    private String title_image;
 
-    public News() {
-    }
+    @OneToOne(mappedBy = "rally",fetch = FetchType.EAGER)
+    private RallyAlbum album;
 
     public void setTitle(String title) {
         this.title = title;
@@ -30,6 +33,10 @@ public class News {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setComments(int comments) {
+        this.comments = comments;
     }
 
     public void setTime(Date time) {
@@ -40,8 +47,8 @@ public class News {
         this.author = author;
     }
 
-    public void setTitle_image(String title_image) {
-        this.title_image = title_image;
+    public void setAlbum(RallyAlbum album) {
+        this.album = album;
     }
 
     public int getId() {
@@ -56,6 +63,10 @@ public class News {
         return description;
     }
 
+    public int getComments() {
+        return comments;
+    }
+
     public Date getTime() {
         return time;
     }
@@ -64,7 +75,10 @@ public class News {
         return author;
     }
 
-    public String getTitle_image() {
-        return title_image;
+    public RallyAlbum getAlbum() {
+        return album;
+    }
+
+    public Rally() {
     }
 }

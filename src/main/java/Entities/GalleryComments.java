@@ -1,11 +1,10 @@
-package com.honor.back.honorwebapp;
+package Entities;
 
 
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.math.BigInteger;
-import java.util.List;
+
 @Entity
 @Table(name="honor_gallery_comments")
 public class GalleryComments {

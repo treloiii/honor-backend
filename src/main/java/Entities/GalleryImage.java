@@ -1,10 +1,9 @@
-package com.honor.back.honorwebapp;
+package Entities;
 
 
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.List;
 @Proxy(lazy =false)
 @Entity
