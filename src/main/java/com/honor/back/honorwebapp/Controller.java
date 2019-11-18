@@ -130,31 +130,18 @@ public class Controller{
         imagesList= Arrays.asList(gson.fromJson(images,GalleryImage[].class));
         GalleryAlbum album=albumService.getAlbum(album_id);
         String response="";
+        String serverPath = "/home/std/honor-backend/static/gallery/" + album.getId()+"/";
         int index=0;
         for (GalleryImage image:imagesList) {
-            try {
-                if (!files[index].isEmpty() && (files[index].getContentType().contains("jpeg") || files[index].getContentType().contains("png"))) {
-                    String serverPath = "/home/std/honor-backend/static/gallery/" + album.getId()+"/";
-                    byte[] bytes = files[index].getBytes();
-                    System.out.println(files[index].getContentType());
-                    File file=new File(serverPath + image.getName() + "." + files[index].getContentType().substring("image/".length()));
-                    if(!file.exists()) {
-                        BufferedOutputStream stream =
-                                new BufferedOutputStream(new FileOutputStream(file));
-                        stream.write(bytes);
-                        stream.close();
-                        image.setServer_path(serverPath);
-                        image.setUrl("http://honor-webapp-server.std-763.ist.mospolytech.ru/static/gallery/" + album.getId() + "/" + image.getName() + "." + files[index].getContentType().substring("image/".length()));
-                        image.setAlbum(album);
-                        galleryService.addGalleryPhoto(image);
-                    }
-                    else{
-                        response+="Cannot upload file with name "+image.getName()+", because file alread exists;\n";
-                    }
-                }
+            String fileUploadResult=utils.fileUpload(serverPath,image.getName(),files[index]);
+            if(!fileUploadResult.equals("file exists")&&!fileUploadResult.equals("file empty")){
+                image.setServer_path(serverPath);
+                image.setUrl("http://honor-webapp-server.std-763.ist.mospolytech.ru/static/gallery/" + album.getId() + "/" + image.getName() + "." + files[index].getContentType().substring("image/".length()));
+                image.setAlbum(album);
+                galleryService.addGalleryPhoto(image);
             }
-            catch (Exception e){
-                e.printStackTrace();
+            else{
+                response+=fileUploadResult;
             }
             index++;
         }
@@ -174,26 +161,17 @@ public class Controller{
     @RequestMapping(value="/uploadStory", method= RequestMethod.POST)
     public @ResponseBody String handleFileUpload(@RequestParam("post") String posted,
                                                  @RequestParam("file") MultipartFile file){
+        String serverPath = "/home/std/honor-backend/static/stories/";
         Gson gson =new Gson();
         Post post=gson.fromJson(posted,Post.class);
-        if (!file.isEmpty()&&(file.getContentType().contains("jpeg")||file.getContentType().contains("png"))) {
-            try {
-                String serverPath = "/home/std/honor-backend/static/stories/";
-                byte[] bytes = file.getBytes();
-                System.out.println(file.getContentType());
-                BufferedOutputStream stream =
-                        new BufferedOutputStream(new FileOutputStream(new File(serverPath + post.getTitle() + "." + file.getContentType().substring("image/".length()))));
-                stream.write(bytes);
-                stream.close();
-                post.setImage("http://honor-webapp-server.std-763.ist.mospolytech.ru/static/stories/" + post.getTitle() + "." + file.getContentType().substring("image/".length()));
-                postService.savePost(post);
-                return "Вы удачно загрузили " + post.getTitle();
-
-            } catch (Exception e) {
-                return "Вам не удалось загрузить " + post.getTitle() + " => " + e.getMessage();
-            }
-        } else {
-            return "Вам не удалось загрузить " + post.getTitle() + " потому что файл пустой.";
+        String fileUploadResult=utils.fileUpload(serverPath,post.getTitle(),file);
+        if(!fileUploadResult.equals("file exists")&&!fileUploadResult.equals("file empty")){
+            post.setImage(fileUploadResult);
+            postService.savePost(post);
+            return "success";
+        }
+        else{
+            return fileUploadResult;
         }
     }
     @RequestMapping(value = "/uploadNews",method = RequestMethod.POST)
@@ -204,8 +182,8 @@ public class Controller{
         News news=gson.fromJson(addedNews,News.class);
         news.setTime(new Date());
         String fileUploadResult=utils.fileUpload(serverPath,news.getTitle(),file);
-        news.setTitle_image(fileUploadResult);
         if(!fileUploadResult.equals("file exists")&&!fileUploadResult.equals("file empty")) {
+            news.setTitle_image(fileUploadResult);
             newsService.addNews(news);
             return "success";
         }
