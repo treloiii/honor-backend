@@ -19,4 +19,7 @@ public class AlbumService {
         return dao.getAll(0);
     }
     public GalleryAlbum getAlbum(int id){return dao.get(id);}
+    public void addAlbum(GalleryAlbum album){
+        dao.save(album);
+    }
 }

@@ -1,5 +1,6 @@
 package com.honor.back.honorwebapp;
 import Entities.*;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,7 +9,14 @@ import services.*;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin
@@ -112,52 +120,79 @@ public class Controller{
     }
 
 
-    @RequestMapping(value="/upload/{content}", method= RequestMethod.POST)
-    public @ResponseBody String handleFileUpload(@RequestParam("name") String name,
-                                                 @RequestParam("file") MultipartFile file,
-                                                 @RequestParam("title") String title,
-                                                 @RequestParam("description") String desc,
-                                                 @PathVariable String content){
-        if (!file.isEmpty()&&(file.getContentType().contains("jpeg")||file.getContentType().contains("png"))) {
+
+    @RequestMapping("/addAlbum")
+    public String addAlbum(@RequestBody GalleryAlbum album){
+        album.setCreation_date(new Date());
+        albumService.addAlbum(album);
+        new File("/home/std/honor-backend/static/gallery/"+album.getId()).mkdirs();
+        return "Album with id:"+album.getId();
+    }
+    @RequestMapping("/addAlbumImages/{album_id}")
+    public String addImages(@RequestParam("images") String images,@RequestParam("files") MultipartFile[] files,
+                                        @PathVariable int album_id){
+        Gson gson=new Gson();
+        List<GalleryImage> imagesList = null;
+        imagesList= Arrays.asList(gson.fromJson(images,GalleryImage[].class));
+        GalleryAlbum album=albumService.getAlbum(album_id);
+        String response="";
+        int index=0;
+        for (GalleryImage image:imagesList) {
             try {
-                    if(content.equals("gallery")) {
-                        String serverPath = "/home/std/honor-backend/static/gallery/";
-                        //String serverPath="C://cso//";
-                        byte[] bytes = file.getBytes();
-                        System.out.println(file.getContentType());
+                if (!files[index].isEmpty() && (files[index].getContentType().contains("jpeg") || files[index].getContentType().contains("png"))) {
+                    String serverPath = "/home/std/honor-backend/static/gallery/" + album.getId()+"/";
+                    byte[] bytes = files[index].getBytes();
+                    System.out.println(files[index].getContentType());
+                    File file=new File(serverPath + image.getName() + "." + files[index].getContentType().substring("image/".length()));
+                    if(!file.exists()) {
                         BufferedOutputStream stream =
-                                new BufferedOutputStream(new FileOutputStream(new File(serverPath + name + "." + file.getContentType().substring("image/".length()))));
+                                new BufferedOutputStream(new FileOutputStream(file));
                         stream.write(bytes);
                         stream.close();
-                        GalleryImage gi = new GalleryImage();
-                        gi.setName(name);
-                        gi.setServer_path(serverPath);
-                        gi.setDescription("ss");
-                        gi.setUrl("http://honor-webapp-server.std-763.ist.mospolytech.ru/static/gallery/" + name + "." + file.getContentType().substring("image/".length()));
-                        galleryService.addGalleryPhoto(gi);
-                        return "Вы удачно загрузили " + name + " в " + name + "Галерею!";
+                        image.setServer_path(serverPath);
+                        image.setUrl("http://honor-webapp-server.std-763.ist.mospolytech.ru/static/gallery/" + album.getId() + "/" + image.getName() + "." + files[index].getContentType().substring("image/".length()));
+                        image.setAlbum(album);
+                        galleryService.addGalleryPhoto(image);
                     }
                     else{
-                        String serverPath = "/home/std/honor-backend/static/stories/";
-                        //String serverPath = "C://cso//";
-                        byte[] bytes = file.getBytes();
-                        System.out.println(file.getContentType());
-                        BufferedOutputStream stream =
-                                new BufferedOutputStream(new FileOutputStream(new File(serverPath + name + "." + file.getContentType().substring("image/".length()))));
-                        stream.write(bytes);
-                        stream.close();
-                        Post post = new Post();
-                        post.setTitle(title);
-                        post.setImage("http://honor-webapp-server.std-763.ist.mospolytech.ru/static/stories/" + name + "." + file.getContentType().substring("image/".length()));
-                        post.setDescription(desc);
-                        postService.savePost(post);
-                        return "Вы удачно загрузили " + name + " в " + name + "Историю!";
+                        response+="Cannot upload file with name "+image.getName()+", because file alread exists;\n";
                     }
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            index++;
+        }
+        if(response.equals(""))
+            response+="success";
+        return response;
+    }
+
+
+    @RequestMapping(value="/uploadStory", method= RequestMethod.POST)
+    public @ResponseBody String handleFileUpload(@RequestParam("post") String posted,
+                                                 @RequestParam("file") MultipartFile file){
+        Gson gson =new Gson();
+        Post post=gson.fromJson(posted,Post.class);
+        if (!file.isEmpty()&&(file.getContentType().contains("jpeg")||file.getContentType().contains("png"))) {
+            try {
+                String serverPath = "/home/std/honor-backend/static/stories/";
+                byte[] bytes = file.getBytes();
+                System.out.println(file.getContentType());
+                BufferedOutputStream stream =
+                        new BufferedOutputStream(new FileOutputStream(new File(serverPath + post.getTitle() + "." + file.getContentType().substring("image/".length()))));
+                stream.write(bytes);
+                stream.close();
+                post.setImage("http://honor-webapp-server.std-763.ist.mospolytech.ru/static/stories/" + post.getTitle() + "." + file.getContentType().substring("image/".length()));
+                postService.savePost(post);
+                return "Вы удачно загрузили " + post.getTitle();
+
             } catch (Exception e) {
-                return "Вам не удалось загрузить " + name + " => " + e.getMessage();
+                return "Вам не удалось загрузить " + post.getTitle() + " => " + e.getMessage();
             }
         } else {
-            return "Вам не удалось загрузить " + name + " потому что файл пустой.";
+            return "Вам не удалось загрузить " + post.getTitle() + " потому что файл пустой.";
         }
     }
 }

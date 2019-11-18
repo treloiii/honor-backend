@@ -9,7 +9,7 @@ import java.util.List;
 public class GalleryAlbum {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
     private int id;
     @Column
     private String name;

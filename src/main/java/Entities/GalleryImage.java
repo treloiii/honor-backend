@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name="honor_gallery")
 public class GalleryImage {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column
     private String name;
@@ -75,4 +75,7 @@ public class GalleryImage {
         this.server_path = server_path;
     }
 
+    public void setAlbum(GalleryAlbum album) {
+        this.album = album;
+    }
 }
