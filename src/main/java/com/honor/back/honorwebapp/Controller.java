@@ -1,5 +1,6 @@
 package com.honor.back.honorwebapp;
 import Entities.*;
+import Utils.Utils;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,8 @@ import java.util.List;
 @CrossOrigin
 @RestController
 public class Controller{
+    @Autowired
+    private Utils utils;
     @Autowired
     private GalleryService galleryService;
 
@@ -64,13 +67,6 @@ public class Controller{
     @RequestMapping("/getImage")
     public GalleryImage getImage(@RequestParam("id") int id){
         return galleryService.getImageById(id);
-    }
-
-    @RequestMapping("/addComment/{photo_id}")
-    public String addComment(@RequestBody GalleryComments comment, @PathVariable int photo_id){
-        GalleryImage image=galleryService.getImageById(photo_id);
-        galleryService.addComment(image,comment);
-        return "Success";
     }
 
     @RequestMapping("/getAlbums")
@@ -123,9 +119,7 @@ public class Controller{
 
     @RequestMapping("/addAlbum")
     public String addAlbum(@RequestBody GalleryAlbum album){
-        album.setCreation_date(new Date());
         albumService.addAlbum(album);
-        new File("/home/std/honor-backend/static/gallery/"+album.getId()).mkdirs();
         return "Album with id:"+album.getId();
     }
     @RequestMapping("/addAlbumImages/{album_id}")
@@ -169,6 +163,13 @@ public class Controller{
         return response;
     }
 
+    @RequestMapping("/addComment/{photo_id}")
+    public String addComment(@RequestBody GalleryComments comment, @PathVariable int photo_id){
+        GalleryImage image=galleryService.getImageById(photo_id);
+        galleryService.addComment(image,comment);
+        return "Success";
+    }
+
 
     @RequestMapping(value="/uploadStory", method= RequestMethod.POST)
     public @ResponseBody String handleFileUpload(@RequestParam("post") String posted,
@@ -194,5 +195,23 @@ public class Controller{
         } else {
             return "Вам не удалось загрузить " + post.getTitle() + " потому что файл пустой.";
         }
+    }
+    @RequestMapping(value = "/uploadNews",method = RequestMethod.POST)
+    public @ResponseBody String uploadNews(@RequestParam("news") String addedNews,
+                                           @RequestParam("file") MultipartFile file){
+        String serverPath="/home/std/honor-backend/static/news/";
+        Gson gson=new Gson();
+        News news=gson.fromJson(addedNews,News.class);
+        news.setTime(new Date());
+        String fileUploadResult=utils.fileUpload(serverPath,news.getTitle(),file);
+        news.setTitle_image(fileUploadResult);
+        if(!fileUploadResult.equals("file exists")&&!fileUploadResult.equals("file empty")) {
+            newsService.addNews(news);
+            return "success";
+        }
+        else {
+            return fileUploadResult;
+        }
+
     }
 }

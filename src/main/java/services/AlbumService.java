@@ -5,6 +5,8 @@ import dao.AlbumDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 @Component("albumService")
@@ -20,6 +22,8 @@ public class AlbumService {
     }
     public GalleryAlbum getAlbum(int id){return dao.get(id);}
     public void addAlbum(GalleryAlbum album){
+        album.setCreation_date(new Date());
+        new File("/home/std/honor-backend/static/gallery/"+album.getId()).mkdirs();
         dao.save(album);
     }
 }

@@ -14,7 +14,11 @@ public class NewsDAO implements DAOSkeleton {
 
     @Override
     public void save(Object savedObject) {
-
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        session.save(savedObject);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override

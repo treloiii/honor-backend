@@ -21,4 +21,7 @@ public class NewsService {
     public News getNewsById(int id){
         return dao.get(id);
     }
+    public void addNews(News news){
+        dao.save(news);
+    }
 }
