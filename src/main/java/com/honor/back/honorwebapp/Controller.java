@@ -153,6 +153,7 @@ public class Controller{
     @RequestMapping("/addComment/{photo_id}")
     public String addComment(@RequestBody GalleryComments comment, @PathVariable int photo_id){
         GalleryImage image=galleryService.getImageById(photo_id);
+        comment.setTime(new Date());
         galleryService.addComment(image,comment);
         return "Success";
     }

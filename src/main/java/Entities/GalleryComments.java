@@ -4,17 +4,19 @@ package Entities;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.Date;
 
 @Entity
 @Table(name="honor_gallery_comments")
 public class GalleryComments {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column
     private String nickname;
     @Column
-    private BigInteger time;
+    @Temporal(value = TemporalType.DATE)
+    private Date time;
     @Column
     private String comment;
     @ManyToOne(fetch = FetchType.EAGER)
@@ -32,7 +34,7 @@ public class GalleryComments {
         return nickname;
     }
 
-    public BigInteger getTime() {
+    public Date getTime() {
         return time;
     }
 
@@ -48,7 +50,7 @@ public class GalleryComments {
         this.nickname = nickname;
     }
 
-    public void setTime(BigInteger time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 
