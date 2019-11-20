@@ -32,7 +32,7 @@ public class AlbumDAO implements DAOSkeleton {
     public GalleryAlbum get(int id) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        GalleryAlbum album=session.get(GalleryAlbum.class,id);
+        GalleryAlbum album=session.createQuery("From GalleryAlbum WHERE id="+id,GalleryAlbum.class).getSingleResult();
         session.getTransaction().commit();
         session.close();
         return album;
