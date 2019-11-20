@@ -138,4 +138,14 @@ description - описание изображения
         }
 title - заголовок истории<br>
 description - текст истории
+<h3>Добавить комментарий к фото в галерее</h3>
+<p>/addComment/{photo_id}</p>
+<p>Для добавления истории, необходимо отправить POST запрос с объектом структуры</p>
+        
+        { 
+         "nickname":"commenatator_nickname",
+         "comment":"text of comment" 
+        }
+nickname - Никнейм комментатора<br>
+comment - текст комментатора
    
