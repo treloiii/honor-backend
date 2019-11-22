@@ -2,6 +2,8 @@ package Entities;
 
 
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.Date;
@@ -18,12 +20,22 @@ public class GalleryComments {
     @Temporal(value = TemporalType.DATE)
     private Date time;
     @Column
+    private String email;
+    @Column
     private String comment;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="photo_id")
     private GalleryImage image;
 
     public GalleryComments() {
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public int getId() {
