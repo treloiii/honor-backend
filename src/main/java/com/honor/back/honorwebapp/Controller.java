@@ -43,27 +43,7 @@ public class Controller{
     @Autowired
     private OrdensService ordensService;
 
-    @RequestMapping(value = "/test",method = RequestMethod.POST)
-    public String getTest(@RequestParam("pic") MultipartFile[] images,@RequestParam("title") String title,@RequestParam("description") String description){
-        new File("/home/std/honor-backend/static/news/"+title).mkdirs();
-        String uploadPath="/home/std/honor-backend/static/news/"+title+"/";
-        String[] buf=description.split("_paste_");
-        String finalStr="";
-        System.out.println(Arrays.toString(buf));
-        int i=0;
-        for (String a:buf) {
-            finalStr+=a;
-            if(i<images.length) {
-                String img=utils.fileUpload(uploadPath, images[i].getOriginalFilename(), images[i]);
-                if(!img.equals("file exists")&&!img.equals("file empty")) {
-                    finalStr += "<img src=\"" +img+"\">";
-                }
-            }
-            i++;
-        }
-        System.out.println(finalStr);
-        return title;
-    }
+
     @RequestMapping("/getMain")
     public List<Post> getMain() throws SQLException {
         return postService.getAllPosts();
@@ -192,22 +172,42 @@ public class Controller{
             return fileUploadResult;
         }
     }
-    @RequestMapping(value = "/uploadNews",method = RequestMethod.POST)
-    public @ResponseBody String uploadNews(@RequestParam("news") String addedNews,
-                                           @RequestParam("file") MultipartFile file){
-        String serverPath="/home/std/honor-backend/static/news/";
-        Gson gson=new Gson();
-        News news=gson.fromJson(addedNews,News.class);
-        news.setTime(new Date());
-        String fileUploadResult=utils.fileUpload(serverPath,news.getTitle(),file);
-        if(!fileUploadResult.equals("file exists")&&!fileUploadResult.equals("file empty")) {
-            news.setTitle_image(fileUploadResult);
-            newsService.addNews(news);
-            return "success";
-        }
-        else {
-            return fileUploadResult;
-        }
 
+
+    @RequestMapping(value = "/uploadNews",method = RequestMethod.POST)
+    public String uploadNews(@RequestParam("pic") MultipartFile[] images,@RequestParam("title_pic") MultipartFile titleImage,
+                             @RequestParam("title") String title,@RequestParam("description") String description,
+                             @RequestParam("picname") String titleImageName){
+
+        String uploadPath="/home/std/honor-backend/static/news/"+title+"/";
+        new File(uploadPath.substring(0,uploadPath.length()-1)).mkdirs();
+        String[] buf=description.split("_paste_");
+        String finalStr="";
+        System.out.println(Arrays.toString(buf));
+        int i=0;
+        for (String a:buf) {
+            finalStr+=a;
+            if(i<images.length) {
+                String img=utils.fileUpload(uploadPath, images[i].getOriginalFilename(), images[i]);
+                if(!img.equals("file exists")&&!img.equals("file empty")) {
+                    finalStr += "<img src=\"" +img+"\">";
+                }
+            }
+            i++;
+        }
+        String titleRes=utils.fileUpload(uploadPath,titleImageName,titleImage);
+        if(!titleRes.equals("file exists")&&!titleRes.equals("file empty")) {
+            News news=new News();
+            news.setTitle_image_name(titleImageName);
+            news.setTitle_image(titleRes);
+            news.setTitle(title);
+            news.setTime(new Date());
+            news.setAuthor("Admin");
+            news.setDescription(description);
+            newsService.addNews(news);
+        }
+        System.out.println(finalStr);
+        return "success";
     }
+
 }

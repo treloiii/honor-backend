@@ -20,8 +20,18 @@ public class News {
     private String author;
     @Column
     private String title_image;
+    @Column
+    private String title_image_name;
 
     public News() {
+    }
+
+    public void setTitle_image_name(String title_image_name) {
+        this.title_image_name = title_image_name;
+    }
+
+    public String getTitle_image_name() {
+        return title_image_name;
     }
 
     public void setTitle(String title) {

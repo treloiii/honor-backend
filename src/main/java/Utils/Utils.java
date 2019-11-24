@@ -30,8 +30,14 @@ public class Utils {
                     contentType="jpg";
                 else
                     contentType="png";
-                String postfix="_uncompressed";
-                File file1=new File(serverPath + fileName+postfix + "." + contentType);
+                double fileSizeKb=file.getSize()/1024;
+                File file1;
+                String postfix = "_uncompressed";
+                if(fileSizeKb>350)
+                    file1= new File(serverPath + fileName + postfix + "." + contentType);
+                else
+                    file1= new File(serverPath + fileName + "." + contentType);
+
                 if(!file1.exists()) {
                     byte[] bytes = file.getBytes();
                     System.out.println(file.getContentType());
@@ -39,11 +45,14 @@ public class Utils {
                             new BufferedOutputStream(new FileOutputStream(file1));
                     stream.write(bytes);
                     stream.close();
-                    res="http://honor-webapp-server.std-763.ist.mospolytech.ru/"+serverPath.substring("/home/std/honor-backend/".length())+fileName + "." + contentType;
-                    if(contentType.equals("jpg"))
-                        compressJPEG(serverPath + fileName+postfix + "." + contentType,postfix);
-                    else
-                        compressPNG(serverPath + fileName + "." + contentType,file1);
+                    res="http://honor-webapp-server.std-763.ist.mospolytech.ru/"+serverPath.substring("/home/std/honor-backend/".length())+fileName + ".jpg";
+                    if(contentType.equals("jpg")) {
+                        if(fileSizeKb>350)
+                            compressJPEG(serverPath + fileName + postfix + "." + contentType, postfix);
+                    }
+                    else {
+                        compressPNG(serverPath + fileName + "." + contentType, file1);
+                    }
                 }
                 else {
                     res="file exists";
