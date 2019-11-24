@@ -203,7 +203,7 @@ public class Controller{
             news.setTitle(title);
             news.setTime(new Date());
             news.setAuthor("Admin");
-            news.setDescription(description);
+            news.setDescription(finalStr);
             newsService.addNews(news);
         }
         System.out.println(finalStr);
