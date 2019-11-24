@@ -179,6 +179,8 @@ public class Controller{
                              @RequestParam("title") String title,@RequestParam("description") String description,
                              @RequestParam("picname") String titleImageName){
 
+        title=utils.transliterate(title);
+        titleImageName=utils.transliterate(titleImageName);
         String uploadPath="/home/std/honor-backend/static/news/"+title+"/";
         new File(uploadPath.substring(0,uploadPath.length()-1)).mkdirs();
         String[] buf=description.split("_paste_");
