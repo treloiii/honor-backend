@@ -43,9 +43,26 @@ public class Controller{
     @Autowired
     private OrdensService ordensService;
 
-    @RequestMapping("/test")
-    public String getTest(){
-        return "Hello world!";
+    @RequestMapping(value = "/test",method = RequestMethod.POST)
+    public String getTest(@RequestParam("pic") MultipartFile[] images,@RequestParam("title") String title,@RequestParam("description") String description){
+        new File("/home/std/honor-backend/static/news/"+title).mkdirs();
+        String uploadPath="/home/std/honor-backend/static/news/"+title+"/";
+        String[] buf=description.split("_paste_");
+        String finalStr="";
+        System.out.println(Arrays.toString(buf));
+        int i=0;
+        for (String a:buf) {
+            finalStr+=a;
+            if(i<images.length) {
+                String img=utils.fileUpload(uploadPath, images[i].getOriginalFilename(), images[i]);
+                if(!img.equals("file exists")&&!img.equals("file empty")) {
+                    finalStr += "<img src=\"" +img+"\">";
+                }
+            }
+            i++;
+        }
+        System.out.println(finalStr);
+        return title;
     }
     @RequestMapping("/getMain")
     public List<Post> getMain() throws SQLException {

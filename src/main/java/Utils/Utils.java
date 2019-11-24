@@ -30,9 +30,8 @@ public class Utils {
                     contentType="jpg";
                 else
                     contentType="png";
-
-                File file1=new File(serverPath + fileName + "." + contentType);
-                String postfix="uncompressed";
+                String postfix="_uncompressed";
+                File file1=new File(serverPath + fileName+postfix + "." + contentType);
                 if(!file1.exists()) {
                     byte[] bytes = file.getBytes();
                     System.out.println(file.getContentType());
@@ -42,9 +41,9 @@ public class Utils {
                     stream.close();
                     res="http://honor-webapp-server.std-763.ist.mospolytech.ru/"+serverPath.substring("/home/std/honor-backend/".length())+fileName + "." + contentType;
                     if(contentType.equals("jpg"))
-                        compressJPEG(serverPath + fileName + "." + contentType);
+                        compressJPEG(serverPath + fileName+postfix + "." + contentType,postfix);
                     else
-                        compressPNG(serverPath + fileName + "." + contentType);
+                        compressPNG(serverPath + fileName + "." + contentType,file1);
                 }
                 else {
                     res="file exists";
@@ -60,15 +59,15 @@ public class Utils {
     }
 
 
-    private void compressPNG(String pathToPng){
-        toJpeg(pathToPng);
+    private void compressPNG(String pathToPng,File fileToDelete){
+        toJpeg(pathToPng,fileToDelete);
         //compressJPEG(pathToPng.substring(0,pathToPng.length()-".png".length())+".jpg");
     }
 
-    private void compressJPEG(String file_path){
+    private void compressJPEG(String file_path,String postfix){
         try {
             File imageFile = new File(file_path);
-            File compressedImageFile = new File(file_path);
+            File compressedImageFile = new File(file_path.substring(0,file_path.length()-4-postfix.length())+".jpg");
 
             InputStream is = new FileInputStream(imageFile);
             OutputStream os = new FileOutputStream(compressedImageFile);
@@ -103,12 +102,13 @@ public class Utils {
             os.close();
             ios.close();
             writer.dispose();
+            imageFile.delete();
         }
         catch (Exception e){
             e.printStackTrace();
         }
     }
-    private void toJpeg(String path){
+    private void toJpeg(String path,File fileToDelete){
         BufferedImage bufferedImage;
         try {
             //Считываем изображение в буфер
@@ -122,6 +122,7 @@ public class Utils {
             // записываем новое изображение в формате jpg
             ImageIO.write(newBufferedImage, "jpg", new File(path.substring(0,path.length()-".png".length())+".jpg"));
 
+            fileToDelete.delete();
             System.out.println("Готово!");
 
         } catch (IOException e) {

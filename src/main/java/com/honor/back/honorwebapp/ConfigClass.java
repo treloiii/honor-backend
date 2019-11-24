@@ -23,7 +23,7 @@ public class ConfigClass {
     MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
         factory.setMaxFileSize(DataSize.parse("10240KB"));
-        factory.setMaxRequestSize(DataSize.parse("10240KB"));
+        factory.setMaxRequestSize(DataSize.parse("102400KB"));
         return factory.createMultipartConfig();
     }
 }
