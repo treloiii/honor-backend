@@ -9,7 +9,11 @@ import java.util.List;
 public class NewsDAO implements DAOSkeleton {
     @Override
     public void update(Object updatedObject) {
-
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        session.update(updatedObject);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override

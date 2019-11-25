@@ -2,7 +2,9 @@ package com.honor.back.honorwebapp;
 import Entities.*;
 import Utils.Utils;
 import com.google.gson.Gson;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import services.*;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @CrossOrigin
 @RestController
@@ -174,42 +177,64 @@ public class Controller{
     }
 
 
-    @RequestMapping(value = "/uploadNews",method = RequestMethod.POST)
+    @RequestMapping(value = "/uploadNews/{updatable}",method = RequestMethod.POST)
     public String uploadNews(@RequestParam("pic") MultipartFile[] images,@RequestParam("title_pic") MultipartFile titleImage,
                              @RequestParam("title") String title,@RequestParam("description") String description,
-                             @RequestParam("picname") String titleImageName){
+                             @RequestParam("picname") String titleImageName,@RequestParam(value = "news_id",required = false) Integer id,
+                             @RequestParam(value = "time",required = false)
+                                 @DateTimeFormat(pattern = "yyyy-mm-dd") Date time,
+                             @PathVariable("updatable") String updatable){
+        News news;
+        try {
+            news = newsService.getNewsById(id);
+        }
+        catch (Exception e){
+            news = new News();
+        }
+        if(!updatable.equals("new")) {
+            try {
+                FileUtils.deleteDirectory(new File("/home/std/honor-backend/static/news/" + utils.transliterate(news.getTitle()) + "/"));
+            }
+            catch (Exception e){
+                System.out.println("cannot find dir");
+            }
+        }
 
-
-        titleImageName=utils.transliterate(titleImageName);
-        String uploadPath="/home/std/honor-backend/static/news/"+utils.transliterate(title)+"/";
-        new File(uploadPath.substring(0,uploadPath.length()-1)).mkdirs();
-        String[] buf=description.split("_paste_");
-        String finalStr="";
-        System.out.println(Arrays.toString(buf));
-        int i=0;
-        for (String a:buf) {
-            finalStr+=a;
-            if(i<images.length) {
-                String img=utils.fileUpload(uploadPath, images[i].getOriginalFilename(), images[i]);
-                if(!img.equals("file exists")&&!img.equals("file empty")) {
-                    finalStr += "<img src=\"" +img+"\">";
+            titleImageName = utils.transliterate(titleImageName);
+            String uploadPath = "/home/std/honor-backend/static/news/" + utils.transliterate(title) + "/";
+            new File(uploadPath.substring(0, uploadPath.length() - 1)).mkdirs();
+            String[] buf = description.split("_paste_");
+            String finalStr = "";
+            System.out.println(Arrays.toString(buf));
+            int i = 0;
+            for (String a : buf) {
+                finalStr += a;
+                if (i < images.length) {
+                    String img = utils.fileUpload(uploadPath, images[i].getOriginalFilename(), images[i]);
+                    if (!img.equals("file exists") && !img.equals("file empty")) {
+                        finalStr += "<img src=\"" + img + "\">";
+                    }
+                }
+                i++;
+            }
+            String titleRes = utils.fileUpload(uploadPath, titleImageName, titleImage);
+            if (!titleRes.equals("file exists") && !titleRes.equals("file empty")) {
+                news.setTitle_image_name(titleImageName);
+                news.setTitle_image(titleRes);
+                news.setTitle(title);
+                news.setAuthor("Admin");
+                news.setDescription(finalStr);
+                if(updatable.equals("new")) {
+                    news.setTime(new Date());
+                    newsService.addNews(news);
+                }
+                else{
+                    news.setTime(time);
+                    newsService.updateNews(news);
                 }
             }
-            i++;
-        }
-        String titleRes=utils.fileUpload(uploadPath,titleImageName,titleImage);
-        if(!titleRes.equals("file exists")&&!titleRes.equals("file empty")) {
-            News news=new News();
-            news.setTitle_image_name(titleImageName);
-            news.setTitle_image(titleRes);
-            news.setTitle(title);
-            news.setTime(new Date());
-            news.setAuthor("Admin");
-            news.setDescription(finalStr);
-            newsService.addNews(news);
-        }
-        System.out.println(finalStr);
-        return "success";
+            System.out.println(finalStr);
+            return "success";
     }
 
 }

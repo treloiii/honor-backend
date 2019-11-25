@@ -24,4 +24,7 @@ public class NewsService {
     public void addNews(News news){
         dao.save(news);
     }
+    public void updateNews(News news){
+        dao.update(news);
+    }
 }
