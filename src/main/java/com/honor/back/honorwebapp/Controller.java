@@ -178,7 +178,7 @@ public class Controller{
 
 
     @RequestMapping(value = "/uploadNews/{updatable}",method = RequestMethod.POST)
-    public String uploadNews(@RequestParam("pic") MultipartFile[] images,@RequestParam("title_pic") MultipartFile titleImage,
+    public String uploadNews(@RequestParam("pic") MultipartFile[] images,@RequestParam(value = "title_pic",required = false) MultipartFile titleImage,
                              @RequestParam("title") String title,@RequestParam("description") String description,
                              @RequestParam("picname") String titleImageName,@RequestParam(value = "news_id",required = false) Integer id,
                              @RequestParam(value = "time",required = false)
@@ -217,10 +217,15 @@ public class Controller{
                 }
                 i++;
             }
-            String titleRes = utils.fileUpload(uploadPath, titleImageName, titleImage);
+            String titleRes="";
+            if(titleImage!=null) {
+                titleRes = utils.fileUpload(uploadPath, titleImageName, titleImage);
+            }
             if (!titleRes.equals("file exists") && !titleRes.equals("file empty")) {
-                news.setTitle_image_name(titleImageName);
-                news.setTitle_image(titleRes);
+                if(!titleRes.equals("")) {
+                    news.setTitle_image_name(titleImageName);
+                    news.setTitle_image(titleRes);
+                }
                 news.setTitle(title);
                 news.setAuthor("Admin");
                 news.setDescription(finalStr);
