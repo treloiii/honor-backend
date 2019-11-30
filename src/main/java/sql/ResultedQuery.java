@@ -16,7 +16,7 @@ public class ResultedQuery {
     public ResultedQuery() {
     }
 
-    ResultSet getResultSet(String query) throws SQLException {
+    public ResultSet getResultSet(String query) throws SQLException {
         c=db.getConnection();
         PreparedStatement ps=c.prepareStatement(query);
         return ps.executeQuery();

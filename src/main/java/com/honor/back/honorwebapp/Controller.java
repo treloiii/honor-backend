@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import services.*;
+import sql.ResultedQuery;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,7 +47,8 @@ public class Controller{
 
     @Autowired
     private OrdensService ordensService;
-
+    @Autowired
+    private ResultedQuery query;
 
     @RequestMapping("/getMain")
     public List<Post> getMain() throws SQLException {
@@ -136,7 +139,7 @@ public class Controller{
             String fileUploadResult=utils.fileUpload(serverPath,image.getName(),files[index]);
             if(!fileUploadResult.equals("file exists")&&!fileUploadResult.equals("file empty")){
                 image.setServer_path(serverPath);
-                image.setUrl("http://honor-webapp-server.std-763.ist.mospolytech.ru/static/gallery/" + album.getId() + "/" + image.getName() + "." + files[index].getContentType().substring("image/".length()));
+                image.setUrl("http://honor-webapp-server.std-763.ist.mospolytech.ru/static/gallery/" + album.getId() + "/" + image.getName() + ".jpg");
                 image.setAlbum(album);
                 galleryService.addGalleryPhoto(image);
             }
@@ -241,5 +244,4 @@ public class Controller{
             System.out.println(finalStr);
             return "success";
     }
-
 }

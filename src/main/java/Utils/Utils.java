@@ -33,10 +33,17 @@ public class Utils {
                 double fileSizeKb=file.getSize()/1024;
                 File file1;
                 String postfix = "_uncompressed";
-                if(fileSizeKb>350)
-                    file1= new File(serverPath + fileName + postfix + "." + contentType);
-                else
-                    file1= new File(serverPath + fileName + "." + contentType);
+                if(contentType.equals("jpg")) {
+                    if (fileSizeKb > 350) {
+                        file1 = new File(serverPath + fileName + postfix + "." + contentType);
+                    }
+                    else{
+                        file1 = new File(serverPath + fileName + "." + contentType);
+                    }
+                }
+                else {
+                    file1 = new File(serverPath + fileName + "." + contentType);
+                }
 
                 if(!file1.exists()) {
                     byte[] bytes = file.getBytes();
