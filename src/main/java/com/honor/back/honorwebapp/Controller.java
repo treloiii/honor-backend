@@ -136,6 +136,7 @@ public class Controller{
         String serverPath = "/home/std/honor-backend/static/gallery/" + album.getId()+"/";
         int index=0;
         for (GalleryImage image:imagesList) {
+            image.setName(utils.transliterate(image.getName()));
             String fileUploadResult=utils.fileUpload(serverPath,image.getName(),files[index]);
             if(!fileUploadResult.equals("file exists")&&!fileUploadResult.equals("file empty")){
                 image.setServer_path(serverPath);

@@ -159,4 +159,7 @@ public class Utils {
         }
         return builder.toString();
     }
+    public String reverseTransliterate(String latMessage){
+        return Translit.translit(latMessage);
+    }
 }
