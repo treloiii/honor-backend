@@ -5,13 +5,17 @@ import java.util.Map;
 
 public class Translit {
 
-    final static int UPPER = 1;
+    final int UPPER = 1;
 
-    final static int LOWER = 2;
+    final int LOWER = 2;
 
-    final static Map<String, String> map = makeTranslitMap();
+    private Map<String, String> map;
 
-    private static Map<String, String> makeTranslitMap() {
+    Translit(boolean isReverse){
+        map=isReverse?makeReverseTranslitMap():makeTranslitMap();
+    }
+
+    private Map<String, String> makeTranslitMap() {
         Map<String, String> map = new HashMap<>();
         map.put("a", "а");
         map.put("b", "б");
@@ -39,6 +43,8 @@ public class Translit {
         map.put("ts", "ц");
         map.put("ch", "ч");
         map.put("sh", "ш");
+        map.put("sch","щ");
+        map.put("$i","ы");
         map.put("`", "ъ");
         map.put("y", "у");
         map.put("'", "ь");
@@ -51,18 +57,59 @@ public class Translit {
         return map;
     }
 
-    private static int charClass(char c) {
+    private Map<String, String> makeReverseTranslitMap() {
+        Map<String, String> map = new HashMap<>();
+        map.put("а","a");
+        map.put("б","b");
+        map.put("в","v");
+        map.put("г","g");
+        map.put("д","d");
+        map.put("е","e");
+        map.put("ё","yo");
+        map.put("ж","zh");
+        map.put("з","z");
+        map.put("и","i");
+        map.put("й","j");
+        // map.put("к","k");
+        map.put("л","l");
+        map.put("м","m");
+        map.put("н","n");
+        map.put("о","o");
+        map.put("п","p");
+        map.put("р","r");
+        map.put("с","s");
+        map.put("т","t");
+        map.put("у","u");
+        map.put("ф","f");
+        map.put("х","h");
+        map.put("ц","ts");
+        map.put("ч","ch");
+        map.put("ш","sh");
+        map.put("щ","sch");
+        map.put("ы","$i");
+        map.put("ъ","`");
+        //   map.put("у","y");
+        map.put("ь","'");
+        map.put("ю","yu");
+        map.put("я","ya");
+        map.put("кс","x");
+        //  map.put("в","w");
+        map.put("к","q");
+        map.put("ий","iy");
+        return map;
+    }
+    private int charClass(char c) {
         return Character.isUpperCase(c) ? UPPER : LOWER;
     }
 
-    private static String get(String s) {
+    private String get(String s) {
         int charClass = charClass(s.charAt(0));
         String result = map.get(s.toLowerCase());
         return result == null ? "" : (charClass == UPPER ? (result.charAt(0) + "").toUpperCase() +
                 (result.length() > 1 ? result.substring(1) : "") : result);
     }
 
-    public static String translit(String text) {
+    public String translit(String text) {
         int len = text.length();
         if (len == 0) {
             return text;
