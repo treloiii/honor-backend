@@ -50,6 +50,21 @@ public class Controller{
     @Autowired
     private ResultedQuery query;
 
+    @RequestMapping("/deleteNews")
+    public String deleteNews(@RequestParam("id") int id) throws SQLException{
+        ResultSet rs;
+        rs=this.query.getResultSet("DELETE FROM honor_news WHERE id="+id);
+        return "";
+    }
+
+    @RequestMapping("/deletePost")
+    public String deletePosts(@RequestParam("id") int id) throws SQLException{
+        ResultSet rs;
+        rs=this.query.getResultSet("DELETE FROM honor_main_posts WHERE id="+id);
+        return "";
+    }
+
+
     @RequestMapping("/getMain")
     public List<Post> getMain() throws SQLException {
         return postService.getAllPosts();
