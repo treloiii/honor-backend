@@ -43,7 +43,7 @@ public class AlbumService {
     }
     public void addAlbum(GalleryAlbum album){
         album.setCreation_date(new Date());
-        new File("/home/std/honor-backend/static/gallery/"+album.getId()).mkdirs();
         dao.save(album);
+        new File("/home/std/honor-backend/static/gallery/"+album.getId()).mkdir();
     }
 }
