@@ -52,16 +52,14 @@ public class Controller{
 
     @RequestMapping("/deleteNews")
     public String deleteNews(@RequestParam("id") int id) throws SQLException{
-        ResultSet rs;
-        rs=this.query.getResultSet("DELETE FROM honor_news WHERE id="+id);
-        return "";
+        this.query.VoidQuery("DELETE FROM honor_news WHERE id="+id);
+        return "success";
     }
 
     @RequestMapping("/deletePost")
     public String deletePosts(@RequestParam("id") int id) throws SQLException{
-        ResultSet rs;
-        rs=this.query.getResultSet("DELETE FROM honor_main_posts WHERE id="+id);
-        return "";
+        this.query.VoidQuery("DELETE FROM honor_main_posts WHERE id="+id);
+        return "success";
     }
 
 
