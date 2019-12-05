@@ -21,5 +21,10 @@ public class ResultedQuery {
         PreparedStatement ps=c.prepareStatement(query);
         return ps.executeQuery();
     }
+    public void VoidQuery(String query) throws SQLException{
+        c=db.getConnection();
+        PreparedStatement ps=c.prepareStatement(query);
+        ps.execute();
+    }
 
 }

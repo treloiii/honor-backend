@@ -16,10 +16,21 @@ public class GalleryAlbum {
     @Column
     @Temporal(TemporalType.DATE)
     private Date creation_date;
+    @Column
+    private String description;
 
     @OneToMany(mappedBy = "album",fetch = FetchType.EAGER)
     private List<GalleryImage> images;
     public GalleryAlbum() {
+    }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setName(String name) {
