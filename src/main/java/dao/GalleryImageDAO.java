@@ -32,8 +32,9 @@ public class GalleryImageDAO implements DAOSkeleton {
     public GalleryImage get(int id) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        GalleryImage image=session.get(GalleryImage.class,id);
+        GalleryImage image=session.createQuery("From GalleryImage WHERE id="+id,GalleryImage.class).getSingleResult();
         session.getTransaction().commit();
+        session.close();
         return image;
     }
 
