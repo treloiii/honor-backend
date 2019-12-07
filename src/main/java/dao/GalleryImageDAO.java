@@ -38,8 +38,12 @@ public class GalleryImageDAO implements DAOSkeleton {
     }
 
     @Override
-    public void delete(Object updatedObject) {
-
+    public void delete(Object deletedObject) {
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        session.delete(deletedObject);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override

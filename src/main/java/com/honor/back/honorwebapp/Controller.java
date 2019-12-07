@@ -72,6 +72,16 @@ public class Controller{
         return "success";
     }
 
+    @RequestMapping("/delete/img")
+    public String deleteGalleryImage(@RequestBody int id){
+        if(this.galleryService.deletePhoto(id)){
+            return "success";
+        }
+        else{
+            return "error";
+        }
+    }
+
 
     @RequestMapping("/getMain")
     public List<Post> getMain() throws SQLException {

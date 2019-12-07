@@ -3,9 +3,11 @@ package services;
 import Entities.GalleryComments;
 import Entities.GalleryImage;
 import dao.GalleryImageDAO;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.List;
 
 @Component("galleryService")
@@ -26,6 +28,19 @@ public class GalleryService {
 
     public void addGalleryPhoto(GalleryImage image){
         dao.save(image);
+    }
+
+    public boolean deletePhoto(int id){
+        GalleryImage image=this.getImageById(id);
+        try{
+            File file=new File(image.getServer_path()+image.getName()+".jpg");
+            boolean result= file.delete();
+            dao.delete(this.getImageById(id));
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
     public void addComment(GalleryImage image, GalleryComments comment){
         comment.setImage(image);
