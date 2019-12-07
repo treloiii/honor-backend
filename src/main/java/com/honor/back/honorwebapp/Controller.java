@@ -52,8 +52,17 @@ public class Controller{
 
     @RequestMapping("/deleteNews")
     public String deleteNews(@RequestParam("id") int id) throws SQLException{
-        this.query.VoidQuery("DELETE FROM honor_news WHERE id="+id);
-        return "success";
+        try {
+            ResultSet rs = this.query.getResultSet("SELECT title FROM honor_news WHERE id=" + id);
+            String title = rs.getString("title");
+            FileUtils.deleteDirectory(new File("/home/std/honor-backend/static/news/" + title + "/"));
+            this.query.VoidQuery("DELETE FROM honor_news WHERE id=" + id);
+            return "success";
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return e+"error";
+        }
     }
 
     @RequestMapping("/deletePost")
