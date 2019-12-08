@@ -38,7 +38,7 @@ public class GalleryService {
       //      boolean result= file.delete();
             Files.delete(file.toPath());
             dao.delete(this.getImageById(id));
-            return file.exists();
+            return !file.exists();
         }catch (Exception e){
             e.printStackTrace();
             return false;
