@@ -1,71 +1,52 @@
 package Entities;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 @Entity
 @Table(name = "users")
-public class User implements UserDetails{
-
-    static final long serialVersionUID = 1L;
+public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, updatable = false)
-    private Long id;
-
-    @Column(name = "username", nullable = false, unique = true)
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private long id;
+    @Column
     private String username;
-
-    @Column(name = "password", nullable = false)
+    @Column
+    @JsonIgnore
     private String password;
-
-    @Column(name = "enabled", nullable = false)
+    @Column
     private boolean enabled;
 
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-
-        return authorities;
+    public long getId() {
+        return id;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        // we never lock accounts
-        return true;
+    public String getUsername() {
+        return username;
     }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        // credentials never expire
-        return true;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    @Override
     public String getPassword() {
         return password;
     }
 
-    @Override
-    public String getUsername() {
-        return username;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

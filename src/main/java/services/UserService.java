@@ -1,23 +1,12 @@
 package services;
 
-import dao.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import Entities.User;
 
-@Service("userDetailsService")
-public class UserService implements UserDetailsService {
+import java.util.List;
 
-    @Autowired
-    @Qualifier("userRepository")
-    private UserRepository userRepository;
+public interface UserService {
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findOneByUsername(username);
-    }
+    User save(User user);
+    List<User> findAll();
+    void delete(long id);
 }

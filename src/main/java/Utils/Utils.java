@@ -1,7 +1,5 @@
 package Utils;
 
-import com.googlecode.pngtastic.core.PngImage;
-import com.googlecode.pngtastic.core.PngOptimizer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
