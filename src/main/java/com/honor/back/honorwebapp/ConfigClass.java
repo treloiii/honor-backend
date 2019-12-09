@@ -13,7 +13,7 @@ import javax.servlet.MultipartConfigElement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"com.honor.back.honorwebapp","dao","services","Utils","sql"})
+@ComponentScan(basePackages = {"com.honor.back.honorwebapp","dao","services","Utils","sql","controllers"})
 public class ConfigClass {
     @Bean
     MultipartConfigElement multipartConfigElement() {
