@@ -33,18 +33,17 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	}
 
 	public List<User> findAll() {
-		List<User> list = new ArrayList<>();
-		userDao.findAll().iterator().forEachRemaining(list::add);
-		return list;
+		return userDao.getAll(0);
 	}
 
 	@Override
 	public void delete(long id) {
-		userDao.delete(userDao.findById(id).get());
+		userDao.delete(userDao.get((int)id));
 	}
 
 	@Override
 	public User save(User user) {
-		return userDao.save(user);
+		userDao.save(user);
+		return user;
 	}
 }
