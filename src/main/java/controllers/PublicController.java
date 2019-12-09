@@ -53,75 +53,72 @@ public class PublicController {
 
 
 
-    @RequestMapping("/getMain")
+    @RequestMapping("/get/all/posts")
     public List<Post> getMain() throws SQLException {
         return postService.getAllPosts();
     }
-    @RequestMapping("/getPost")
+    @RequestMapping("/get/post")
     public Post getPost(@RequestParam("id") int id){
         return postService.getPostById(id);
     }
-    @RequestMapping("/newPost")
-    public void addPost(@RequestBody Post post){
-        postService.savePost(post);
-    }
-    @RequestMapping("/getGallery")
+
+    @RequestMapping("/get/gallery")
     public List<GalleryImage> getImages(){
        // galleryDao=new GalleryImageDAO();
         return galleryService.getAllGallery();
     }
-    @RequestMapping("/getImage")
+    @RequestMapping("/get/image")
     public GalleryImage getImage(@RequestParam("id") int id){
         return galleryService.getImageById(id);
     }
 
-    @RequestMapping("/getAlbums")
+    @RequestMapping("/get/all/albums")
     public List<GalleryAlbum> getAlbums(){
         return albumService.getAllAlbums();
     }
 
-    @RequestMapping("/getAlbum")
+    @RequestMapping("/get/album")
     public GalleryAlbum getAlbumById(@RequestParam("id") int id){
         return albumService.getAlbum(id);
     }
 
 
-    @RequestMapping("/getAllNews")
+    @RequestMapping("/get/all/news")
     public List<News> getAllNews(){
         return newsService.getAllnews();
     }
-    @RequestMapping("/getNews")
+    @RequestMapping("/get/news")
     public News getNews(@RequestParam("id") int id){
         return newsService.getNewsById(id);
     }
 
 
-    @RequestMapping("/getActions/{action}")
+    @RequestMapping("/get/actions/{action}")
     public List<Actions> getRallies(@PathVariable String action){
-        if(action.equals("Rallies"))
+        if(action.equals("rallies"))
             return actionsService.getAllRallies(1);
-        else if(action.equals("Events"))
+        else if(action.equals("events"))
             return actionsService.getAllRallies(2);
         else
             return null;
     }
 
-    @RequestMapping("/getAction")
+    @RequestMapping("/get/action")
     public Actions getRally(@RequestParam("id") int id){
         return actionsService.getRallyById(id);
     }
 
-    @RequestMapping("/getOrdens")
+    @RequestMapping("/get/all/ordens")
     public List<Ordens> getOrdens(){
         return ordensService.getAllOrdens();
     }
 
-    @RequestMapping("/getOrden")
+    @RequestMapping("/get/orden")
     public Ordens getOrden(@RequestParam("id")int id){
         return ordensService.getOrden(id);
     }
 
-    @RequestMapping("/addComment/{photo_id}")
+    @RequestMapping("/add/comment/{photo_id}")
     public String addComment(@RequestBody GalleryComments comment, @PathVariable int photo_id){
         GalleryImage image=galleryService.getImageById(photo_id);
         comment.setTime(new Date());

@@ -46,6 +46,11 @@ public class AdminController {
     private OrdensService ordensService;
     @Autowired
     private ResultedQuery query;
+    @RequestMapping("/add/post")
+    public void addPost(@RequestBody Post post){
+        postService.savePost(post);
+    }
+
     @RequestMapping("/delete/news")
     public String deleteNews(@RequestBody int id) throws SQLException {
         try {
@@ -95,7 +100,7 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = "/uploadNews/{updatable}",method = RequestMethod.POST)
+    @RequestMapping(value = "/upload/news/{updatable}",method = RequestMethod.POST)
     public String uploadNews(@RequestParam("pic") MultipartFile[] images,@RequestParam(value = "title_pic",required = false) MultipartFile titleImage,
                              @RequestParam("title") String title,@RequestParam("description") String description,
                              @RequestParam("picname") String titleImageName,@RequestParam(value = "news_id",required = false) Integer id,
@@ -161,12 +166,12 @@ public class AdminController {
     }
 
 
-    @RequestMapping("/addAlbum")
+    @RequestMapping("/add/album")
     public String addAlbum(@RequestBody GalleryAlbum album){
         albumService.addAlbum(album);
         return "Album with id:"+album.getId();
     }
-    @RequestMapping("/addAlbumImages/{album_id}")
+    @RequestMapping("/add/album/images/{album_id}")
     public String addImages(@RequestParam("images") String images,@RequestParam("files") MultipartFile[] files,
                             @PathVariable int album_id){
         Gson gson=new Gson();
