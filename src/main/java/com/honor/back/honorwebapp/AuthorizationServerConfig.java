@@ -13,8 +13,8 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-	private static final String CLIEN_ID = "devglan-client";
-	private static final String CLIENT_SECRET = "$2a$04$e/c1/RfsWuThaWFCrcCuJeoyvwCV0URN/6Pn9ZFlrtIWaU/vj/BfG";
+	private static final String CLIEN_ID = "honor-admin";
+	private static final String CLIENT_SECRET = "$2a$04$en5UZysFbuuK.fimkJ3MeetHmToFz8ZfjOQyzpc2Q03UHKFkkbukC";//honor-polytech-root
 	private static final String GRANT_TYPE_PASSWORD = "password";
 	private static final String AUTHORIZATION_CODE = "authorization_code";
     private static final String REFRESH_TOKEN = "refresh_token";

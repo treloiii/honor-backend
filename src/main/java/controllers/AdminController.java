@@ -82,7 +82,7 @@ public class AdminController {
             return "error";
         }
     }
-    @RequestMapping(value="/uploadStory", method= RequestMethod.POST)
+    @RequestMapping(value="/upload/story", method= RequestMethod.POST)
     public @ResponseBody String handleFileUpload(@RequestParam("post") String posted,
                                                  @RequestParam("file") MultipartFile file){
         String serverPath = "/home/std/honor-backend/static/stories/";
