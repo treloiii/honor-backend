@@ -40,7 +40,11 @@ public class AlbumDAO implements DAOSkeleton {
 
     @Override
     public void delete(Object updatedObject) {
-
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        session.delete(updatedObject);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override

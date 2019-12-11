@@ -67,6 +67,7 @@ public class AdminController {
         }
     }
 
+
     @RequestMapping("/delete/post")
     public String deletePosts(@RequestBody int id) throws SQLException{
         this.query.VoidQuery("DELETE FROM honor_main_posts WHERE id="+id);
@@ -81,6 +82,15 @@ public class AdminController {
         else{
             return "error";
         }
+    }
+    @RequestMapping("/update/album")
+    public String updateAlbum(@RequestParam("id") int id,@RequestParam("name") String name){
+        albumService.updateAlbum(id,name);
+        return "success";
+    }
+    @RequestMapping("/delete/album")
+    public String deleteAlbum(@RequestBody int id){
+       return albumService.deleteAlbum(id);
     }
     @RequestMapping(value="/upload/story", method= RequestMethod.POST)
     public @ResponseBody String handleFileUpload(@RequestParam("post") String posted,
