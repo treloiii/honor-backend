@@ -44,4 +44,12 @@ public class ActionsDAO implements DAOSkeleton {
         session.close();
         return rallies;
     }
+    public Actions getLast(int type){
+        Session session= HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        Actions news=session.createQuery("From Actions where type="+type+" order by id desc",Actions.class).setMaxResults(1).getSingleResult();
+        session.getTransaction().commit();
+        session.close();
+        return news;
+    }
 }

@@ -22,4 +22,7 @@ public class ActionsService {
     public Actions getRallyById(int id){
         return dao.get(id);
     }
+    public Actions getLast(int type){
+        return dao.getLast(type);
+    }
 }

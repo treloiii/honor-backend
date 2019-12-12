@@ -1,8 +1,7 @@
 package controllers;
 import Entities.*;
+import Utils.CompilationObject;
 import Utils.Utils;
-import com.google.gson.Gson;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -90,6 +89,30 @@ public class PublicController {
     @RequestMapping("/get/news")
     public News getNews(@RequestParam("id") int id){
         return newsService.getNewsById(id);
+    }
+
+    @RequestMapping("/get/last/news")
+    public News getLastNews(){
+        return newsService.getLast();
+    }
+    @RequestMapping("/get/last/post")
+    public Post getLastPost(){
+        return postService.getLast();
+    }
+    @RequestMapping("/get/last/rally")
+    public Actions getLastRally(){
+        return actionsService.getLast(1);
+    }
+    @RequestMapping("/get/last/event")
+    public Actions getLastEvent(){
+        return actionsService.getLast(2);
+    }
+    @RequestMapping("/get/last/all")
+    public CompilationObject getLasts(){
+       return new CompilationObject(newsService.getLast(),
+               postService.getLast(),
+               actionsService.getLast(1),
+               actionsService.getLast(2));
     }
 
 

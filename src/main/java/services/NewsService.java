@@ -4,6 +4,7 @@ import Entities.News;
 import dao.NewsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import sql.ResultedQuery;
 
 import java.util.List;
 
@@ -26,5 +27,8 @@ public class NewsService {
     }
     public void updateNews(News news){
         dao.update(news);
+    }
+    public News getLast(){
+        return dao.getLast();
     }
 }

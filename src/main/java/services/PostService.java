@@ -24,5 +24,7 @@ public class PostService {
     public void savePost(Post post){
         dao.save(post);
     }
-
+    public Post getLast(){
+        return dao.getLast();
+    }
 }

@@ -48,4 +48,12 @@ public class PostDAO implements DAOSkeleton {
         session.close();
         return posts;
     }
+    public Post getLast(){
+        Session session= HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        Post post=session.createQuery("From Post order by id desc",Post.class).setMaxResults(1).getSingleResult();
+        session.getTransaction().commit();
+        session.close();
+        return post;
+    }
 }
