@@ -1,6 +1,7 @@
 package dao;
 
 import Entities.Actions;
+import Entities.ActionsType;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,15 @@ public class ActionsDAO implements DAOSkeleton {
         session.getTransaction().commit();
         session.close();
         return actions;
+    }
+
+    public ActionsType getType(int id){
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        ActionsType type =session.get(ActionsType.class,id);
+        session.getTransaction().commit();
+        session.close();
+        return type;
     }
 
     @Override

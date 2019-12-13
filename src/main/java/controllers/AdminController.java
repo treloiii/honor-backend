@@ -49,19 +49,46 @@ public class AdminController {
         postService.savePost(post);
     }
 
-    @RequestMapping("/delete/news")
-    public String deleteNews(@RequestBody int id) throws SQLException {
-        try {
-            ResultSet rs = this.query.getResultSet("SELECT title FROM honor_news WHERE id=" + id);
-            rs.next();
-            String title = rs.getString("title");
-            FileUtils.deleteDirectory(new File("/home/std/honor-backend/static/news/" + title + "/"));
-            this.query.VoidQuery("DELETE FROM honor_news WHERE id=" + id);
-            return "success";
+    @RequestMapping("/delete/{type}")
+    public String deleteNews(@RequestBody int id,@PathVariable("type") String type) throws SQLException {//type={news,memo,events}
+        if(type.equals("news")||type.equals("memo")||type.equals("events")) {
+            try {
+                ResultSet rs = null;
+                switch (type) {
+                    case "news":
+                        rs = this.query.getResultSet("SELECT title FROM honor_news WHERE id=" + id);
+                        break;
+                    case "memo":
+                        rs = this.query.getResultSet("SELECT title FROM honor_main_posts WHERE id=" + id);
+                        break;
+                    case "events":
+                        rs = this.query.getResultSet("SELECT title FROM honor_actions WHERE id=" + id);
+                        break;
+                }
+                //rs = this.query.getResultSet("SELECT title FROM honor_news WHERE id=" + id);
+                assert rs != null;
+                rs.next();
+                String title = rs.getString("title");
+                FileUtils.deleteDirectory(new File("/home/std/honor-backend/static/" + type + "/" + title + "/"));
+                switch (type) {
+                    case "news":
+                        this.query.VoidQuery("DELETE FROM honor_news WHERE id=" + id);
+                        break;
+                    case "memo":
+                        this.query.VoidQuery("DELETE FROM honor_main_posts WHERE id=" + id);
+                        break;
+                    case "events":
+                        this.query.VoidQuery("DELETE FROM honor_actions WHERE id=" + id);
+                        break;
+                }
+                return "success";
+            } catch (Exception e) {
+                e.printStackTrace();
+                return e + "error";
+            }
         }
-        catch (Exception e){
-            e.printStackTrace();
-            return e+"error";
+        else {
+            return "invalid type";
         }
     }
 
@@ -132,7 +159,18 @@ public class AdminController {
                         break;
                 }
             } catch (Exception e) {
-                section = new News();
+                switch (type) {
+                    case "news":
+                        section = new News();
+                        break;
+                    case "memo":
+                        section = new Post();
+                        break;
+                    case "events":
+                        section = new Actions();
+                        break;
+                }
+
             }
             if (!updatable.equals("new")) {
                 try {
@@ -178,6 +216,7 @@ public class AdminController {
                     } else if (section instanceof Post) {
                         postService.savePost((Post) section);
                     } else if (section instanceof Actions) {
+                        ((Actions) section).setType(actionsService.getType(2));
                         actionsService.saveAction((Actions) section);
                     }
                 } else {

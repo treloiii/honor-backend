@@ -19,7 +19,7 @@ public class PostDAO implements DAOSkeleton {
     public void update(Object updatedObject) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        session.save(updatedObject);
+        session.update(updatedObject);
         session.getTransaction().commit();
         session.close();
     }

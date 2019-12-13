@@ -1,6 +1,7 @@
 package services;
 
 import Entities.Actions;
+import Entities.ActionsType;
 import dao.ActionsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,5 +31,8 @@ public class ActionsService {
     }
     public Actions getLast(int type){
         return dao.getLast(type);
+    }
+    public ActionsType getType(int type){//1:Rally,2:Events
+        return dao.getType(type);
     }
 }
