@@ -100,7 +100,7 @@ public class AdminController {
         Post post=gson.fromJson(posted,Post.class);
         String fileUploadResult=utils.fileUpload(serverPath,post.getTitle(),file);
         if(!fileUploadResult.equals("file exists")&&!fileUploadResult.equals("file empty")){
-            post.setImage(fileUploadResult);
+            post.setTitle_image(fileUploadResult);
             postService.savePost(post);
             return "success";
         }

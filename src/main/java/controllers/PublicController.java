@@ -103,11 +103,11 @@ public class PublicController {
         News news=newsService.getLast();
         grid.add(new GridObject(news.getTitle_image(),news.getTitle(),news.getId(),"/news","Новости"));
         Post post=postService.getLast();
-        grid.add(new GridObject(post.getImage(),post.getTitle(),post.getId(),"/memories","Воспоминания"));
+        grid.add(new GridObject(post.getTitle_image(),post.getTitle(),post.getId(),"/memories","Воспоминания"));
         Actions rally=actionsService.getLast(1);
-        grid.add(new GridObject(news.getTitle_image(),rally.getTitle(),rally.getId(),"/rally","Автопробеги"));
+        grid.add(new GridObject(rally.getTitle_image(),rally.getTitle(),rally.getId(),"/rally","Автопробеги"));
         Actions event=actionsService.getLast(2);
-        grid.add(new GridObject(news.getTitle_image(),event.getTitle(),event.getId(),"/events","Мероприятия"));
+        grid.add(new GridObject(event.getTitle_image(),event.getTitle(),event.getId(),"/events","Мероприятия"));
         return grid;
     }
 

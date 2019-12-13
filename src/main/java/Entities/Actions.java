@@ -25,9 +25,11 @@ public class Actions {
     private Date time;
     @Column
     private String author;
+    @Column
+    private String title_image;
+    @Column
+    private String title_image_name;
 
-    @OneToOne(mappedBy = "actions",fetch = FetchType.LAZY)
-    private ActionsAlbum album;
 
     @OneToMany(mappedBy = "actions1",fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
@@ -37,6 +39,23 @@ public class Actions {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="type")
     private ActionsType type;
+
+
+    public void setTitle_image(String title_image) {
+        this.title_image = title_image;
+    }
+
+    public void setTitle_image_name(String title_image_name) {
+        this.title_image_name = title_image_name;
+    }
+
+    public String getTitle_image() {
+        return title_image;
+    }
+
+    public String getTitle_image_name() {
+        return title_image_name;
+    }
 
     public ActionsType getType() {
         return type;
@@ -64,10 +83,6 @@ public class Actions {
 
     public void setAuthor(String author) {
         this.author = author;
-    }
-
-    public void setAlbum(ActionsAlbum album) {
-        this.album = album;
     }
 
     public int getId() {
@@ -98,10 +113,6 @@ public class Actions {
         this.id = id;
     }
 
-
-    public ActionsAlbum getAlbum() {
-        return album;
-    }
 
     public Actions() {
     }

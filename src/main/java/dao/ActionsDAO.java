@@ -57,10 +57,11 @@ public class ActionsDAO implements DAOSkeleton {
 //        session.close();
         Actions action=new Actions();
         try {
-            ResultSet rs = rq.getResultSet("select id,title from honor_actions where type="+type+" order by id desc ");
+            ResultSet rs = rq.getResultSet("select id,title,title_image from honor_actions where type="+type+" order by id desc ");
             rs.next();
             action.setTitle(rs.getString("title"));
             action.setId(rs.getInt("id"));
+            action.setTitle_image(rs.getString("title_image"));
         }
         catch (Exception e){
             e.printStackTrace();

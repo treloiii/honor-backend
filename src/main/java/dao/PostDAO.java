@@ -61,9 +61,9 @@ public class PostDAO implements DAOSkeleton {
 //        session.close();
         Post post=new Post();
         try {
-            ResultSet rs = rq.getResultSet("select id,title, image from honor_main_posts order by id desc");
+            ResultSet rs = rq.getResultSet("select id,title, title_image from honor_main_posts order by id desc");
             rs.next();
-            post.setImage(rs.getString("image"));
+            post.setTitle_image(rs.getString("title_image"));
             post.setTitle(rs.getString("title"));
             post.setId(rs.getInt("id"));
         }
