@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "honor_news")
-public class News {
+public class News implements Redactable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

@@ -17,7 +17,11 @@ public class PostDAO implements DAOSkeleton {
     private ResultedQuery rq;
     @Override
     public void update(Object updatedObject) {
-
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        session.save(updatedObject);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override

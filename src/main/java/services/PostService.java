@@ -15,6 +15,9 @@ public class PostService {
     public PostService() {
     }
 
+    public void updatePost(Post post){
+        dao.update(post);
+    }
     public Post getPostById(int id){
         return dao.get(id);
     }

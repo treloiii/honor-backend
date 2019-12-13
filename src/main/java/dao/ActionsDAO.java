@@ -17,12 +17,20 @@ public class ActionsDAO implements DAOSkeleton {
     private ResultedQuery rq;
     @Override
     public void update(Object updatedObject) {
-
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        session.update(updatedObject);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
     public void save(Object savedObject) {
-
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        session.save(savedObject);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override

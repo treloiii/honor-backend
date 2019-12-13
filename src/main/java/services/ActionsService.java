@@ -14,7 +14,13 @@ public class ActionsService {
 
     public ActionsService(){
     }
+    public void saveAction(Actions action){
+        dao.save(action);
+    }
 
+    public void updateAction(Actions action){
+        dao.update(action);
+    }
     public List<Actions> getAllRallies(int type){
         return dao.getAll(type);
     }

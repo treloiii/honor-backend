@@ -1,11 +1,9 @@
 package controllers;
 
-import Entities.GalleryAlbum;
-import Entities.GalleryImage;
-import Entities.News;
-import Entities.Post;
+import Entities.*;
 import Utils.Utils;
 import com.google.gson.Gson;
+import com.sun.deploy.net.HttpResponse;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -110,69 +108,95 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = "/upload/news/{updatable}",method = RequestMethod.POST)
+    @RequestMapping(value = "/upload/{type}/{updatable}",method = RequestMethod.POST)
     public String uploadNews(@RequestParam("pic") MultipartFile[] images,@RequestParam(value = "title_pic",required = false) MultipartFile titleImage,
                              @RequestParam("title") String title,@RequestParam("description") String description,
                              @RequestParam("picname") String titleImageName,@RequestParam(value = "news_id",required = false) Integer id,
                              @RequestParam(value = "time",required = false)
                              @DateTimeFormat(pattern = "yyyy-mm-dd") Date time,
-                             @PathVariable("updatable") String updatable){
-        News news;
-        try {
-            news = newsService.getNewsById(id);
-        }
-        catch (Exception e){
-            news = new News();
-        }
-        if(!updatable.equals("new")) {
+                             @PathVariable("updatable") String updatable,
+                             @PathVariable(value = "type") String type){//type:{news,memo,events}
+        if(type.equals("news")||type.equals("memo")||type.equals("events")) {
+            System.out.println(type);
+            Redactable section = null;
             try {
-                FileUtils.deleteDirectory(new File("/home/std/honor-backend/static/news/" + utils.transliterate(news.getTitle()) + "/"));
+                switch (type) {
+                    case "news":
+                        section = newsService.getNewsById(id);
+                        break;
+                    case "memo":
+                        section = postService.getPostById(id);
+                        break;
+                    case "events":
+                        section = actionsService.getRallyById(id);
+                        break;
+                }
+            } catch (Exception e) {
+                section = new News();
             }
-            catch (Exception e){
-                System.out.println("cannot find dir");
-            }
-        }
-
-        titleImageName = utils.transliterate(titleImageName);
-        String uploadPath = "/home/std/honor-backend/static/news/" + utils.transliterate(title) + "/";
-        new File(uploadPath.substring(0, uploadPath.length() - 1)).mkdirs();
-        String[] buf = description.split("_paste_");
-        String finalStr = "";
-        System.out.println(Arrays.toString(buf));
-        int i = 0;
-        for (String a : buf) {
-            finalStr += a;
-            if (i < images.length) {
-                String img = utils.fileUpload(uploadPath, images[i].getOriginalFilename(), images[i]);
-                if (!img.equals("file exists") && !img.equals("file empty")) {
-                    finalStr += "<img src=\"" + img + "\">";
+            if (!updatable.equals("new")) {
+                try {
+                    FileUtils.deleteDirectory(new File("/home/std/honor-backend/static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"));
+                } catch (Exception e) {
+                    System.out.println("cannot find dir");
                 }
             }
-            i++;
-        }
-        String titleRes="";
-        if(titleImage!=null) {
-            titleRes = utils.fileUpload(uploadPath, titleImageName, titleImage);
-        }
-        if (!titleRes.equals("file exists") && !titleRes.equals("file empty")) {
-            if(!titleRes.equals("")) {
-                news.setTitle_image_name(titleImageName);
-                news.setTitle_image(titleRes);
+
+            titleImageName = utils.transliterate(titleImageName);
+            String uploadPath = "/home/std/honor-backend/static/" + type + "/" + utils.transliterate(title) + "/";
+            new File(uploadPath.substring(0, uploadPath.length() - 1)).mkdirs();
+            String[] buf = description.split("_paste_");
+            String finalStr = "";
+            System.out.println(Arrays.toString(buf));
+            int i = 0;
+            for (String a : buf) {
+                finalStr += a;
+                if (i < images.length) {
+                    String img = utils.fileUpload(uploadPath, images[i].getOriginalFilename(), images[i]);
+                    if (!img.equals("file exists") && !img.equals("file empty")) {
+                        finalStr += "<img src=\"" + img + "\">";
+                    }
+                }
+                i++;
             }
-            news.setTitle(title);
-            news.setAuthor("Admin");
-            news.setDescription(finalStr);
-            if(updatable.equals("new")) {
-                news.setTime(new Date());
-                newsService.addNews(news);
+            String titleRes = "";
+            if (titleImage != null) {
+                titleRes = utils.fileUpload(uploadPath, titleImageName, titleImage);
             }
-            else{
-                news.setTime(time);
-                newsService.updateNews(news);
+            if (!titleRes.equals("file exists") && !titleRes.equals("file empty")) {
+                if (!titleRes.equals("")) {
+                    section.setTitle_image_name(titleImageName);
+                    section.setTitle_image(titleRes);
+                }
+                section.setTitle(title);
+                section.setAuthor("Admin");
+                section.setDescription(finalStr);
+                if (updatable.equals("new")) {
+                    section.setTime(new Date());
+                    if (section instanceof News) {
+                        newsService.addNews((News) section);
+                    } else if (section instanceof Post) {
+                        postService.savePost((Post) section);
+                    } else if (section instanceof Actions) {
+                        actionsService.saveAction((Actions) section);
+                    }
+                } else {
+                    section.setTime(time);
+                    if (section instanceof News) {
+                        newsService.updateNews((News) section);
+                    } else if (section instanceof Post) {
+                        postService.updatePost((Post) section);
+                    } else if (section instanceof Actions) {
+                        actionsService.updateAction((Actions) section);
+                    }
+                }
             }
+            System.out.println(finalStr);
+            return "success";
         }
-        System.out.println(finalStr);
-        return "success";
+        else {
+            return "invalid type";
+        }
     }
 
 

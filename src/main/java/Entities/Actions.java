@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name="honor_actions")
-public class Actions {
+public class Actions implements Redactable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
