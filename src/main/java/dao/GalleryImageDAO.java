@@ -56,4 +56,12 @@ public class GalleryImageDAO implements DAOSkeleton {
             session.close();
             return posts;
     }
+    public List<GalleryImage> getLast(){
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        List<GalleryImage> posts = session.createQuery("From GalleryImage c order by id desc",GalleryImage.class).setMaxResults(5).list();
+        session.getTransaction().commit();
+        session.close();
+        return posts;
+    }
 }

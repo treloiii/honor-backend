@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sql.ResultedQuery;
 
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.sql.ResultSet;
 import java.util.List;
 @Component("newsDao")
@@ -57,11 +59,22 @@ public class NewsDAO implements DAOSkeleton {
     }
 
     public News getLast(){
-        Session session= HibernateSessionFactory.getSession().openSession();
-        session.beginTransaction();
-        News news=session.createQuery("From News order by id desc",News.class).setMaxResults(1).getSingleResult();
-        session.getTransaction().commit();
-        session.close();
+//        Session session= HibernateSessionFactory.getSession().openSession();
+//        session.beginTransaction();
+//        News news=session.createQuery("select new News(id,title,title_image) From News order by id desc",News.class).setMaxResults(1).getSingleResult();
+//        session.getTransaction().commit();
+//        session.close();
+        News news=new News();
+        try {
+            ResultSet rs = rq.getResultSet("select id,title,title_image from honor_news order by id desc");
+            rs.next();
+            news.setTitle_image(rs.getString("title_image"));
+            news.setTitle(rs.getString("title"));
+            news.setId(rs.getInt("id"));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         return news;
     }
 }

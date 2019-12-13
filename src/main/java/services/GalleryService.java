@@ -49,4 +49,7 @@ public class GalleryService {
         //image.addComment(comment);
         dao.save(comment);
     }
+    public List<GalleryImage> getLast(){
+        return dao.getLast();
+    }
 }

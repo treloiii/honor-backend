@@ -24,6 +24,13 @@ public class News {
     private String title_image_name;
 
     public News() {
+//        this.id=id;
+//        this.title=title;
+//        this.title_image=title_image;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setTitle_image_name(String title_image_name) {

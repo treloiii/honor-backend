@@ -1,28 +1,14 @@
 package controllers;
 import Entities.*;
-import Utils.CompilationObject;
+import Utils.GridObject;
 import Utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import services.*;
 import sql.ResultedQuery;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
+import java.util.*;
 
 @CrossOrigin
 @RestController
@@ -107,12 +93,22 @@ public class PublicController {
     public Actions getLastEvent(){
         return actionsService.getLast(2);
     }
+    @RequestMapping("/get/last/photos")
+    public List<GalleryImage> getLastPhotos(){
+        return galleryService.getLast();
+    }
     @RequestMapping("/get/last/all")
-    public CompilationObject getLasts(){
-       return new CompilationObject(newsService.getLast(),
-               postService.getLast(),
-               actionsService.getLast(1),
-               actionsService.getLast(2));
+    public Set<GridObject> getLasts(){
+        Set<GridObject> grid=new HashSet<GridObject>();
+        News news=newsService.getLast();
+        grid.add(new GridObject(news.getTitle_image(),news.getTitle(),news.getId(),"/news","Новости"));
+        Post post=postService.getLast();
+        grid.add(new GridObject(post.getImage(),post.getTitle(),post.getId(),"/memories","Воспоминания"));
+        Actions rally=actionsService.getLast(1);
+        grid.add(new GridObject(news.getTitle_image(),rally.getTitle(),rally.getId(),"/rally","Автопробеги"));
+        Actions event=actionsService.getLast(2);
+        grid.add(new GridObject(news.getTitle_image(),event.getTitle(),event.getId(),"/events","Мероприятия"));
+        return grid;
     }
 
 

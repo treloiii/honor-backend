@@ -1,5 +1,6 @@
 package Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -25,14 +26,15 @@ public class Actions {
     @Column
     private String author;
 
-    @OneToOne(mappedBy = "actions",fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "actions",fetch = FetchType.LAZY)
     private ActionsAlbum album;
 
     @OneToMany(mappedBy = "actions1",fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<ActionsComments> comments;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="type")
     private ActionsType type;
 
@@ -91,6 +93,11 @@ public class Actions {
     public String getAuthor() {
         return author;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 
     public ActionsAlbum getAlbum() {
         return album;

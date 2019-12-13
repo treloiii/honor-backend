@@ -1,6 +1,7 @@
 package Entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ public class GalleryImage {
     private String description;
     @Column
     private String url;
+    @JsonIgnore
     @Column
     private String server_path;
 

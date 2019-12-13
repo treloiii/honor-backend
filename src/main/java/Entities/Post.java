@@ -18,6 +18,10 @@ public class Post {
     public Post() {
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
