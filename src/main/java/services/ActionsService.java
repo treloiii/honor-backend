@@ -7,8 +7,10 @@ import dao.ActionsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
 import java.util.List;
 @Component("rallyService")
+
 public class ActionsService {
     private int RESULT_PER_PAGE= Utils.RESULT_PER_PAGE;
     @Autowired
@@ -35,5 +37,9 @@ public class ActionsService {
     }
     public ActionsType getType(int type){//1:Rally,2:Events
         return dao.getType(type);
+    }
+
+    public Long getCount(int type){
+        return dao.getCountByType(type);
     }
 }

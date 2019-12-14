@@ -1,11 +1,14 @@
 package Entities;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name="honor_gallery_albums")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class GalleryAlbum {
 
     @Id
@@ -20,6 +23,7 @@ public class GalleryAlbum {
     private String description;
 
     @OneToMany(mappedBy = "album",fetch = FetchType.EAGER)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<GalleryImage> images;
     public GalleryAlbum() {
     }

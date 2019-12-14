@@ -3,11 +3,13 @@ package dao;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import Entities.Post;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import sql.ResultedQuery;
 
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.util.List;
 @Component("postDao")
@@ -52,11 +54,24 @@ public class PostDAO implements DAOSkeleton {
     public List<Post> getAll(int from,int to) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        List<Post> posts= session.createQuery("From Post p", Post.class).setFirstResult(from).setMaxResults(to).list();
+        Query query=session.createQuery("From Post p", Post.class).setFirstResult(from).setMaxResults(to);
+        query.setCacheable(true);
+        List<Post> posts=query.list();
         session.getTransaction().commit();
         session.close();
         return posts;
     }
+
+    @Override
+    public Long getCount() {
+        Session session =HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        Query query=session.createQuery("SELECT COUNT(*) FROM Post");
+        query.setCacheable(true);
+        System.out.println(query.getSingleResult());
+        return (Long) query.getSingleResult();
+    }
+
     public Post getLast(){
 //        Session session= HibernateSessionFactory.getSession().openSession();
 //        session.beginTransaction();

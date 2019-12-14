@@ -3,8 +3,10 @@ package dao;
 import Entities.GalleryAlbum;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Component("albumDao")
@@ -32,7 +34,8 @@ public class AlbumDAO implements DAOSkeleton {
     public GalleryAlbum get(int id) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        GalleryAlbum album=session.createQuery("From GalleryAlbum WHERE id="+id,GalleryAlbum.class).getSingleResult();
+        Query query=session.createQuery("From GalleryAlbum WHERE id="+id,GalleryAlbum.class);
+        GalleryAlbum album=(GalleryAlbum) query.getSingleResult();
         session.getTransaction().commit();
         session.close();
         return album;
@@ -51,9 +54,21 @@ public class AlbumDAO implements DAOSkeleton {
     public List<GalleryAlbum> getAll(int from,int to) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        List<GalleryAlbum> albums = session.createQuery("From GalleryAlbum",GalleryAlbum.class).setFirstResult(from).setMaxResults(to).list();
+        Query query=session.createQuery("From GalleryAlbum",GalleryAlbum.class).setFirstResult(from).setMaxResults(to);
+        query.setCacheable(true);
+        List<GalleryAlbum> albums=query.list();
         session.getTransaction().commit();
         session.close();
         return albums;
+    }
+
+    @Override
+    public Long getCount() {
+        Session session =HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        Query query=session.createQuery("SELECT COUNT(*) FROM Albums");
+        query.setCacheable(true);
+        System.out.println(query.getSingleResult());
+        return (Long) query.getSingleResult();
     }
 }

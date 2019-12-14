@@ -1,10 +1,13 @@
 package Entities;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name="honor_actions_comments")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ActionsComments {
 
     @Id

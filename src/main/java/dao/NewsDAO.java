@@ -2,12 +2,13 @@ package dao;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import Entities.News;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sql.ResultedQuery;
 
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.util.List;
 @Component("newsDao")
@@ -52,10 +53,22 @@ public class NewsDAO implements DAOSkeleton {
     public List<News> getAll(int from,int to) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        List<News> allNews = session.createQuery("From News n",News.class).setFirstResult(from).setMaxResults(to).list();
+        Query query=session.createQuery("From News n",News.class).setFirstResult(from).setMaxResults(to);
+        query.setCacheable(true);
+        List<News> allNews=query.list();
         session.getTransaction().commit();
         session.close();
         return allNews;
+    }
+
+    @Override
+    public Long getCount() {
+        Session session =HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        Query query=session.createQuery("SELECT COUNT(*) FROM News");
+        query.setCacheable(true);
+        System.out.println(query.getSingleResult());
+        return (Long) query.getSingleResult();
     }
 
     public News getLast(){

@@ -8,6 +8,12 @@
         <property name="hibernate.connection.url">jdbc:mysql://std-mysql.ist.mospolytech.ru:3306/std_763?serverTimezone=UTC</property>
         <property name="hibernate.connection.username">std_763</property>
         <property name="hibernate.connection.password">b4uld103</property>
+        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.jcache.JCacheRegionFactory</property>
+        <property name="hibernate.javax.cache.provider">org.ehcache.jsr107.EhcacheCachingProvider</property>
+        <property name="hibernate.cache.use_second_level_cache">true</property>
+        <property name="hibernate.cache.use_query_cache">true</property>
+        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.jcache.JCacheRegionFactory</property>
+        <property name="hibernate.javax.cache.provider">org.ehcache.jsr107.EhcacheCachingProvider</property>
 <!--        <property name="hibernate.connection.pool_size">1</property>-->
         <property name="hibernate.current_session_context_class">thread</property>
         <!--<property name="connection.pool_size">10</property>-->

@@ -5,6 +5,7 @@ import com.honor.back.honorwebapp.HibernateSessionFactory;
 import org.hibernate.Session;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
 import java.util.List;
 @Component("ordensDao")
 public class OrdensDAO implements DAOSkeleton {
@@ -41,5 +42,10 @@ public class OrdensDAO implements DAOSkeleton {
         session.getTransaction().commit();
         session.close();
         return ordens;
+    }
+
+    @Override
+    public Long getCount() {
+        return null;
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sql.ResultedQuery;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Component("newsService")
@@ -37,5 +38,9 @@ public class NewsService {
     }
     public News getLast(){
         return dao.getLast();
+    }
+
+    public Long getCount(){
+        return dao.getCount();
     }
 }

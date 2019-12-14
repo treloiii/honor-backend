@@ -3,12 +3,16 @@ package dao;
 import Entities.Actions;
 import Entities.ActionsType;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import sql.ResultedQuery;
 
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.util.List;
 @Component("rallyDao")
@@ -62,17 +66,37 @@ public class ActionsDAO implements DAOSkeleton {
     public List getAll(int from,int to) {
         Session session= HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        List<Actions> rallies= session.createQuery("From Actions a", Actions.class).setFirstResult(from).setMaxResults(to).list();
+        Query query=session.createQuery("From Actions a", Actions.class).setFirstResult(from).setMaxResults(to);
+        query.setCacheable(true);
+        List<Actions> rallies= query.list();
         session.getTransaction().commit();
         session.close();
         return rallies;
+    }
+
+    @Override
+    public Long getCount() {
+        Session session =HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        Query query=session.createQuery("SELECT COUNT(*) FROM Actions where type="+this.type);
+        query.setCacheable(true);
+        System.out.println(query.getSingleResult());
+        return (Long) query.getSingleResult();
+    }
+
+    private int type=1;
+    public Long getCountByType(int type){
+        this.type=type;
+        return getCount();
     }
 
 
     public List<Actions> getAllConcrete(int type,int from,int to) {
         Session session= HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        List<Actions> rallies= session.createQuery("From Actions WHERE type="+type, Actions.class).setFirstResult(from).setMaxResults(to).list();
+        Query query= session.createQuery("From Actions WHERE type="+type, Actions.class).setFirstResult(from).setMaxResults(to);
+        query.setCacheable(true);
+        List<Actions> rallies=query.list();
         session.getTransaction().commit();
         session.close();
         return rallies;

@@ -1,10 +1,13 @@
 package Entities;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name="honor_main_posts")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Post implements Redactable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

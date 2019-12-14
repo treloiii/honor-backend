@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
+import java.math.BigInteger;
 import java.util.List;
 
 @Component("userRepository")
@@ -65,5 +66,10 @@ public class UserRepository implements DAOSkeleton {
         session.getTransaction().commit();
         session.close();
         return posts;
+    }
+
+    @Override
+    public Long getCount() {
+        return null;
     }
 }

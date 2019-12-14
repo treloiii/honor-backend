@@ -2,6 +2,7 @@ package Entities;
 
 
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="honor_gallery_comments")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class GalleryComments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

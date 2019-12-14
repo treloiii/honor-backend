@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import services.*;
 import sql.ResultedQuery;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -36,7 +37,19 @@ public class PublicController {
     @Autowired
     private ResultedQuery query;
 
-
+    @RequestMapping("/get/count/{type}")
+    public Long getCountEntity(@PathVariable("type") String type){
+        switch (type) {
+            case "events":
+                return actionsService.getCount(2);
+            case "rally":
+                return actionsService.getCount(1);
+            case "news":
+                return newsService.getCount();
+            default:
+                return (long) -1;
+        }
+    }
 
     @RequestMapping("/get/all/posts/{page}")
     public List<Post> getMain(@RequestParam(value = "count",required = false) Integer count,@PathVariable(required = false) int page) throws SQLException {

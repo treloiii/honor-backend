@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -65,5 +66,9 @@ public class AlbumService {
         catch (Exception e){
             return "error "+e;
         }
+    }
+
+    public Long getCount(){
+        return dao.getCount();
     }
 }

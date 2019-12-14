@@ -6,6 +6,7 @@ import dao.PostDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Component("postService")
@@ -35,5 +36,8 @@ public class PostService {
     }
     public Post getLast(){
         return dao.getLast();
+    }
+    public Long getCount(){
+        return dao.getCount();
     }
 }

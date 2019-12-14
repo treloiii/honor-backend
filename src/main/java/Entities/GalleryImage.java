@@ -2,6 +2,7 @@ package Entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.List;
 @Proxy(lazy =false)
 @Entity
 @Table(name="honor_gallery")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class GalleryImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +26,7 @@ public class GalleryImage {
     private String server_path;
 
     @OneToMany(mappedBy = "image",fetch = FetchType.EAGER)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<GalleryComments> comments;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -1,5 +1,6 @@
 package dao;
 
+import java.math.BigInteger;
 import java.util.List;
 
 public interface DAOSkeleton <T>{
@@ -8,4 +9,5 @@ public interface DAOSkeleton <T>{
     public T get(int id);
     public void delete(T updatedObject);
     public List<T> getAll(int from,int to);
+    public Long getCount();
 }

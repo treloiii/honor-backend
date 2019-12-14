@@ -1,6 +1,7 @@
 package Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name="honor_actions")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Actions implements Redactable {
 
     @Id
@@ -33,6 +35,7 @@ public class Actions implements Redactable {
 
     @OneToMany(mappedBy = "actions1",fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<ActionsComments> comments;
 
     @JsonIgnore

@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Component("galleryDao")
@@ -56,6 +57,12 @@ public class GalleryImageDAO implements DAOSkeleton {
             session.close();
             return posts;
     }
+
+    @Override
+    public Long getCount() {
+        return null;
+    }
+
     public List<GalleryImage> getLast(){
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
