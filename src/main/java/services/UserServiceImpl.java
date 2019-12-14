@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	}
 
 	public List<User> findAll() {
-		return userDao.getAll(0);
+		return userDao.getAll(0,0);
 	}
 
 	@Override

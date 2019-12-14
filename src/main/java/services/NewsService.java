@@ -1,6 +1,7 @@
 package services;
 
 import Entities.News;
+import Utils.Utils;
 import dao.NewsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,14 +11,15 @@ import java.util.List;
 
 @Component("newsService")
 public class NewsService {
+    private final int RESULT_PER_PAGE= Utils.RESULT_PER_PAGE;
     @Autowired
     private NewsDAO dao;
 
     public NewsService() {
     }
 
-    public List<News> getAllnews(){
-        return dao.getAll(0);
+    public List<News> getAllnews(int page){
+        return dao.getAll((page-1)*RESULT_PER_PAGE,page*RESULT_PER_PAGE);
     }
     public News getNewsById(int id){
         return dao.get(id);

@@ -13,7 +13,7 @@ public class OrdensService {
     private OrdensDAO dao;
 
     public List<Ordens> getAllOrdens(){
-        return dao.getAll(0);
+        return dao.getAll(0,0);
     }
     public Ordens getOrden(int id){
         return dao.get(id);

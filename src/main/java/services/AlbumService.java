@@ -15,6 +15,7 @@ import java.util.List;
 
 @Component("albumService")
 public class AlbumService {
+    private int RESULT_PER_PAGE=Utils.RESULT_PER_PAGE;
     @Autowired
     AlbumDAO dao;
     @Autowired
@@ -23,8 +24,8 @@ public class AlbumService {
     public AlbumService() {
     }
 
-    public List<GalleryAlbum> getAllAlbums(){
-        List<GalleryAlbum> albums=dao.getAll(0);
+    public List<GalleryAlbum> getAllAlbums(int page){
+        List<GalleryAlbum> albums=dao.getAll((page-1)*RESULT_PER_PAGE,page*RESULT_PER_PAGE);
         for (GalleryAlbum album:albums){
             List<GalleryImage> imgs=album.getImages();
             for (GalleryImage img:imgs) {

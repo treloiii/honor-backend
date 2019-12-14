@@ -49,10 +49,10 @@ public class NewsDAO implements DAOSkeleton {
     }
 
     @Override
-    public List<News> getAll(int id) {
+    public List<News> getAll(int from,int to) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        List<News> allNews = session.createQuery("From News",News.class).list();
+        List<News> allNews = session.createQuery("From News n",News.class).setFirstResult(from).setMaxResults(to).list();
         session.getTransaction().commit();
         session.close();
         return allNews;

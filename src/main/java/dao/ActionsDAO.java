@@ -59,10 +59,20 @@ public class ActionsDAO implements DAOSkeleton {
     }
 
     @Override
-    public List<Actions> getAll(int type) {
+    public List getAll(int from,int to) {
         Session session= HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        List<Actions> rallies= session.createQuery("From Actions WHERE type="+type, Actions.class).list();
+        List<Actions> rallies= session.createQuery("From Actions a", Actions.class).setFirstResult(from).setMaxResults(to).list();
+        session.getTransaction().commit();
+        session.close();
+        return rallies;
+    }
+
+
+    public List<Actions> getAllConcrete(int type,int from,int to) {
+        Session session= HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        List<Actions> rallies= session.createQuery("From Actions WHERE type="+type, Actions.class).setFirstResult(from).setMaxResults(to).list();
         session.getTransaction().commit();
         session.close();
         return rallies;

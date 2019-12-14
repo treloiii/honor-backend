@@ -49,10 +49,10 @@ public class PostDAO implements DAOSkeleton {
     }
 
     @Override
-    public List<Post> getAll(int id) {
+    public List<Post> getAll(int from,int to) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        List<Post> posts= session.createQuery("From Post", Post.class).list();
+        List<Post> posts= session.createQuery("From Post p", Post.class).setFirstResult(from).setMaxResults(to).list();
         session.getTransaction().commit();
         session.close();
         return posts;

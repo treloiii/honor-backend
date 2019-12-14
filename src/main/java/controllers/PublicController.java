@@ -38,9 +38,9 @@ public class PublicController {
 
 
 
-    @RequestMapping("/get/all/posts")
-    public List<Post> getMain() throws SQLException {
-        return postService.getAllPosts();
+    @RequestMapping("/get/all/posts/{page}")
+    public List<Post> getMain(@PathVariable(required = false) int page) throws SQLException {
+        return postService.getAllPosts(page);
     }
     @RequestMapping("/get/post")
     public Post getPost(@RequestParam("id") int id){
@@ -57,9 +57,9 @@ public class PublicController {
         return galleryService.getImageById(id);
     }
 
-    @RequestMapping("/get/all/albums")
-    public List<GalleryAlbum> getAlbums(){
-        return albumService.getAllAlbums();
+    @RequestMapping("/get/all/albums/{page}")
+    public List<GalleryAlbum> getAlbums(@PathVariable(required = false) int page){
+        return albumService.getAllAlbums(page);
     }
 
     @RequestMapping("/get/album")
@@ -68,9 +68,9 @@ public class PublicController {
     }
 
 
-    @RequestMapping("/get/all/news")
-    public List<News> getAllNews(){
-        return newsService.getAllnews();
+    @RequestMapping("/get/all/news/{page}")
+    public List<News> getAllNews(@PathVariable(required = false) int page){
+        return newsService.getAllnews(page);
     }
     @RequestMapping("/get/news")
     public News getNews(@RequestParam("id") int id){
@@ -99,7 +99,7 @@ public class PublicController {
     }
     @RequestMapping("/get/last/all")
     public Set<GridObject> getLasts(){
-        Set<GridObject> grid=new HashSet<GridObject>();
+        Set<GridObject> grid=new HashSet<>();
         News news=newsService.getLast();
         grid.add(new GridObject(news.getTitle_image(),news.getTitle(),news.getId(),"/news","Новости"));
         Post post=postService.getLast();
@@ -112,12 +112,12 @@ public class PublicController {
     }
 
 
-    @RequestMapping("/get/actions/{action}")
-    public List<Actions> getRallies(@PathVariable String action){
+    @RequestMapping("/get/actions/{action}/{page}")
+    public List<Actions> getRallies(@PathVariable String action,@PathVariable(required = false) int page){
         if(action.equals("rallies"))
-            return actionsService.getAllRallies(1);
+            return actionsService.getAllRallies(1,page);
         else if(action.equals("events"))
-            return actionsService.getAllRallies(2);
+            return actionsService.getAllRallies(2,page);
         else
             return null;
     }

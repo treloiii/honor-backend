@@ -34,10 +34,10 @@ public class OrdensDAO implements DAOSkeleton {
     }
 
     @Override
-    public List<Ordens> getAll(int id) {
+    public List<Ordens> getAll(int from,int to) {
         Session session= HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        List<Ordens> ordens = session.createQuery("From Ordens",Ordens.class).list();
+        List<Ordens> ordens = session.createQuery("From Ordens o",Ordens.class).list();
         session.getTransaction().commit();
         session.close();
         return ordens;

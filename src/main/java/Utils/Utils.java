@@ -17,6 +17,7 @@ import java.util.Map;
 
 @Component("utils")
 public class Utils {
+    public final static int RESULT_PER_PAGE=20;
     public Utils() {
     }
 

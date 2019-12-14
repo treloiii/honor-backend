@@ -58,7 +58,7 @@ public class UserRepository implements DAOSkeleton {
     }
 
     @Override
-    public List<User> getAll(int id) {
+    public List<User> getAll(int from,int to) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         List<User> posts= session.createQuery("From Post", User.class).list();

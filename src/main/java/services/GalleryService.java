@@ -24,7 +24,7 @@ public class GalleryService {
     }
 
     public List<GalleryImage> getAllGallery(){
-        return dao.getAll(0);
+        return dao.getAll(0,0);
     }
 
     public GalleryImage getImageById(int id){
