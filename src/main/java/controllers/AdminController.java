@@ -141,8 +141,8 @@ public class AdminController {
                              @RequestParam(value = "time",required = false)
                              @DateTimeFormat(pattern = "yyyy-mm-dd") Date time,
                              @PathVariable("updatable") String updatable,
-                             @PathVariable(value = "type") String type){//type:{news,memo,events}
-        if(type.equals("news")||type.equals("memo")||type.equals("events")) {
+                             @PathVariable(value = "type") String type){//type:{news,memo,events,rally}
+        if(type.equals("news")||type.equals("memo")||type.equals("events")||type.equals("rally")) {
             System.out.println(type);
             Redactable section = null;
             try {
@@ -154,6 +154,7 @@ public class AdminController {
                         section = postService.getPostById(id);
                         break;
                     case "events":
+                    case "rally":
                         section = actionsService.getRallyById(id);
                         break;
                 }
@@ -166,6 +167,7 @@ public class AdminController {
                         section = new Post();
                         break;
                     case "events":
+                    case "rally":
                         section = new Actions();
                         break;
                 }
@@ -215,7 +217,10 @@ public class AdminController {
                     } else if (section instanceof Post) {
                         postService.savePost((Post) section);
                     } else if (section instanceof Actions) {
-                        ((Actions) section).setType(actionsService.getType(2));
+                        if(type.equals("rally"))
+                            ((Actions) section).setType(actionsService.getType(1));
+                        else
+                            ((Actions) section).setType(actionsService.getType(2));
                         actionsService.saveAction((Actions) section);
                     }
                 } else {
