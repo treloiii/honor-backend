@@ -18,8 +18,13 @@ public class NewsService {
     public NewsService() {
     }
 
-    public List<News> getAllnews(int page){
-        return dao.getAll((page-1)*RESULT_PER_PAGE,page*RESULT_PER_PAGE);
+    public List<News> getAllnews(int page,Integer count){
+        if(count!=null){
+            return dao.getAll(0, count);
+        }
+        else {
+            return dao.getAll((page - 1) * RESULT_PER_PAGE, page * RESULT_PER_PAGE);
+        }
     }
     public News getNewsById(int id){
         return dao.get(id);

@@ -39,8 +39,8 @@ public class PublicController {
 
 
     @RequestMapping("/get/all/posts/{page}")
-    public List<Post> getMain(@PathVariable(required = false) int page) throws SQLException {
-        return postService.getAllPosts(page);
+    public List<Post> getMain(@RequestParam(value = "count",required = false) Integer count,@PathVariable(required = false) int page) throws SQLException {
+        return postService.getAllPosts(page,count);
     }
     @RequestMapping("/get/post")
     public Post getPost(@RequestParam("id") int id){
@@ -69,8 +69,8 @@ public class PublicController {
 
 
     @RequestMapping("/get/all/news/{page}")
-    public List<News> getAllNews(@PathVariable(required = false) int page){
-        return newsService.getAllnews(page);
+    public List<News> getAllNews(@RequestParam(value = "count",required = false) Integer count,@PathVariable(required = false) int page){
+        return newsService.getAllnews(page,count);
     }
     @RequestMapping("/get/news")
     public News getNews(@RequestParam("id") int id){
