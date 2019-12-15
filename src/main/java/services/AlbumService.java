@@ -26,7 +26,7 @@ public class AlbumService {
     }
 
     public List<GalleryAlbum> getAllAlbums(int page){
-        List<GalleryAlbum> albums=dao.getAll((page-1)*RESULT_PER_PAGE,page*RESULT_PER_PAGE);
+        List<GalleryAlbum> albums=dao.getAll((page-1)*RESULT_PER_PAGE,RESULT_PER_PAGE);
         for (GalleryAlbum album:albums){
             List<GalleryImage> imgs=album.getImages();
             for (GalleryImage img:imgs) {

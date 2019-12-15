@@ -26,7 +26,7 @@ public class ActionsService {
         dao.update(action);
     }
     public List<Actions> getAllRallies(int type,int page){
-        return dao.getAllConcrete(type,(page-1)*RESULT_PER_PAGE,page*RESULT_PER_PAGE);
+        return dao.getAllConcrete(type,(page-1)*RESULT_PER_PAGE,RESULT_PER_PAGE);
     }
 
     public Actions getRallyById(int id){

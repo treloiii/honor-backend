@@ -28,7 +28,7 @@ public class PostService {
         if(count!=null){
             return dao.getAll(0, count);
         }else {
-            return dao.getAll((page - 1) * RESULT_PER_PAGE, page * RESULT_PER_PAGE);
+            return dao.getAll((page - 1) * RESULT_PER_PAGE, RESULT_PER_PAGE);
         }
     }
     public void savePost(Post post){
