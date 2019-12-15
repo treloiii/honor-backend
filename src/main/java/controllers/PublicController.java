@@ -38,18 +38,18 @@ public class PublicController {
     private ResultedQuery query;
 
     @RequestMapping("/get/count/{type}")
-    public Long getCountEntity(@PathVariable("type") String type){
+    public Double getCountEntity(@PathVariable("type") String type){
         switch (type) {
             case "events":
-                return actionsService.getCount(2);
+                return Math.floor(actionsService.getCount(2)/Utils.RESULT_PER_PAGE)+1;
             case "rally":
-                return actionsService.getCount(1);
+                return Math.floor(actionsService.getCount(1)/Utils.RESULT_PER_PAGE)+1;
             case "news":
-                return newsService.getCount();
+                return Math.floor(newsService.getCount()/Utils.RESULT_PER_PAGE)+1;
             case "memo":
-                return postService.getCount();
+                return Math.floor(postService.getCount()/Utils.RESULT_PER_PAGE)+1;
             default:
-                return (long) -1;
+                return (double) -1;
         }
     }
 
