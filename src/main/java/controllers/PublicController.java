@@ -46,6 +46,8 @@ public class PublicController {
                 return actionsService.getCount(1);
             case "news":
                 return newsService.getCount();
+            case "memo":
+                return postService.getCount();
             default:
                 return (long) -1;
         }
