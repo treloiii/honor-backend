@@ -68,7 +68,10 @@ public class NewsDAO implements DAOSkeleton {
         Query query=session.createQuery("SELECT COUNT(*) FROM News");
         query.setCacheable(true);
         System.out.println(query.getSingleResult());
-        return (Long) query.getSingleResult();
+        Long retVal= (Long) query.getSingleResult();
+        session.getTransaction().commit();
+        session.close();
+        return retVal;
     }
 
     public News getLast(){

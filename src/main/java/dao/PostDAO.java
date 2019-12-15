@@ -69,7 +69,10 @@ public class PostDAO implements DAOSkeleton {
         Query query=session.createQuery("SELECT COUNT(*) FROM Post");
         query.setCacheable(true);
         System.out.println(query.getSingleResult());
-        return (Long) query.getSingleResult();
+        Long retVal= (Long) query.getSingleResult();
+        session.getTransaction().commit();
+        session.close();
+        return retVal;
     }
 
     public Post getLast(){
