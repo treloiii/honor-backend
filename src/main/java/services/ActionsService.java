@@ -39,7 +39,10 @@ public class ActionsService {
         return dao.getType(type);
     }
 
-    public Long getCount(int type){
-        return dao.getCountByType(type);
+    public Double getCount(int type){
+        if(dao.getCountByType(type)%Utils.RESULT_PER_PAGE==0)
+            return Math.floor(dao.getCountByType(type)/Utils.RESULT_PER_PAGE);
+        else
+            return Math.floor(dao.getCountByType(type)/Utils.RESULT_PER_PAGE)+1;
     }
 }

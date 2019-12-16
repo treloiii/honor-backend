@@ -41,25 +41,13 @@ public class PublicController {
     public Double getCountEntity(@PathVariable("type") String type){
         switch (type) {
             case "events":
-                if(actionsService.getCount(2)%Utils.RESULT_PER_PAGE==0)
-                    return Math.floor(actionsService.getCount(2)/Utils.RESULT_PER_PAGE);
-                else
-                    return Math.floor(actionsService.getCount(2)/Utils.RESULT_PER_PAGE)+1;
+                return actionsService.getCount(2);
             case "rally":
-                if(actionsService.getCount(1)%Utils.RESULT_PER_PAGE==0)
-                    return Math.floor(actionsService.getCount(1)/Utils.RESULT_PER_PAGE);
-                else
-                    return Math.floor(actionsService.getCount(1)/Utils.RESULT_PER_PAGE)+1;
+                return actionsService.getCount(1);
             case "news":
-                if(newsService.getCount()%Utils.RESULT_PER_PAGE==0)
-                    return Math.floor(newsService.getCount()/Utils.RESULT_PER_PAGE);
-                else
-                    return Math.floor(newsService.getCount()/Utils.RESULT_PER_PAGE)+1;
+                return newsService.getCount();
             case "memo":
-                if(postService.getCount()%Utils.RESULT_PER_PAGE==0)
-                    return Math.floor(postService.getCount()/Utils.RESULT_PER_PAGE);
-                else
-                    return Math.floor(postService.getCount()/Utils.RESULT_PER_PAGE)+1;
+                return postService.getCount();
             default:
                 return (double) -1;
         }

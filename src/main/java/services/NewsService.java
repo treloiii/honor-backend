@@ -40,7 +40,10 @@ public class NewsService {
         return dao.getLast();
     }
 
-    public Long getCount(){
-        return dao.getCount();
+    public Double getCount(){
+        if(dao.getCount()%Utils.RESULT_PER_PAGE==0)
+            return Math.floor(dao.getCount()/Utils.RESULT_PER_PAGE);
+        else
+            return Math.floor(dao.getCount()/Utils.RESULT_PER_PAGE)+1;
     }
 }
