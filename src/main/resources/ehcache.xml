@@ -1,0 +1,34 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd"
+         updateCheck="true" monitoring="autodetect"
+         dynamicConfig="true" maxBytesLocalHeap="400M" maxBytesLocalOffHeap="2G">
+    <diskStore path="java.io.tmpdir"/>
+    <cache name="Entities.GalleryAlbum"
+       maxElementsInMemory="1000"
+       eternal="false"
+       timeToIdleSeconds="15"
+       timeToLiveSeconds="15"
+       overflowToDisk="false"
+       memoryStoreEvictionPolicy="LRU"/>
+    <cache name="Entities.GalleryImage"
+           maxElementsInMemory="1000"
+           eternal="false"
+           timeToIdleSeconds="15"
+           timeToLiveSeconds="15"
+           overflowToDisk="false"
+           memoryStoreEvictionPolicy="LRU"/>
+    <cache name="Entities.GalleryComments"
+           maxElementsInMemory="1000"
+           eternal="false"
+           timeToIdleSeconds="15"
+           timeToLiveSeconds="15"
+           overflowToDisk="false"
+           memoryStoreEvictionPolicy="LRU"/>
+</ehcache>
+<!--<cache name="com.my.company.Entity"-->
+<!--       maxElementsInMemory="1000"-->
+<!--       eternal="false"-->
+<!--       timeToIdleSeconds="7200"-->
+<!--       timeToLiveSeconds="7200"-->
+<!--       overflowToDisk="false"-->
+<!--       memoryStoreEvictionPolicy="LRU"/>-->
