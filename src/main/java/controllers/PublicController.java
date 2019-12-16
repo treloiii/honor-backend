@@ -156,6 +156,7 @@ public class PublicController {
     public String addComment(@RequestBody GalleryComments comment, @PathVariable int photo_id){
         GalleryImage image=galleryService.getImageById(photo_id);
         comment.setTime(new Date());
+        comment.setActive(false);
         galleryService.addComment(image,comment);
         return "Success";
     }

@@ -25,11 +25,21 @@ public class GalleryComments {
     private String email;
     @Column
     private String comment;
+    @Column
+    private Boolean active;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="photo_id")
     private GalleryImage image;
 
     public GalleryComments() {
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public void setEmail(String email) {
