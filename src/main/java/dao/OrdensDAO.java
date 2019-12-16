@@ -48,4 +48,9 @@ public class OrdensDAO implements DAOSkeleton {
     public Long getCount() {
         return null;
     }
+
+    @Override
+    public void clearCache() {
+
+    }
 }

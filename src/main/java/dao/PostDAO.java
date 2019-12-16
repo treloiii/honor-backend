@@ -3,6 +3,7 @@ package dao;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import Entities.Post;
 import org.hibernate.Session;
+import org.hibernate.cache.internal.EnabledCaching;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -93,5 +94,16 @@ public class PostDAO implements DAOSkeleton {
             e.printStackTrace();
         }
         return post;
+    }
+
+    @Override
+    public void clearCache() {
+        try {
+            EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
+            cache.evictCollectionData();
+            cache.evict(Post.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

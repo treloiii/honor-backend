@@ -10,4 +10,5 @@ public interface DAOSkeleton <T>{
     public void delete(T updatedObject);
     public List<T> getAll(int from,int to);
     public Long getCount();
+    public void clearCache();
 }

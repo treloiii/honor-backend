@@ -1,8 +1,11 @@
 package dao;
 
 import Entities.GalleryAlbum;
+import Entities.GalleryComments;
+import Entities.GalleryImage;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import org.hibernate.Session;
+import org.hibernate.cache.internal.EnabledCaching;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 
@@ -73,5 +76,18 @@ public class AlbumDAO implements DAOSkeleton {
         session.getTransaction().commit();
         session.close();
         return retVal;
+    }
+
+    @Override
+    public void clearCache() {
+        try {
+            EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
+            cache.evictCollectionData();
+            cache.evict(GalleryAlbum.class);
+            cache.evict(GalleryImage.class);
+            cache.evict(GalleryComments.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

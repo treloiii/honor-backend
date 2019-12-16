@@ -61,4 +61,7 @@ public class GalleryService {
         }
         return transList;
     }
+    public void clearCache(){
+        dao.clearCache();
+    }
 }

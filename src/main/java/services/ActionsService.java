@@ -45,4 +45,7 @@ public class ActionsService {
         else
             return Math.floor(dao.getCountByType(type)/Utils.RESULT_PER_PAGE)+1;
     }
+    public void clearCache(){
+        dao.clearCache();
+    }
 }

@@ -71,4 +71,9 @@ public class GalleryImageDAO implements DAOSkeleton {
         session.close();
         return posts;
     }
+
+    @Override
+    public void clearCache() {
+
+    }
 }

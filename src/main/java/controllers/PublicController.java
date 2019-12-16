@@ -2,6 +2,10 @@ package controllers;
 import Entities.*;
 import Utils.GridObject;
 import Utils.Utils;
+import com.honor.back.honorwebapp.HibernateSessionFactory;
+import org.ehcache.Cache;
+import org.hibernate.cache.internal.EnabledCaching;
+import org.hibernate.metadata.ClassMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import services.*;
@@ -53,6 +57,26 @@ public class PublicController {
         }
     }
 
+    @RequestMapping("/clear/cache/{type}")
+    public void clearCache(@PathVariable("type") String type){
+        switch (type) {
+            case "events":
+            case "rally":
+                actionsService.clearCache();
+                break;
+            case "news":
+                newsService.clearCache();
+                break;
+            case "memo":
+                postService.clearCache();
+                break;
+            case "gallery":
+                albumService.clearCache();
+                break;
+            default:
+                System.out.println("invalid type "+type);
+        }
+    }
     @RequestMapping("/get/all/posts/{page}")
     public List<Post> getMain(@RequestParam(value = "count",required = false) Integer count,@PathVariable(required = false) int page) throws SQLException {
         return postService.getAllPosts(page,count);

@@ -5,6 +5,7 @@ import Entities.ActionsType;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.cache.internal.EnabledCaching;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,5 +123,16 @@ public class ActionsDAO implements DAOSkeleton {
             e.printStackTrace();
         }
         return action;
+    }
+
+    @Override
+    public void clearCache() {
+        try {
+            EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
+            cache.evictCollectionData();
+            cache.evict(Actions.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

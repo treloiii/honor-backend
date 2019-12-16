@@ -72,4 +72,8 @@ public class UserRepository implements DAOSkeleton {
     public Long getCount() {
         return null;
     }
+
+    @Override
+    public void clearCache() {
+    }
 }

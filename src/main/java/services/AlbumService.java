@@ -71,4 +71,7 @@ public class AlbumService {
     public Long getCount(){
         return dao.getCount();
     }
+    public void clearCache(){
+        dao.clearCache();
+    }
 }

@@ -46,4 +46,7 @@ public class NewsService {
         else
             return Math.floor(dao.getCount()/Utils.RESULT_PER_PAGE)+1;
     }
+    public void clearCache(){
+        dao.clearCache();
+    }
 }

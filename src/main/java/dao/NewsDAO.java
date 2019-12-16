@@ -2,6 +2,7 @@ package dao;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import Entities.News;
 import org.hibernate.Session;
+import org.hibernate.cache.internal.EnabledCaching;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -92,5 +93,16 @@ public class NewsDAO implements DAOSkeleton {
             e.printStackTrace();
         }
         return news;
+    }
+
+    @Override
+    public void clearCache() {
+        try {
+            EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
+            cache.evictCollectionData();
+            cache.evict(News.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
