@@ -5,16 +5,15 @@ import Utils.Utils;
 import dao.NewsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sql.ResultedQuery;
 
-import java.math.BigInteger;
 import java.util.List;
 
 @Component("newsService")
 public class NewsService {
-    private final int RESULT_PER_PAGE= Utils.RESULT_PER_PAGE;
     @Autowired
     private NewsDAO dao;
+    @Autowired
+    private Utils utils;
 
     public NewsService() {
     }
@@ -24,7 +23,7 @@ public class NewsService {
             return dao.getAll(0, count);
         }
         else {
-            return dao.getAll((page - 1) * RESULT_PER_PAGE, RESULT_PER_PAGE);
+            return dao.getAll((page - 1) * utils.RESULT_PER_PAGE, utils.RESULT_PER_PAGE);
         }
     }
     public News getNewsById(int id){
@@ -41,10 +40,10 @@ public class NewsService {
     }
 
     public Double getCount(){
-        if(dao.getCount()%Utils.RESULT_PER_PAGE==0)
-            return Math.floor(dao.getCount()/Utils.RESULT_PER_PAGE);
+        if(dao.getCount()%utils.RESULT_PER_PAGE==0)
+            return Math.floor(dao.getCount()/utils.RESULT_PER_PAGE);
         else
-            return Math.floor(dao.getCount()/Utils.RESULT_PER_PAGE)+1;
+            return Math.floor(dao.getCount()/utils.RESULT_PER_PAGE)+1;
     }
     public void clearCache(){
         dao.clearCache();

@@ -6,14 +6,14 @@ import dao.PostDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigInteger;
 import java.util.List;
 
 @Component("postService")
 public class PostService {
-    private final int RESULT_PER_PAGE= Utils.RESULT_PER_PAGE;
     @Autowired
     private PostDAO dao;
+    @Autowired
+    Utils utils;
 
     public PostService() {
     }
@@ -28,7 +28,7 @@ public class PostService {
         if(count!=null){
             return dao.getAll(0, count);
         }else {
-            return dao.getAll((page - 1) * RESULT_PER_PAGE, RESULT_PER_PAGE);
+            return dao.getAll((page - 1) * utils.RESULT_PER_PAGE, utils.RESULT_PER_PAGE);
         }
     }
     public void savePost(Post post){
@@ -38,10 +38,10 @@ public class PostService {
         return dao.getLast();
     }
     public Double getCount(){
-        if(dao.getCount()%Utils.RESULT_PER_PAGE==0)
-            return Math.floor(dao.getCount()/Utils.RESULT_PER_PAGE);
+        if(dao.getCount()% utils.RESULT_PER_PAGE==0)
+            return Math.floor(dao.getCount()/ utils.RESULT_PER_PAGE);
         else
-            return Math.floor(dao.getCount()/Utils.RESULT_PER_PAGE)+1;
+            return Math.floor(dao.getCount()/ utils.RESULT_PER_PAGE)+1;
     }
     public void clearCache(){
         dao.clearCache();

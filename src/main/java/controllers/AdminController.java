@@ -133,6 +133,38 @@ public class AdminController {
         }
     }
 
+    @RequestMapping("/set/pagination/{count}")
+    public Integer setPagiation(@PathVariable int count){
+        try {
+            return this.utils.setResultPerPage(count);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    @RequestMapping("/clear/cache/{type}")
+    public String clearCache(@PathVariable("type") String type){
+        System.out.println(type);
+        switch (type) {
+            case "events":
+            case "rally":
+                actionsService.clearCache();
+                break;
+            case "news":
+                newsService.clearCache();
+                break;
+            case "memo":
+                postService.clearCache();
+                break;
+            case "gallery":
+                albumService.clearCache();
+                break;
+            default:
+                System.out.println("invalid type "+type);
+        }
+        return "success";
+    }
+
 
     @RequestMapping(value = "/upload/{type}/{updatable}",method = RequestMethod.POST)
     public String uploadNews(@RequestParam("pic") MultipartFile[] images,@RequestParam(value = "title_pic",required = false) MultipartFile titleImage,

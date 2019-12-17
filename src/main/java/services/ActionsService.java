@@ -7,14 +7,14 @@ import dao.ActionsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigInteger;
 import java.util.List;
 @Component("rallyService")
 
 public class ActionsService {
-    private int RESULT_PER_PAGE= Utils.RESULT_PER_PAGE;
     @Autowired
     private ActionsDAO dao;
+    @Autowired
+    private Utils utils;
 
     public ActionsService(){
     }
@@ -26,7 +26,7 @@ public class ActionsService {
         dao.update(action);
     }
     public List<Actions> getAllRallies(int type,int page){
-        return dao.getAllConcrete(type,(page-1)*RESULT_PER_PAGE,RESULT_PER_PAGE);
+        return dao.getAllConcrete(type,(page-1)*utils.RESULT_PER_PAGE,utils.RESULT_PER_PAGE);
     }
 
     public Actions getRallyById(int id){
@@ -40,10 +40,10 @@ public class ActionsService {
     }
 
     public Double getCount(int type){
-        if(dao.getCountByType(type)%Utils.RESULT_PER_PAGE==0)
-            return Math.floor(dao.getCountByType(type)/Utils.RESULT_PER_PAGE);
+        if(dao.getCountByType(type)%utils.RESULT_PER_PAGE==0)
+            return Math.floor(dao.getCountByType(type)/utils.RESULT_PER_PAGE);
         else
-            return Math.floor(dao.getCountByType(type)/Utils.RESULT_PER_PAGE)+1;
+            return Math.floor(dao.getCountByType(type)/utils.RESULT_PER_PAGE)+1;
     }
     public void clearCache(){
         dao.clearCache();

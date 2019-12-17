@@ -1,7 +1,11 @@
 package Utils;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import sql.ResultedQuery;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -11,14 +15,52 @@ import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Map;
 
 
 @Component("utils")
 public class Utils {
-    public final static int RESULT_PER_PAGE=20;
+    public int RESULT_PER_PAGE;
+    @Autowired
+    private ResultedQuery rq;
+
+    public Integer setResultPerPage(int count) throws SQLException {
+        rq.VoidQuery("UPDATE honor_pagination_settings set count="+count+" where id=1");
+        int result=reloadResultPerPage();
+        if(result!=-1) {
+            RESULT_PER_PAGE=result;
+        }
+        return result;
+    }
+    private Integer reloadResultPerPage(){
+       // rq=new ResultedQuery();
+        System.out.println("reload pagination");
+        try {
+            ResultSet rs = rq.getResultSet("SELECT * FROM honor_pagination_settings where id=1");
+            rs.next();
+            return rs.getInt("count");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    public void initResultPerPage(){
+        int load=reloadResultPerPage();
+        if(load!=-1)
+            RESULT_PER_PAGE=load;
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void doSomethingAfterStartup() {
+        initResultPerPage();
+    }
+
     public Utils() {
+        //reloadResultPerPage();
     }
 
     public String fileUpload(String serverPath,String fileName, MultipartFile file){

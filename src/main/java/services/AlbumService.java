@@ -4,19 +4,16 @@ import Entities.GalleryAlbum;
 import Entities.GalleryImage;
 import Utils.Utils;
 import dao.AlbumDAO;
-import dao.GalleryImageDAO;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
 @Component("albumService")
 public class AlbumService {
-    private int RESULT_PER_PAGE=Utils.RESULT_PER_PAGE;
     @Autowired
     AlbumDAO dao;
     @Autowired
@@ -26,7 +23,7 @@ public class AlbumService {
     }
 
     public List<GalleryAlbum> getAllAlbums(int page){
-        List<GalleryAlbum> albums=dao.getAll((page-1)*RESULT_PER_PAGE,RESULT_PER_PAGE);
+        List<GalleryAlbum> albums=dao.getAll((page-1)*utils.RESULT_PER_PAGE,utils.RESULT_PER_PAGE);
         for (GalleryAlbum album:albums){
             List<GalleryImage> imgs=album.getImages();
             for (GalleryImage img:imgs) {
