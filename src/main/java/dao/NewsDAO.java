@@ -58,6 +58,7 @@ public class NewsDAO implements DAOSkeleton {
         session.beginTransaction();
         Query query=session.createQuery("From News n",News.class).setFirstResult(from).setMaxResults(to);
         query.setCacheable(true);
+        query.setCacheRegion("NEWS_LIST");
         List<News> allNews=query.list();
         session.getTransaction().commit();
         session.close();
@@ -70,6 +71,7 @@ public class NewsDAO implements DAOSkeleton {
         session.beginTransaction();
         Query query=session.createQuery("SELECT COUNT(*) FROM News");
         query.setCacheable(true);
+        query.setCacheRegion("COUNT_DATA_NEWS");
         System.out.println(query.getSingleResult());
         Long retVal= (Long) query.getSingleResult();
         session.getTransaction().commit();
@@ -103,6 +105,8 @@ public class NewsDAO implements DAOSkeleton {
             EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
             cache.evictCollectionData();
             cache.evict(News.class);
+            cache.evictRegion("COUNT_DATA_NEWS");
+            cache.evictRegion("NEWS_LIST");
         } catch (Exception e) {
             e.printStackTrace();
         }

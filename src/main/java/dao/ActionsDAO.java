@@ -83,6 +83,7 @@ public class ActionsDAO implements DAOSkeleton {
         session.beginTransaction();
         Query query=session.createQuery("SELECT COUNT(*) FROM Actions where type="+this.type);
         query.setCacheable(true);
+        query.setCacheRegion("COUNT_DATA_ACTIONS");
         System.out.println(query.getSingleResult());
         Long retVal= (Long) query.getSingleResult();
         session.getTransaction().commit();
@@ -102,6 +103,7 @@ public class ActionsDAO implements DAOSkeleton {
         session.beginTransaction();
         Query query= session.createQuery("From Actions WHERE type="+type, Actions.class).setFirstResult(from).setMaxResults(to);
         query.setCacheable(true);
+        query.setCacheRegion("ACTIONS_LIST");
         List<Actions> rallies=query.list();
         session.getTransaction().commit();
         session.close();
@@ -133,6 +135,8 @@ public class ActionsDAO implements DAOSkeleton {
             EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
             cache.evictCollectionData();
             cache.evict(Actions.class);
+            cache.evictRegion("COUNT_DATA_ACTIONS");
+            cache.evictRegion("ACTIONS_LIST");
         } catch (Exception e) {
             e.printStackTrace();
         }

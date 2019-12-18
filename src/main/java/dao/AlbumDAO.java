@@ -60,6 +60,7 @@ public class AlbumDAO implements DAOSkeleton {
         session.beginTransaction();
         Query query=session.createQuery("From GalleryAlbum",GalleryAlbum.class).setFirstResult(from).setMaxResults(to);
         query.setCacheable(true);
+        query.setCacheRegion("ALBUM_LIST");
         List<GalleryAlbum> albums=query.list();
         session.getTransaction().commit();
         session.close();
@@ -72,6 +73,7 @@ public class AlbumDAO implements DAOSkeleton {
         session.beginTransaction();
         Query query=session.createQuery("SELECT COUNT(*) FROM Albums");
         query.setCacheable(true);
+        query.setCacheRegion("COUNT_DATA_ALBUM");
         System.out.println(query.getSingleResult());
         Long retVal= (Long) query.getSingleResult();
         session.getTransaction().commit();
@@ -87,6 +89,8 @@ public class AlbumDAO implements DAOSkeleton {
             cache.evict(GalleryAlbum.class);
             cache.evict(GalleryImage.class);
             cache.evict(GalleryComments.class);
+            cache.evictRegion("COUNT_DATA_ALBUM");
+            cache.evictRegion("ALBUM_LIST");
         } catch (Exception e) {
             e.printStackTrace();
         }

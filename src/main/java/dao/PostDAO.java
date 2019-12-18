@@ -59,6 +59,7 @@ public class PostDAO implements DAOSkeleton {
         session.beginTransaction();
         Query query=session.createQuery("From Post p", Post.class).setFirstResult(from).setMaxResults(to);
         query.setCacheable(true);
+        query.setCacheRegion("POST_LIST");
         List<Post> posts=query.list();
         session.getTransaction().commit();
         session.close();
@@ -71,6 +72,7 @@ public class PostDAO implements DAOSkeleton {
         session.beginTransaction();
         Query query=session.createQuery("SELECT COUNT(*) FROM Post");
         query.setCacheable(true);
+        query.setCacheRegion("COUNT_DATA_POSTS");
         System.out.println(query.getSingleResult());
         Long retVal= (Long) query.getSingleResult();
         session.getTransaction().commit();
@@ -104,6 +106,8 @@ public class PostDAO implements DAOSkeleton {
             EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
             cache.evictCollectionData();
             cache.evict(Post.class);
+            cache.evictRegion("COUNT_DATA_POSTS");
+            cache.evictRegion("POST_LIST");
         } catch (Exception e) {
             e.printStackTrace();
         }
