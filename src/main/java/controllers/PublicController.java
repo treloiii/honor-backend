@@ -2,6 +2,7 @@ package controllers;
 import Entities.*;
 import Utils.GridObject;
 import Utils.Utils;
+import Utils.PaginationCountSize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import services.*;
@@ -37,18 +38,18 @@ public class PublicController {
     private ResultedQuery query;
 
     @RequestMapping("/get/count/{type}")
-    public Double getCountEntity(@PathVariable("type") String type){
+    public PaginationCountSize getCountEntity(@PathVariable("type") String type){
         switch (type) {
             case "events":
-                return actionsService.getCount(2);
+                return new PaginationCountSize(actionsService.getCount(2),utils.RESULT_PER_PAGE,"none");
             case "rally":
-                return actionsService.getCount(1);
+                return new PaginationCountSize(actionsService.getCount(1),utils.RESULT_PER_PAGE,"none");
             case "news":
-                return newsService.getCount();
+                return new PaginationCountSize(newsService.getCount(),utils.RESULT_PER_PAGE,"none");
             case "memo":
-                return postService.getCount();
+                return new PaginationCountSize(postService.getCount(),utils.RESULT_PER_PAGE,"none");
             default:
-                return (double) -1;
+                return new PaginationCountSize(-1,-1,"invalid type");
         }
     }
     @RequestMapping("/get/page/size")
