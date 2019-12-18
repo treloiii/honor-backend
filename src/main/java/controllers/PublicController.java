@@ -1,8 +1,8 @@
 package controllers;
 import Entities.*;
-import Utils.GridObject;
-import Utils.Utils;
-import Utils.PaginationCountSize;
+import utils.GridObject;
+import utils.Utils;
+import utils.PaginationCountSize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import services.*;

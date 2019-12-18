@@ -2,7 +2,7 @@ package services;
 
 import Entities.GalleryComments;
 import Entities.GalleryImage;
-import Utils.Utils;
+import utils.Utils;
 import dao.GalleryImageDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

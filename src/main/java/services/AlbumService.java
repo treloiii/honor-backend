@@ -2,7 +2,7 @@ package services;
 
 import Entities.GalleryAlbum;
 import Entities.GalleryImage;
-import Utils.Utils;
+import utils.Utils;
 import dao.AlbumDAO;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;

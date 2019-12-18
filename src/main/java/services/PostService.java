@@ -1,7 +1,7 @@
 package services;
 
 import Entities.Post;
-import Utils.Utils;
+import utils.Utils;
 import dao.PostDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package Utils
+package utils
 
 /**
  * count - count of pages in pagination

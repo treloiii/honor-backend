@@ -1,10 +1,4 @@
-package Utils;
-
-import Entities.Actions;
-import Entities.News;
-import Entities.Post;
-
-import java.util.List;
+package utils;
 
 public class GridObject {
     private String image;

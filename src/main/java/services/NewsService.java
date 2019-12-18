@@ -1,7 +1,7 @@
 package services;
 
 import Entities.News;
-import Utils.Utils;
+import utils.Utils;
 import dao.NewsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
