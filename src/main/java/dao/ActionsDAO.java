@@ -28,6 +28,7 @@ public class ActionsDAO implements DAOSkeleton {
         session.update(updatedObject);
         session.getTransaction().commit();
         session.close();
+        this.clearCache();
     }
 
     @Override
@@ -37,6 +38,7 @@ public class ActionsDAO implements DAOSkeleton {
         session.save(savedObject);
         session.getTransaction().commit();
         session.close();
+        this.clearCache();
     }
 
     @Override

@@ -50,7 +50,7 @@ public class AdminController {
 
     @RequestMapping("/delete/{type}")
     public String deleteNews(@RequestBody int id,@PathVariable("type") String type) throws SQLException {//type={news,memo,events}
-        if(type.equals("news")||type.equals("memo")||type.equals("events")) {
+        if(type.equals("news")||type.equals("memo")||type.equals("events")||type.equals("rally")) {
             try {
                 ResultSet rs = null;
                 switch (type) {
@@ -61,6 +61,7 @@ public class AdminController {
                         rs = this.query.getResultSet("SELECT title FROM honor_main_posts WHERE id=" + id);
                         break;
                     case "events":
+                    case "rally":
                         rs = this.query.getResultSet("SELECT title FROM honor_actions WHERE id=" + id);
                         break;
                 }
@@ -72,12 +73,16 @@ public class AdminController {
                 switch (type) {
                     case "news":
                         this.query.VoidQuery("DELETE FROM honor_news WHERE id=" + id);
+                        newsService.clearCache();
                         break;
                     case "memo":
                         this.query.VoidQuery("DELETE FROM honor_main_posts WHERE id=" + id);
+                        postService.clearCache();
                         break;
                     case "events":
+                    case "rally":
                         this.query.VoidQuery("DELETE FROM honor_actions WHERE id=" + id);
+                        actionsService.clearCache();
                         break;
                 }
                 return "success";
@@ -114,7 +119,7 @@ public class AdminController {
     }
     @RequestMapping("/delete/album")
     public String deleteAlbum(@RequestBody int id){
-       return albumService.deleteAlbum(id);
+        return albumService.deleteAlbum(id);
     }
     @RequestMapping(value="/upload/story", method= RequestMethod.POST)
     public @ResponseBody String handleFileUpload(@RequestParam("post") String posted,

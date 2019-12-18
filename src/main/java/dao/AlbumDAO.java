@@ -51,6 +51,7 @@ public class AlbumDAO implements DAOSkeleton {
         session.delete(updatedObject);
         session.getTransaction().commit();
         session.close();
+        this.clearCache();
     }
 
     @Override
