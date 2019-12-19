@@ -14,6 +14,7 @@ public class News implements Redactable {
     private int id;
     @Column
     private String title;
+    @Lob
     @Column
     private String description;
     @Column

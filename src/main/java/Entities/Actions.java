@@ -20,6 +20,7 @@ public class Actions implements Redactable {
 
     @Column
     private String title;
+    @Lob
     @Column
     private String description;
     @Column
