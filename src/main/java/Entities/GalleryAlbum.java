@@ -22,7 +22,7 @@ public class GalleryAlbum {
     @Column
     private String description;
 
-    @OneToMany(mappedBy = "album",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "album",fetch = FetchType.LAZY)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<GalleryImage> images;
     public GalleryAlbum() {

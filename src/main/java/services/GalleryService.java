@@ -40,6 +40,7 @@ public class GalleryService {
             Files.delete(file.toPath());
             dao.delete(this.getImageById(id));
             return !file.exists();
+//            return true;
         }catch (Exception e){
             e.printStackTrace();
             return false;
