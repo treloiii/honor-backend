@@ -70,7 +70,6 @@ public class Translit {
         map.put("з","z");
         map.put("и","i");
         map.put("й","j");
-        // map.put("к","k");
         map.put("л","l");
         map.put("м","m");
         map.put("н","n");
@@ -88,12 +87,10 @@ public class Translit {
         map.put("щ","sch");
         map.put("ы","$i");
         map.put("ъ","`");
-        //   map.put("у","y");
         map.put("ь","'");
         map.put("ю","yu");
         map.put("я","ya");
         map.put("кс","x");
-        //  map.put("в","w");
         map.put("к","q");
         map.put("ий","iy");
         return map;
