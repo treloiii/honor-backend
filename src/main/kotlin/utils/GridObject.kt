@@ -1,5 +1,3 @@
 package utils
 
-class GridObject (val image:String, val title:String, val id: Int, val url:String, val type:String) {
-
-}
+class GridObject (val image:String, val title:String, val id: Int, val url:String, val type:String)
