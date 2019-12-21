@@ -11,7 +11,7 @@ public class DatabaseInstance {
     private Connection connection;
 
     public DatabaseInstance() throws SQLException {
-        this.connection= DriverManager.getConnection("jdbc:mysql://127.0.0.1/honor?useLegacyDatetimeCode=false&serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8","trelloiii", "b4uld103");
+        this.connection= DriverManager.getConnection("jdbc:mysql://ensler.ru/honor?useLegacyDatetimeCode=false&serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8","trelloiii", "b4uld103");
     }
 
     public Connection getConnection() {

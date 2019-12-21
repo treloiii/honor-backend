@@ -11,6 +11,7 @@ import sql.ResultedQuery;
 import javax.persistence.TypedQuery;
 import java.math.BigInteger;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 @Component("newsDao")
 public class NewsDAO implements DAOSkeleton {

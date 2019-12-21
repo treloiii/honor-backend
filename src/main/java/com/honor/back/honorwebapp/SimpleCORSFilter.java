@@ -20,11 +20,13 @@ public class SimpleCORSFilter implements Filter{
         response.setHeader("Access-Control-Allow-Methods", "*");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "*");
+        req.setCharacterEncoding("UTF-8");
        // response.setStatus(404);
         if("OPTIONS".equalsIgnoreCase(((HttpServletRequest) req).getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
         }
         else {
+
             chain.doFilter(req, res);
         }
     }
