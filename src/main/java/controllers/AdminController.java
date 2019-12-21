@@ -69,7 +69,7 @@ public class AdminController {
                 assert rs != null;
                 rs.next();
                 String title = rs.getString("title");
-                FileUtils.deleteDirectory(new File("/home/std/honor-backend/static/" + type + "/" + title + "/"));
+                FileUtils.deleteDirectory(new File("/home/ensler/honor-server/static/" + type + "/" + title + "/"));
                 switch (type) {
                     case "news":
                         this.query.VoidQuery("DELETE FROM honor_news WHERE id=" + id);
@@ -124,7 +124,7 @@ public class AdminController {
     @RequestMapping(value="/upload/story", method= RequestMethod.POST)
     public @ResponseBody String handleFileUpload(@RequestParam("post") String posted,
                                                  @RequestParam("file") MultipartFile file){
-        String serverPath = "/home/std/honor-backend/static/stories/";
+        String serverPath = "/home/ensler/honor-server/static/memo/";
         Gson gson =new Gson();
         Post post=gson.fromJson(posted,Post.class);
         String fileUploadResult=utils.fileUpload(serverPath,post.getTitle(),file);
@@ -212,14 +212,14 @@ public class AdminController {
             }
             if (!updatable.equals("new")) {
                 try {
-                    FileUtils.deleteDirectory(new File("/home/std/honor-backend/static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"));
+                    FileUtils.deleteDirectory(new File("/home/ensler/honor-server/static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"));
                 } catch (Exception e) {
                     System.out.println("cannot find dir");
                 }
             }
 
             titleImageName = utils.transliterate(titleImageName);
-            String uploadPath = "/home/std/honor-backend/static/" + type + "/" + utils.transliterate(title) + "/";
+            String uploadPath = "/home/ensler/honor-server/static/" + type + "/" + utils.transliterate(title) + "/";
             new File(uploadPath.substring(0, uploadPath.length() - 1)).mkdirs();
             String[] buf = description.split("_paste_");
             String finalStr = "";
@@ -293,14 +293,14 @@ public class AdminController {
         imagesList= Arrays.asList(gson.fromJson(images,GalleryImage[].class));
         GalleryAlbum album=albumService.getAlbum(album_id);
         String response="";
-        String serverPath = "/home/std/honor-backend/static/gallery/" + album.getId()+"/";
+        String serverPath = "/home/ensler/honor-server/static/gallery/" + album.getId()+"/";
         int index=0;
         for (GalleryImage image:imagesList) {
             image.setName(utils.transliterate(image.getName()));
             String fileUploadResult=utils.fileUpload(serverPath,image.getName(),files[index]);
             if(!fileUploadResult.equals("file exists")&&!fileUploadResult.equals("file empty")){
                 image.setServer_path(serverPath);
-                image.setUrl("http://honor-webapp-server.std-763.ist.mospolytech.ru/static/gallery/" + album.getId() + "/" + image.getName() + ".jpg");
+                image.setUrl("http://database.ensler.ru/static/gallery/" + album.getId() + "/" + image.getName() + ".jpg");
                 image.setAlbum(album);
                 galleryService.addGalleryPhoto(image);
             }

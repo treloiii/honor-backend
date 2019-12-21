@@ -93,7 +93,7 @@ public class Utils {
                             new BufferedOutputStream(new FileOutputStream(file1));
                     stream.write(bytes);
                     stream.close();
-                    res="http://honor-webapp-server.std-763.ist.mospolytech.ru/"+serverPath.substring("/home/std/honor-backend/".length())+fileName + ".jpg";
+                    res="http://honor-webapp-server.std-763.ist.mospolytech.ru/"+serverPath.substring("/home/ensler/honor-server/".length())+fileName + ".jpg";
                     if(contentType.equals("jpg")) {
                         if(fileSizeKb>350)
                             compressJPEG(serverPath + fileName + postfix + "." + contentType, postfix);
