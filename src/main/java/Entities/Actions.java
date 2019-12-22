@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name="honor_actions")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Actions implements Redactable {
 
     @Id
@@ -36,7 +36,7 @@ public class Actions implements Redactable {
 
     @OneToMany(mappedBy = "actions1",fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<ActionsComments> comments;
 
     @JsonIgnore

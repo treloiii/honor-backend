@@ -25,7 +25,7 @@ public class NewsDAO implements DAOSkeleton {
         session.update(updatedObject);
         session.getTransaction().commit();
         session.close();
-        //this.clearCache();
+        this.clearCache();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class NewsDAO implements DAOSkeleton {
         session.save(savedObject);
         session.getTransaction().commit();
         session.close();
-       // this.clearCache();
+        this.clearCache();
     }
 
     @Override
