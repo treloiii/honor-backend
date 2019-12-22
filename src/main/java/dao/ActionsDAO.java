@@ -28,7 +28,7 @@ public class ActionsDAO implements DAOSkeleton {
         session.update(updatedObject);
         session.getTransaction().commit();
         session.close();
-        this.clearCache();
+        //this.clearCache();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ActionsDAO implements DAOSkeleton {
         session.save(savedObject);
         session.getTransaction().commit();
         session.close();
-        this.clearCache();
+       // this.clearCache();
     }
 
     @Override
@@ -110,22 +110,26 @@ public class ActionsDAO implements DAOSkeleton {
         return rallies;
     }
     public Actions getLast(int type){
-//        Session session= HibernateSessionFactory.getSession().openSession();
-//        session.beginTransaction();
-//        Actions news=session.createQuery("From Actions where type="+type+" order by id desc",Actions.class).setMaxResults(1).getSingleResult();
-//        session.getTransaction().commit();
-//        session.close();
-        Actions action=new Actions();
-        try {
-            ResultSet rs = rq.getResultSet("select id,title,title_image from honor_actions where type="+type+" order by id desc ");
-            rs.next();
-            action.setTitle(rs.getString("title"));
-            action.setId(rs.getInt("id"));
-            action.setTitle_image(rs.getString("title_image"));
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+        Session session= HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        Actions action;
+        Query<Actions> query=session.createQuery("select new  Actions(id,title,title_image) from Actions where type="+type+" order by id desc",Actions.class).setMaxResults(1);
+        query.setCacheable(true);
+        query.setCacheRegion("ACTION_LAST");
+        action=query.getSingleResult();
+        session.getTransaction().commit();
+        session.close();
+//        Actions action=new Actions();
+//        try {
+//            ResultSet rs = rq.getResultSet("select id,title,title_image from honor_actions where type="+type+" order by id desc ");
+//            rs.next();
+//            action.setTitle(rs.getString("title"));
+//            action.setId(rs.getInt("id"));
+//            action.setTitle_image(rs.getString("title_image"));
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
         return action;
     }
 
@@ -137,6 +141,7 @@ public class ActionsDAO implements DAOSkeleton {
             cache.evict(Actions.class);
             cache.evictRegion("COUNT_DATA_ACTIONS");
             cache.evictRegion("ACTIONS_LIST");
+            cache.evictRegion("ACTION_LAST");
         } catch (Exception e) {
             e.printStackTrace();
         }

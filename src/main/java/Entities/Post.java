@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="honor_main_posts")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Post implements Redactable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,11 @@ public class Post implements Redactable {
     @Column
     private String author;
 
+    public Post(int id, String title, String title_image) {
+        this.id = id;
+        this.title = title;
+        this.title_image = title_image;
+    }
 
     public Post() {
     }

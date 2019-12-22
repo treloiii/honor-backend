@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "honor_news")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class News implements Redactable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +26,12 @@ public class News implements Redactable {
     private String title_image;
     @Column
     private String title_image_name;
+
+    public News(int id, String title, String title_image) {
+        this.id = id;
+        this.title = title;
+        this.title_image = title_image;
+    }
 
     public News() {
 //        this.id=id;
