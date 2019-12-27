@@ -9,5 +9,6 @@ public interface Redactable {
     public void setAuthor(String author);
     public void setTitle_image_name(String title_image_name);
     public void setTitle_image(String title_image);
+    public String getTitle_image_name();
     public String getTitle();
 }

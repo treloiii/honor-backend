@@ -12,6 +12,7 @@ import services.*;
 import sql.ResultedQuery;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -210,8 +211,10 @@ public class AdminController {
                 }
 
             }
+            File tempTitleImage=null;
             if (!updatable.equals("new")) {
                 try {
+                    tempTitleImage=new File("/home/ensler/honor-server/static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"+section.getTitle_image_name()+".jpg");
                     FileUtils.deleteDirectory(new File("/home/ensler/honor-server/static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"));
                 } catch (Exception e) {
                     System.out.println("cannot find dir");
@@ -243,6 +246,14 @@ public class AdminController {
                     System.out.println("SET TITLE IMAGE");
                     section.setTitle_image_name(titleImageName);
                     section.setTitle_image(titleRes);
+                }
+            }
+            else{
+                File uploadOld=new File(uploadPath+section.getTitle_image_name()+".jpg");
+                try {
+                    Utils.copy(tempTitleImage,uploadOld);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
            // if (!titleRes.equals("file exists") && !titleRes.equals("file empty")) {

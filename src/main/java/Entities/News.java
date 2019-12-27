@@ -94,4 +94,5 @@ public class News implements Redactable {
     public String getTitle_image() {
         return title_image;
     }
+
 }
