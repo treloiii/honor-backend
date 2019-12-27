@@ -235,15 +235,18 @@ public class AdminController {
                 }
                 i++;
             }
+            System.out.println("title"+titleImage);
             String titleRes = "";
             if (titleImage != null) {
                 titleRes = utils.fileUpload(uploadPath, titleImageName, titleImage);
-            }
-            if (!titleRes.equals("file exists") && !titleRes.equals("file empty")) {
                 if (!titleRes.equals("")) {
+                    System.out.println("SET TITLE IMAGE");
                     section.setTitle_image_name(titleImageName);
                     section.setTitle_image(titleRes);
                 }
+            }
+           // if (!titleRes.equals("file exists") && !titleRes.equals("file empty")) {
+
                 section.setTitle(title);
                 section.setAuthor("Admin");
                 section.setDescription(finalStr);
@@ -270,7 +273,7 @@ public class AdminController {
                         actionsService.updateAction((Actions) section);
                     }
                 }
-            }
+          //  }
             System.out.println(finalStr);
             return "success";
         }
