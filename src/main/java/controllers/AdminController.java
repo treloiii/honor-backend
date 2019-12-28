@@ -256,7 +256,7 @@ public class AdminController {
             else{
                 File uploadOld=new File(uploadPath+section.getTitle_image_name()+".jpg");
                 try {
-                    Utils.copy(uploadOld,tempFile);
+                    Utils.copy(tempFile,uploadOld);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
