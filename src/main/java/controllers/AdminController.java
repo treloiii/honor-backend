@@ -211,10 +211,15 @@ public class AdminController {
                 }
 
             }
-            File tempTitleImage=null;
+            File currentTitleImage=null;
+            File tempFile=null;
+
             if (!updatable.equals("new")) {
                 try {
-                    tempTitleImage=new File("/home/ensler/honor-server/static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"+section.getTitle_image_name()+".jpg");
+                    String tempDir="/home/ensler/honor-server/static/temp/"+section.getTitle_image_name()+".jpg";
+                    tempFile=new File(tempDir);
+                    currentTitleImage=new File("/home/ensler/honor-server/static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"+section.getTitle_image_name()+".jpg");
+                    Utils.copy(currentTitleImage,tempFile);
                     FileUtils.deleteDirectory(new File("/home/ensler/honor-server/static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"));
                 } catch (Exception e) {
                     System.out.println("cannot find dir");
@@ -251,7 +256,7 @@ public class AdminController {
             else{
                 File uploadOld=new File(uploadPath+section.getTitle_image_name()+".jpg");
                 try {
-                    Utils.copy(tempTitleImage,uploadOld);
+                    Utils.copy(uploadOld,tempFile);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
