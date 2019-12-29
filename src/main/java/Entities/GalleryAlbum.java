@@ -3,6 +3,7 @@ package Entities;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +28,12 @@ public class GalleryAlbum {
     private List<GalleryImage> images;
     public GalleryAlbum() {
     }
+
+    public GalleryAlbum(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
 
 
     public String getDescription() {

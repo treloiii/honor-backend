@@ -60,9 +60,8 @@ public class GalleryService {
         return transList;
     }
     public GalleryImage getLast(){
-        GalleryImage image=dao.getLast();
-        image.setName(utils.reverseTransliterate(image.getName()));
-        return image;
+        //        image.setName(utils.reverseTransliterate(image.getName()));
+        return dao.getLast();
     }
     public void clearCache(){
         dao.clearCache();

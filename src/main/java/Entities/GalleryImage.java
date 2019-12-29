@@ -36,11 +36,24 @@ public class GalleryImage {
     public GalleryImage() {
     }
 
-    public GalleryImage(int id, String name, String description, String url) {
+    @Override
+    public String toString() {
+        return "GalleryImage{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", url='" + url + '\'' +
+                ", server_path='" + server_path + '\'' +
+                ", album=" + album +
+                '}';
+    }
+
+    public GalleryImage(int id, String name, String url/*, GalleryAlbum album*/) {
         this.id = id;
         this.name = name;
-        this.description = description;
+        //this.description = description;
         this.url = url;
+       //l this.album=album;
     }
 
     public List<GalleryComments> getComments() {
@@ -53,6 +66,11 @@ public class GalleryImage {
 
     public int getId() {
         return id;
+    }
+
+    @JsonIgnore
+    public GalleryAlbum getAlbum() {
+        return album;
     }
 
     public String getName() {
