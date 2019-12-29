@@ -114,19 +114,21 @@ public class PublicController {
     }
     @RequestMapping("/get/last/photos")
     public List<GalleryImage> getLastPhotos(){
-        return galleryService.getLast();
+        return galleryService.getLastFive();
     }
     @RequestMapping("/get/last/all")
-    public Set<GridObject> getLasts(){
-        Set<GridObject> grid=new HashSet<>();
+    public List<GridObject> getLasts(){
+        List<GridObject> grid=new ArrayList<>();
+        Actions rally=actionsService.getLast(1);
+        grid.add(new GridObject(rally.getTitle_image(),rally.getTitle(),rally.getId(),"/rally","Автопробеги"));
         News news=newsService.getLast();
         grid.add(new GridObject(news.getTitle_image(),news.getTitle(),news.getId(),"/news","Новости"));
         Post post=postService.getLast();
         grid.add(new GridObject(post.getTitle_image(),post.getTitle(),post.getId(),"/memories","Воспоминания"));
-        Actions rally=actionsService.getLast(1);
-        grid.add(new GridObject(rally.getTitle_image(),rally.getTitle(),rally.getId(),"/rally","Автопробеги"));
         Actions event=actionsService.getLast(2);
         grid.add(new GridObject(event.getTitle_image(),event.getTitle(),event.getId(),"/events","Мероприятия"));
+        GalleryImage image=galleryService.getLast();
+        grid.add(new GridObject(image.getUrl(),image.getName(),image.getId(),"/gallery","Галерея"));
         return grid;
     }
 

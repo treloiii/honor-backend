@@ -6,6 +6,7 @@ import Entities.GalleryImage;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import org.hibernate.Session;
 import org.hibernate.cache.internal.EnabledCaching;
+import org.hibernate.query.Query;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -69,13 +70,24 @@ public class GalleryImageDAO implements DAOSkeleton {
         return null;
     }
 
-    public List<GalleryImage> getLast(){
+    public List<GalleryImage> getLastFive(){
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         List<GalleryImage> posts = session.createQuery("From GalleryImage c order by id desc",GalleryImage.class).setMaxResults(5).list();
         session.getTransaction().commit();
         session.close();
         return posts;
+    }
+    public GalleryImage getLast(){
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        Query<GalleryImage> query = session.createQuery("select new GalleryImage(id,name,description,url) from GalleryImage order by id desc",GalleryImage.class).setMaxResults(1);
+        query.setCacheable(true);
+        query.setCacheRegion("LAST_IMAGE");
+        GalleryImage image=query.getSingleResult();
+        session.getTransaction().commit();
+        session.close();
+        return image;
     }
 
     @Override
@@ -88,6 +100,7 @@ public class GalleryImageDAO implements DAOSkeleton {
             cache.evict(GalleryAlbum.class);
            // cache.evictRegion("COUNT_DATA_ALBUM");
             cache.evictRegion("ALBUM_LIST");
+            cache.evictRegion("LAST_IMAGE");
         } catch (Exception e) {
             e.printStackTrace();
         }

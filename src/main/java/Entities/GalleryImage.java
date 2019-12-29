@@ -36,6 +36,13 @@ public class GalleryImage {
     public GalleryImage() {
     }
 
+    public GalleryImage(int id, String name, String description, String url) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.url = url;
+    }
+
     public List<GalleryComments> getComments() {
         return comments;
     }
