@@ -37,6 +37,15 @@ public class PublicController {
     @Autowired
     private ResultedQuery query;
 
+    @RequestMapping("/test")
+    public String testBug(){
+        try {
+            return galleryService.getLast().toString();
+        }
+        catch (Exception e){
+            return e.getMessage();
+        }
+    }
     @RequestMapping("/get/count/{type}")
     public PaginationCountSize getCountEntity(@PathVariable("type") String type){
         switch (type) {
