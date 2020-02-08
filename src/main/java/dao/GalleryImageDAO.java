@@ -97,16 +97,24 @@ public class GalleryImageDAO implements DAOSkeleton {
 //        System.out.println(image.getAlbum().toString());
 //        session.getTransaction().commit();
 //        session.close();
-        GalleryImage image=null;
-        try {
-            ResultSet rs=rq.getResultSet("select url,album_id from honor_gallery order by id desc limit 1");
-            rs.next();
-            ResultSet rs1=rq.getResultSet("select id,name from honor_gallery_albums where id="+rs.getInt("album_id"));
-            rs1.next();
-            image=new GalleryImage(rs1.getInt("id"),rs1.getString("name"),rs.getString("url"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+        Session session= HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        Query<GalleryImage> query=session.createQuery("from GalleryImage c order by id desc",GalleryImage.class).setMaxResults(1);
+        query.setCacheable(true);
+        query.setCacheRegion("LAST_IMAGE");
+        GalleryImage image=query.getSingleResult();
+        session.getTransaction().commit();
+        session.close();
+//        try {
+//            ResultSet rs=rq.getResultSet("select url,album_id from honor_gallery order by id desc limit 1");
+//            rs.next();
+//            ResultSet rs1=rq.getResultSet("select id,name from honor_gallery_albums where id="+rs.getInt("album_id"));
+//            rs1.next();
+//            image=new GalleryImage(rs1.getInt("id"),rs1.getString("name"),rs.getString("url"));
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
         return image;
     }
 
@@ -120,7 +128,7 @@ public class GalleryImageDAO implements DAOSkeleton {
             cache.evict(GalleryAlbum.class);
            // cache.evictRegion("COUNT_DATA_ALBUM");
             cache.evictRegion("ALBUM_LIST");
-            //cache.evictRegion("LAST_IMAGE");
+            cache.evictRegion("LAST_IMAGE");
         } catch (Exception e) {
             e.printStackTrace();
         }
