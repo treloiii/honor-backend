@@ -40,7 +40,7 @@ public class PublicController {
     @RequestMapping("/test")
     public String testBug(){
         try {
-            return galleryService.getLast().toString();
+            return galleryService.getLast().getAlbum().getName();
         }
         catch (Exception e){
             return e.getMessage();
@@ -137,7 +137,7 @@ public class PublicController {
         Actions event=actionsService.getLast(2);
         grid.add(new GridObject(event.getTitle_image(),event.getTitle(),event.getId(),"/events","Мероприятия"));
         GalleryImage image=galleryService.getLast();
-        grid.add(new GridObject(image.getUrl(),image.getName(),image.getId(),"/gallery","Галерея"));
+        grid.add(new GridObject(image.getUrl(),image.getAlbum().getName(),image.getId(),"/gallery","Галерея"));
         return grid;
     }
 
