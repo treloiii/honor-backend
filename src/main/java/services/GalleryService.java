@@ -51,13 +51,17 @@ public class GalleryService {
         //image.addComment(comment);
         dao.save(comment);
     }
-    public List<GalleryImage> getLast(){
-        List<GalleryImage> transList=dao.getLast();
+    public List<GalleryImage> getLastFive(){
+        List<GalleryImage> transList=dao.getLastFive();
 
         for (GalleryImage image:transList){
             image.setName(utils.reverseTransliterate(image.getName()));
         }
         return transList;
+    }
+    public GalleryImage getLast(){
+        //        image.setName(utils.reverseTransliterate(image.getName()));
+        return dao.getLast();
     }
     public void clearCache(){
         dao.clearCache();

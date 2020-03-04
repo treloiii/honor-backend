@@ -81,22 +81,26 @@ public class PostDAO implements DAOSkeleton {
     }
 
     public Post getLast(){
-//        Session session= HibernateSessionFactory.getSession().openSession();
-//        session.beginTransaction();
-//        Post post=session.createQuery("From Post order by id desc",Post.class).setMaxResults(1).getSingleResult();
-//        session.getTransaction().commit();
-//        session.close();
-        Post post=new Post();
-        try {
-            ResultSet rs = rq.getResultSet("select id,title, title_image from honor_main_posts order by id desc");
-            rs.next();
-            post.setTitle_image(rs.getString("title_image"));
-            post.setTitle(rs.getString("title"));
-            post.setId(rs.getInt("id"));
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+        Session session= HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        Post post;
+        Query<Post> query=session.createQuery("select new Post(id,title,title_image) from Post order by id desc",Post.class).setMaxResults(1);
+        query.setCacheable(true);
+        query.setCacheRegion("LAST_POST");
+        post=query.getSingleResult();
+        session.getTransaction().commit();
+        session.close();
+//        Post post=new Post();
+//        try {
+//            ResultSet rs = rq.getResultSet("select id,title, title_image from honor_main_posts order by id desc");
+//            rs.next();
+//            post.setTitle_image(rs.getString("title_image"));
+//            post.setTitle(rs.getString("title"));
+//            post.setId(rs.getInt("id"));
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
         return post;
     }
 
@@ -108,6 +112,7 @@ public class PostDAO implements DAOSkeleton {
             cache.evict(Post.class);
             cache.evictRegion("COUNT_DATA_POSTS");
             cache.evictRegion("POST_LIST");
+            cache.evictRegion("LAST_POST");
         } catch (Exception e) {
             e.printStackTrace();
         }

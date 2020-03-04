@@ -27,6 +27,11 @@ public class Post implements Redactable {
     @Column
     private String author;
 
+    public Post(int id, String title, String title_image) {
+        this.id = id;
+        this.title = title;
+        this.title_image = title_image;
+    }
 
     public Post() {
     }

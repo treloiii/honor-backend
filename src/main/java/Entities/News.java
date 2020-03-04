@@ -27,6 +27,12 @@ public class News implements Redactable {
     @Column
     private String title_image_name;
 
+    public News(int id, String title, String title_image) {
+        this.id = id;
+        this.title = title;
+        this.title_image = title_image;
+    }
+
     public News() {
 //        this.id=id;
 //        this.title=title;
@@ -88,4 +94,5 @@ public class News implements Redactable {
     public String getTitle_image() {
         return title_image;
     }
+
 }

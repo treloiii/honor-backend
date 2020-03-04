@@ -12,6 +12,7 @@ import services.*;
 import sql.ResultedQuery;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -210,8 +211,15 @@ public class AdminController {
                 }
 
             }
+            File currentTitleImage=null;
+            File tempFile=null;
+
             if (!updatable.equals("new")) {
                 try {
+                    String tempDir="/home/ensler/honor-server/static/temp/"+section.getTitle_image_name()+".jpg";
+                    tempFile=new File(tempDir);
+                    currentTitleImage=new File("/home/ensler/honor-server/static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"+section.getTitle_image_name()+".jpg");
+                    Utils.copy(currentTitleImage,tempFile);
                     FileUtils.deleteDirectory(new File("/home/ensler/honor-server/static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"));
                 } catch (Exception e) {
                     System.out.println("cannot find dir");
@@ -235,15 +243,26 @@ public class AdminController {
                 }
                 i++;
             }
+            System.out.println("title"+titleImage);
             String titleRes = "";
             if (titleImage != null) {
                 titleRes = utils.fileUpload(uploadPath, titleImageName, titleImage);
-            }
-            if (!titleRes.equals("file exists") && !titleRes.equals("file empty")) {
                 if (!titleRes.equals("")) {
+                    System.out.println("SET TITLE IMAGE");
                     section.setTitle_image_name(titleImageName);
                     section.setTitle_image(titleRes);
                 }
+            }
+            else{
+                File uploadOld=new File(uploadPath+section.getTitle_image_name()+".jpg");
+                try {
+                    Utils.copy(tempFile,uploadOld);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+           // if (!titleRes.equals("file exists") && !titleRes.equals("file empty")) {
+
                 section.setTitle(title);
                 section.setAuthor("Admin");
                 section.setDescription(finalStr);
@@ -270,7 +289,7 @@ public class AdminController {
                         actionsService.updateAction((Actions) section);
                     }
                 }
-            }
+          //  }
             System.out.println(finalStr);
             return "success";
         }
