@@ -1,5 +1,5 @@
 schema {
-    query: RedactableQuery
+    query: Query
 }
 type Redactable{
     id:ID!
@@ -16,13 +16,45 @@ type PaginationCountSize{
     error:String!
 }
 scalar DateScalar
-type RedactableQuery{
+type Query{
     getAll(page:Int,count:Int,type:Int):[Redactable]! #type:[1-Rally,2-Events,3-Post,4-News
+
     getLast(type:Int):Redactable
+
     getById(id:Int,type:Int):Redactable
-    getCount(type:Int):PaginationCountSize!
+
+    getCount(type:Int):PaginationCountSize!#type:5-albums
+
+    getAllAlbums(page:Int):[GalleryAlbum]
+    getAlbumById(id:Int):GalleryAlbum
+    getLastImage:GalleryImage
+    getLastFiveImgs:[GalleryImage]
+    getImageById(id:Int):GalleryImage
+
+
+    getGrid:[GridObject]
 }
 scalar DoubleScalar
-type RedactableMutation{
-    addPost:Redactable!
+
+#---------------gallery
+type GalleryImage {
+    id:ID
+    name:String
+    description:String
+    url:String
+}
+type GalleryAlbum{
+    id:ID
+    name:String
+    creation_date:DateScalar
+    description:String
+    images:[GalleryImage]
+}
+#---------------grid
+type GridObject{
+    image:String
+    title:String
+    id:Int
+    url:String
+    type:String
 }

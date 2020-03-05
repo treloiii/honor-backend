@@ -7,6 +7,7 @@ import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import services.ActionsService;
+import services.AlbumService;
 import services.NewsService;
 import services.PostService;
 import utils.PaginationCountSize;
@@ -24,6 +25,8 @@ public class RedactableQuery implements GraphQLQueryResolver {
     private NewsService newsService;
     @Autowired
     private ActionsService actionsService;
+    @Autowired
+    private AlbumService albumService;
 
     public RedactableQuery() {
     }
@@ -36,11 +39,13 @@ public class RedactableQuery implements GraphQLQueryResolver {
         else
             return postService.getAllPosts(page,count);
     }
-    public PaginationCountSize getCount(int type){
+    public PaginationCountSize getCount(int type){//type:5 - albums
         if(type==1||type==2)
             return new PaginationCountSize(actionsService.getCount(type),utils.RESULT_PER_PAGE,"none");
         else if(type==4)
             return new PaginationCountSize(newsService.getCount(),utils.RESULT_PER_PAGE,"none");
+        else if(type==5)
+            return new PaginationCountSize(albumService.getCount(),utils.RESULT_PER_PAGE,"none");
         else
             return new PaginationCountSize(postService.getCount(),utils.RESULT_PER_PAGE,"none");
     }
