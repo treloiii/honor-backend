@@ -67,7 +67,7 @@ public class PublicController {
     }
 
     @RequestMapping("/get/all/posts/{page}")
-    public List<Post> getMain(@RequestParam(value = "count",required = false) Integer count,@PathVariable(required = false) int page) throws SQLException {
+    public List<Redactable> getMain(@RequestParam(value = "count",required = false) Integer count,@PathVariable(required = false) int page) throws SQLException {
         return postService.getAllPosts(page,count);
     }
     @RequestMapping("/get/post")
@@ -97,7 +97,7 @@ public class PublicController {
 
 
     @RequestMapping("/get/all/news/{page}")
-    public List<News> getAllNews(@RequestParam(value = "count",required = false) Integer count,@PathVariable(required = false) int page){
+    public List<Redactable> getAllNews(@RequestParam(value = "count",required = false) Integer count,@PathVariable(required = false) int page){
         return newsService.getAllnews(page,count);
     }
     @RequestMapping("/get/news")
@@ -143,11 +143,11 @@ public class PublicController {
 
 
     @RequestMapping("/get/actions/{action}/{page}")
-    public List<Actions> getRallies(@PathVariable String action,@PathVariable(required = false) int page){
+    public List<Redactable> getRallies(@PathVariable String action,@PathVariable(required = false) int page){
         if(action.equals("rallies"))
-            return actionsService.getAllRallies(1,page);
+            return actionsService.getAllRallies(0,page,1);
         else if(action.equals("events"))
-            return actionsService.getAllRallies(2,page);
+            return actionsService.getAllRallies(0,page,2);
         else
             return null;
     }

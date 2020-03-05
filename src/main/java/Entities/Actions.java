@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name="honor_actions")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Actions implements Redactable {
+public class Actions extends Redactable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

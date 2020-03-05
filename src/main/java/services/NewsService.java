@@ -1,6 +1,7 @@
 package services;
 
 import Entities.News;
+import Entities.Redactable;
 import utils.Utils;
 import dao.NewsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class NewsService {
     public NewsService() {
     }
 
-    public List<News> getAllnews(int page,Integer count){
+    public List<Redactable> getAllnews(int page, Integer count){
         if(count!=null){
             return dao.getAll(0, count);
         }

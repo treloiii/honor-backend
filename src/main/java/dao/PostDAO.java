@@ -1,5 +1,6 @@
 package dao;
 
+import Entities.Redactable;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import Entities.Post;
 import org.hibernate.Session;
@@ -54,13 +55,13 @@ public class PostDAO implements DAOSkeleton {
     }
 
     @Override
-    public List<Post> getAll(int from,int to) {
+    public List<Redactable> getAll(int from, int to) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         Query query=session.createQuery("From Post p", Post.class).setFirstResult(from).setMaxResults(to);
         query.setCacheable(true);
         query.setCacheRegion("POST_LIST");
-        List<Post> posts=query.list();
+        List<Redactable> posts=query.list();
         session.getTransaction().commit();
         session.close();
         return posts;

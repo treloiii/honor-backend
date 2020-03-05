@@ -1,4 +1,5 @@
 package dao;
+import Entities.Redactable;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import Entities.News;
 import org.hibernate.Session;
@@ -54,13 +55,13 @@ public class NewsDAO implements DAOSkeleton {
     }
 
     @Override
-    public List<News> getAll(int from,int to) {
+    public List<Redactable> getAll(int from, int to) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         Query query=session.createQuery("From News n",News.class).setFirstResult(from).setMaxResults(to);
         query.setCacheable(true);
         query.setCacheRegion("NEWS_LIST");
-        List<News> allNews=query.list();
+        List<Redactable> allNews=query.list();
         session.getTransaction().commit();
         session.close();
         return allNews;

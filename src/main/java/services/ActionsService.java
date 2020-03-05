@@ -2,6 +2,7 @@ package services;
 
 import Entities.Actions;
 import Entities.ActionsType;
+import Entities.Redactable;
 import utils.Utils;
 import dao.ActionsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,12 @@ public class ActionsService {
     public void updateAction(Actions action){
         dao.update(action);
     }
-    public List<Actions> getAllRallies(int type,int page){
-        return dao.getAllConcrete(type,(page-1)*utils.RESULT_PER_PAGE,utils.RESULT_PER_PAGE);
+    public List<Redactable> getAllRallies(int page, Integer count,int type){
+        if(count!=null&&!count.equals(0)){
+            return dao.getAllConcrete(type,0,count);
+        }else {
+            return dao.getAllConcrete(type, (page - 1) * utils.RESULT_PER_PAGE, utils.RESULT_PER_PAGE);
+        }
     }
 
     public Actions getRallyById(int id){

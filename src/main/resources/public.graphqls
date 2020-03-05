@@ -1,0 +1,28 @@
+schema {
+    query: RedactableQuery
+}
+type Redactable{
+    id:ID!
+    title:String!
+    description:String!
+    title_image:String!
+    time:DateScalar!
+    title_image_name:String!
+    author:String!
+}
+type PaginationCountSize{
+    count:DoubleScalar!
+    size:Int!
+    error:String!
+}
+scalar DateScalar
+type RedactableQuery{
+    getAll(page:Int,count:Int,type:Int):[Redactable]! #type:[1-Rally,2-Events,3-Post,4-News
+    getLast(type:Int):Redactable
+    getById(id:Int,type:Int):Redactable
+    getCount(type:Int):PaginationCountSize!
+}
+scalar DoubleScalar
+type RedactableMutation{
+    addPost:Redactable!
+}

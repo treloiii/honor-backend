@@ -2,6 +2,7 @@ package dao;
 
 import Entities.Actions;
 import Entities.ActionsType;
+import Entities.Redactable;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -98,13 +99,13 @@ public class ActionsDAO implements DAOSkeleton {
     }
 
 
-    public List<Actions> getAllConcrete(int type,int from,int to) {
+    public List<Redactable> getAllConcrete(int type, int from, int to) {
         Session session= HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         Query query= session.createQuery("From Actions WHERE type="+type, Actions.class).setFirstResult(from).setMaxResults(to);
         query.setCacheable(true);
         query.setCacheRegion("ACTIONS_LIST");
-        List<Actions> rallies=query.list();
+        List<Redactable> rallies=query.list();
         session.getTransaction().commit();
         session.close();
         return rallies;

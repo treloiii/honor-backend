@@ -8,7 +8,7 @@ import java.util.Date;
 @Entity
 @Table(name = "honor_news")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class News implements Redactable {
+public class News extends Redactable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
