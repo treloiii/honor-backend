@@ -39,12 +39,7 @@ public class PublicController {
 
     @RequestMapping("/test")
     public String testBug(){
-        try {
-            return galleryService.getLast().getAlbum().getName();
-        }
-        catch (Exception e){
-            return e.getMessage();
-        }
+        return "Works";
     }
     @RequestMapping("/get/count/{type}")
     public PaginationCountSize getCountEntity(@PathVariable("type") String type){
