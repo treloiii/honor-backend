@@ -1,4 +1,4 @@
-package Scalars;
+package scalars;
 
 import com.google.gson.Gson;
 import graphql.schema.*;

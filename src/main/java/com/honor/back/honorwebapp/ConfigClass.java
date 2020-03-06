@@ -2,8 +2,8 @@ package com.honor.back.honorwebapp;
 
 //import com.mchange.v2.c3p0.ComboPooledDataSource;
 //import org.apache.tomcat.dbcp.dbcp2.*;
-import Scalars.DateScalar;
-import Scalars.DoubleScalar;
+import scalars.DateScalar;
+import scalars.DoubleScalar;
 import graphql.schema.idl.RuntimeWiring;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
