@@ -26,6 +26,8 @@ public class Post extends Redactable {
     private String title_image_name;
     @Column
     private String author;
+    @Column(name="crop_coord")
+    private String coords;
 
     public Post(int id, String title, String title_image) {
         this.id = id;
@@ -34,6 +36,14 @@ public class Post extends Redactable {
     }
 
     public Post() {
+    }
+
+    public String getCoords() {
+        return coords;
+    }
+
+    public void setCoords(String coords) {
+        this.coords = coords;
     }
 
     public void setTime(Date time) {

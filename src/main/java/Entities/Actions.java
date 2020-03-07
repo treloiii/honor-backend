@@ -32,6 +32,8 @@ public class Actions extends Redactable {
     private String title_image;
     @Column
     private String title_image_name;
+    @Column(name="crop_coord")
+    private String coords;
 
 
     @OneToMany(mappedBy = "actions1",fetch = FetchType.EAGER)
@@ -48,6 +50,14 @@ public class Actions extends Redactable {
         this.id = id;
         this.title = title;
         this.title_image = title_image;
+    }
+
+    public void setCoords(String coords) {
+        this.coords = coords;
+    }
+
+    public String getCoords() {
+        return coords;
     }
 
     public void setTitle_image(String title_image) {

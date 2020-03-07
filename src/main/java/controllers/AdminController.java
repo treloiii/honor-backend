@@ -178,6 +178,7 @@ public class AdminController {
                              @RequestParam("picname") String titleImageName,@RequestParam(value = "news_id",required = false) Integer id,
                              @RequestParam(value = "time",required = false)
                              @DateTimeFormat(pattern = "yyyy-mm-dd") Date time,
+                             @RequestParam("coords") String coords,
                              @PathVariable("updatable") String updatable,
                              @PathVariable(value = "type") String type){//type:{news,memo,events,rally}
         if(type.equals("news")||type.equals("memo")||type.equals("events")||type.equals("rally")) {
@@ -266,6 +267,7 @@ public class AdminController {
                 section.setTitle(title);
                 section.setAuthor("Admin");
                 section.setDescription(finalStr);
+                section.setCoords(coords);
                 if (updatable.equals("new")) {
                     section.setTime(new Date());
                     if (section instanceof News) {

@@ -26,6 +26,8 @@ public class News extends Redactable {
     private String title_image;
     @Column
     private String title_image_name;
+    @Column(name = "crop_coord")
+    private String coords;
 
     public News(int id, String title, String title_image) {
         this.id = id;
@@ -37,6 +39,14 @@ public class News extends Redactable {
 //        this.id=id;
 //        this.title=title;
 //        this.title_image=title_image;
+    }
+
+    public String getCoords() {
+        return coords;
+    }
+
+    public void setCoords(String coords) {
+        this.coords = coords;
     }
 
     public void setId(int id) {

@@ -16,4 +16,6 @@ public abstract class Redactable {
     public abstract String getTitle_image();
     public abstract Date getTime();
     public abstract String getAuthor();
+    public abstract String getCoords();
+    public abstract void setCoords(String coords);
 }
