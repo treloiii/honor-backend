@@ -9,6 +9,7 @@ type Redactable{
     time:DateScalar!
     title_image_name:String!
     author:String!
+    coords:String
 }
 type PaginationCountSize{
     count:DoubleScalar!
