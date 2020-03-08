@@ -58,4 +58,5 @@ type GridObject{
     id:Int
     url:String
     type:String
+    coords:String
 }

@@ -46,10 +46,11 @@ public class Actions extends Redactable {
     @JoinColumn(name="type")
     private ActionsType type;
 
-    public Actions(int id, String title, String title_image) {
+    public Actions(int id, String title, String title_image,String coords) {
         this.id = id;
         this.title = title;
         this.title_image = title_image;
+        this.coords=coords;
     }
 
     public void setCoords(String coords) {

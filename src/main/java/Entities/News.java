@@ -29,10 +29,11 @@ public class News extends Redactable {
     @Column(name = "crop_coord")
     private String coords;
 
-    public News(int id, String title, String title_image) {
+    public News(int id, String title, String title_image,String coords) {
         this.id = id;
         this.title = title;
         this.title_image = title_image;
+        this.coords=coords;
     }
 
     public News() {

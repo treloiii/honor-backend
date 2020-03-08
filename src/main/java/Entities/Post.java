@@ -29,10 +29,11 @@ public class Post extends Redactable {
     @Column(name="crop_coord")
     private String coords;
 
-    public Post(int id, String title, String title_image) {
+    public Post(int id, String title, String title_image,String coords) {
         this.id = id;
         this.title = title;
         this.title_image = title_image;
+        this.coords=coords;
     }
 
     public Post() {

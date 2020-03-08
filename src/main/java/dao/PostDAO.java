@@ -85,7 +85,7 @@ public class PostDAO implements DAOSkeleton {
         Session session= HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         Post post;
-        Query<Post> query=session.createQuery("select new Post(id,title,title_image) from Post order by id desc",Post.class).setMaxResults(1);
+        Query<Post> query=session.createQuery("select new Post(id,title,title_image,coords) from Post order by id desc",Post.class).setMaxResults(1);
         query.setCacheable(true);
         query.setCacheRegion("LAST_POST");
         post=query.getSingleResult();
