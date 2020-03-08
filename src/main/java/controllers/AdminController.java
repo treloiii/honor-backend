@@ -257,12 +257,12 @@ public class AdminController {
             if (titleImage != null) {
                 titleRes = utils.fileUpload(uploadPath, titleImageName, titleImage);
                 titleMini=utils.fileUpload(uploadPath,titleImageName+"_cropped",titleImage_mini);
-                if (!titleRes.equals("")) {
+                if (!titleRes.equals("file exists")) {
                     System.out.println("SET TITLE IMAGE");
                     section.setTitle_image_name(titleImageName);
                     section.setTitle_image(titleRes);
                 }
-                if(!titleMini.equals("")){
+                if(!titleMini.equals("file exists")){
                     section.setTitle_image_mini(titleMini);
                 }
             }
