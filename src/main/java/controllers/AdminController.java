@@ -53,36 +53,37 @@ public class AdminController {
     public String deleteNews(@RequestBody int id,@PathVariable("type") String type) throws SQLException {//type={news,memo,events}
         if(type.equals("news")||type.equals("memo")||type.equals("events")||type.equals("rally")) {
             try {
-                ResultSet rs = null;
+                Redactable redactable = null;
                 switch (type) {
                     case "news":
-                        rs = this.query.getResultSet("SELECT title FROM honor_news WHERE id=" + id);
+                        redactable = newsService.getNewsById(id);
                         break;
                     case "memo":
-                        rs = this.query.getResultSet("SELECT title FROM honor_main_posts WHERE id=" + id);
+                        redactable = postService.getPostById(id);
                         break;
                     case "events":
                     case "rally":
-                        rs = this.query.getResultSet("SELECT title FROM honor_actions WHERE id=" + id);
+                        redactable = actionsService.getRallyById(id);
                         break;
                 }
                 //rs = this.query.getResultSet("SELECT title FROM honor_news WHERE id=" + id);
-                assert rs != null;
-                rs.next();
-                String title = rs.getString("title");
+//                assert rs != null;
+//                rs.next();
+//                String title = rs.getString("title");
+                String title=redactable.getTitle();
                 FileUtils.deleteDirectory(new File("/home/ensler/honor-server/static/" + type + "/" + title + "/"));
                 switch (type) {
                     case "news":
-                        this.query.VoidQuery("DELETE FROM honor_news WHERE id=" + id);
+                        newsService.delete(redactable);
                         newsService.clearCache();
                         break;
                     case "memo":
-                        this.query.VoidQuery("DELETE FROM honor_main_posts WHERE id=" + id);
+                        postService.delete(redactable);
                         postService.clearCache();
                         break;
                     case "events":
                     case "rally":
-                        this.query.VoidQuery("DELETE FROM honor_actions WHERE id=" + id);
+                        actionsService.delete(redactable);
                         actionsService.clearCache();
                         break;
                 }

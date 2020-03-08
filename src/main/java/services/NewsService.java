@@ -40,6 +40,10 @@ public class NewsService {
         return dao.getLast();
     }
 
+    public void delete(Object deletedObject){
+        dao.delete(deletedObject);
+    }
+
     public Double getCount(){
         if(dao.getCount()%utils.RESULT_PER_PAGE==0)
             return Math.floor(dao.getCount()/utils.RESULT_PER_PAGE);

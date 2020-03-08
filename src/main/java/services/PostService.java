@@ -44,6 +44,9 @@ public class PostService {
         else
             return Math.floor(dao.getCount()/ utils.RESULT_PER_PAGE)+1;
     }
+    public void delete(Object deletedObject){
+        dao.delete(deletedObject);
+    }
     public void clearCache(){
         dao.clearCache();
     }

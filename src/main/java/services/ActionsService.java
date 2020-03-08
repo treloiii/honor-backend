@@ -43,7 +43,9 @@ public class ActionsService {
     public ActionsType getType(int type){//1:Rally,2:Events
         return dao.getType(type);
     }
-
+    public void delete(Object deletedObject){
+        dao.delete(deletedObject);
+    }
     public Double getCount(int type){
         if(dao.getCountByType(type)%utils.RESULT_PER_PAGE==0)
             return Math.floor(dao.getCountByType(type)/utils.RESULT_PER_PAGE);
