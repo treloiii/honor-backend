@@ -118,7 +118,7 @@ public class ActionsDAO implements DAOSkeleton {
         Session session= HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         Actions action;
-        Query<Actions> query=session.createQuery("select new  Actions(id,title,title_image,coords) from Actions where type="+type+" order by id desc",Actions.class).setMaxResults(1);
+        Query<Actions> query=session.createQuery("select new  Actions(id,title,title_image,coords,title_image_mini) from Actions where type="+type+" order by id desc",Actions.class).setMaxResults(1);
         query.setCacheable(true);
         query.setCacheRegion("ACTION_LAST");
         action=query.getSingleResult();

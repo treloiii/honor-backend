@@ -45,7 +45,7 @@ public class AlbumService {
     public void addAlbum(GalleryAlbum album){
         album.setCreation_date(new Date());
         dao.save(album);
-        new File("/home/std/honor-backend/static/gallery/"+album.getId()).mkdir();
+        new File("/home/std/honor-backend/static/gallery/"+album.getId()).mkdirs();
     }
 
     public void updateAlbum(int id,String name){

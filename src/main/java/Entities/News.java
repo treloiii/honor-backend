@@ -28,18 +28,29 @@ public class News extends Redactable {
     private String title_image_name;
     @Column(name = "crop_coord")
     private String coords;
+    @Column
+    private String title_image_mini;
 
-    public News(int id, String title, String title_image,String coords) {
+    public News(int id, String title, String title_image,String coords,String title_image_mini) {
         this.id = id;
         this.title = title;
         this.title_image = title_image;
         this.coords=coords;
+        this.title_image_mini=title_image_mini;
     }
 
     public News() {
 //        this.id=id;
 //        this.title=title;
 //        this.title_image=title_image;
+    }
+
+    public void setTitle_image_mini(String title_image_mini) {
+        this.title_image_mini = title_image_mini;
+    }
+
+    public String getTitle_image_mini() {
+        return title_image_mini;
     }
 
     public String getCoords() {

@@ -89,7 +89,7 @@ public class NewsDAO implements DAOSkeleton {
         Session session= HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         News news;
-        Query<News> query=session.createQuery("select new News(id,title,title_image,coords) From News order by id desc",News.class).setMaxResults(1);
+        Query<News> query=session.createQuery("select new News(id,title,title_image,coords,title_image_mini) From News order by id desc",News.class).setMaxResults(1);
         query.setCacheable(true);
         query.setCacheRegion("NEWS_LAST");
         news=query.getSingleResult();

@@ -175,6 +175,7 @@ public class AdminController {
 
     @RequestMapping(value = "/upload/{type}/{updatable}",method = RequestMethod.POST)
     public String uploadNews(@RequestParam("pic") MultipartFile[] images,@RequestParam(value = "title_pic",required = false) MultipartFile titleImage,
+                             @RequestParam(value = "title_pic_mini",required = false) MultipartFile titleImage_mini,
                              @RequestParam("title") String title,@RequestParam("description") String description,
                              @RequestParam("picname") String titleImageName,@RequestParam(value = "news_id",required = false) Integer id,
                              @RequestParam(value = "time",required = false)
@@ -214,14 +215,19 @@ public class AdminController {
 
             }
             File currentTitleImage=null;
+            File currentTitleImageMini=null;
             File tempFile=null;
-
+            File tempFile1=null;
             if (!updatable.equals("new")) {
                 try {
                     String tempDir="/home/ensler/honor-server/static/temp/"+section.getTitle_image_name()+".jpg";
+                    String tempDir1="/home/ensler/honor-server/static/temp/"+section.getTitle_image_name()+"_cropped.jpg";
                     tempFile=new File(tempDir);
+                    tempFile1=new File(tempDir1);
                     currentTitleImage=new File("/home/ensler/honor-server/static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"+section.getTitle_image_name()+".jpg");
+                    currentTitleImageMini=new File("/home/ensler/honor-server/static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"+section.getTitle_image_name()+"_cropped.jpg");
                     Utils.copy(currentTitleImage,tempFile);
+                    Utils.copy(currentTitleImageMini,tempFile1);
                     FileUtils.deleteDirectory(new File("/home/ensler/honor-server/static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"));
                 } catch (Exception e) {
                     System.out.println("cannot find dir");
@@ -247,18 +253,25 @@ public class AdminController {
             }
             System.out.println("title"+titleImage);
             String titleRes = "";
+            String titleMini="";
             if (titleImage != null) {
                 titleRes = utils.fileUpload(uploadPath, titleImageName, titleImage);
+                titleMini=utils.fileUpload(uploadPath,titleImageName+"_cropped",titleImage_mini);
                 if (!titleRes.equals("")) {
                     System.out.println("SET TITLE IMAGE");
                     section.setTitle_image_name(titleImageName);
                     section.setTitle_image(titleRes);
                 }
+                if(!titleMini.equals("")){
+                    section.setTitle_image_mini(titleMini);
+                }
             }
             else{
                 File uploadOld=new File(uploadPath+section.getTitle_image_name()+".jpg");
+                File uploadOld1=new File(uploadPath+section.getTitle_image_name()+"_cropped.jpg");
                 try {
                     Utils.copy(tempFile,uploadOld);
+                    Utils.copy(tempFile1,uploadOld1);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
