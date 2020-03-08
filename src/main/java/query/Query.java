@@ -43,7 +43,7 @@ public class Query implements GraphQLQueryResolver {
         else
             grid.add(new GridObject(news.getTitle_image(),news.getTitle(),news.getId(),"/news","Новости",coords));
         Post post=postService.getLast();
-        coords=news.getCoords();
+        coords=post.getCoords();
         if(coords==null)
             grid.add(new GridObject(post.getTitle_image(),post.getTitle(),post.getId(),"/memories","Воспоминания","null"));
         else
