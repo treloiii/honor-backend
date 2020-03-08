@@ -156,9 +156,9 @@ public class PublicController {
     @RequestMapping("/get/actions/{action}/{page}")
     public List<Redactable> getRallies(@PathVariable String action,@PathVariable(required = false) int page){
         if(action.equals("rallies"))
-            return actionsService.getAllRallies(0,page,1);
+            return actionsService.getAllRallies(page,0,1);
         else if(action.equals("events"))
-            return actionsService.getAllRallies(0,page,2);
+            return actionsService.getAllRallies(page,0,2);
         else
             return null;
     }
