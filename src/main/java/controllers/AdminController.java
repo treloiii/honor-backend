@@ -1,9 +1,9 @@
 package controllers;
 
 import Entities.*;
+import org.apache.commons.io.FileUtils;
 import utils.Utils;
 import com.google.gson.Gson;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -71,7 +71,11 @@ public class AdminController {
 //                rs.next();
 //                String title = rs.getString("title");
                 String title=redactable.getTitle();
-                FileUtils.deleteDirectory(new File("/home/ensler/honor-server/static/" + type + "/" + title + "/"));
+                String delPath="/home/ensler/honor-server/static/" + type + "/" + utils.transliterate(title)+"/";
+                System.out.println(title);
+//                FileUtils.deleteDirectory(new File(delPath));
+//                Utils.deleteDirectory(new File(delPath));
+                FileUtils.deleteDirectory(new File(delPath));
                 switch (type) {
                     case "news":
                         newsService.delete(redactable);

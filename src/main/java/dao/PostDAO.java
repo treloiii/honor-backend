@@ -111,15 +111,20 @@ public class PostDAO implements DAOSkeleton {
 
     @Override
     public void clearCache() {
+        EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
+        cache.evictCollectionData();
+        cache.evict(Post.class);
         try {
-            EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
-            cache.evictCollectionData();
-            cache.evict(Post.class);
             cache.evictRegion("COUNT_DATA_POSTS");
+        } catch (Exception e) {
+        }
+        try {
             cache.evictRegion("POST_LIST");
+        } catch (Exception e) {
+        }
+        try {
             cache.evictRegion("LAST_POST");
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

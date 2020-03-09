@@ -111,15 +111,20 @@ public class NewsDAO implements DAOSkeleton {
 
     @Override
     public void clearCache() {
+        EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
+        cache.evictCollectionData();
+        cache.evict(News.class);
         try {
-            EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
-            cache.evictCollectionData();
-            cache.evict(News.class);
             cache.evictRegion("COUNT_DATA_NEWS");
+        } catch (Exception e) {
+        }
+        try {
             cache.evictRegion("NEWS_LIST");
+        } catch (Exception e) {
+        }
+        try {
             cache.evictRegion("NEWS_LAST");
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

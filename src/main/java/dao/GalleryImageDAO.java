@@ -120,17 +120,19 @@ public class GalleryImageDAO implements DAOSkeleton {
 
     @Override
     public void clearCache() {
+        EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
+        cache.evictCollectionData();
+        cache.evict(GalleryImage.class);
+        cache.evict(GalleryComments.class);
+        cache.evict(GalleryAlbum.class);
+        // cache.evictRegion("COUNT_DATA_ALBUM");
         try {
-            EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
-            cache.evictCollectionData();
-            cache.evict(GalleryImage.class);
-            cache.evict(GalleryComments.class);
-            cache.evict(GalleryAlbum.class);
-           // cache.evictRegion("COUNT_DATA_ALBUM");
             cache.evictRegion("ALBUM_LIST");
+        } catch (Exception e) {
+        }
+        try {
             cache.evictRegion("LAST_IMAGE");
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

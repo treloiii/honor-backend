@@ -140,15 +140,20 @@ public class ActionsDAO implements DAOSkeleton {
 
     @Override
     public void clearCache() {
+        EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
+        cache.evictCollectionData();
+        cache.evict(Actions.class);
         try {
-            EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
-            cache.evictCollectionData();
-            cache.evict(Actions.class);
             cache.evictRegion("COUNT_DATA_ACTIONS");
+        } catch (Exception e) {
+        }
+        try {
             cache.evictRegion("ACTIONS_LIST");
+        } catch (Exception e) {
+        }
+        try {
             cache.evictRegion("ACTION_LAST");
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

@@ -85,16 +85,18 @@ public class AlbumDAO implements DAOSkeleton {
 
     @Override
     public void clearCache() {
+        EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
+        cache.evictCollectionData();
+        cache.evict(GalleryAlbum.class);
+        cache.evict(GalleryImage.class);
+        cache.evict(GalleryComments.class);
         try {
-            EnabledCaching cache = (EnabledCaching) HibernateSessionFactory.getSession().getCache();
-            cache.evictCollectionData();
-            cache.evict(GalleryAlbum.class);
-            cache.evict(GalleryImage.class);
-            cache.evict(GalleryComments.class);
             cache.evictRegion("COUNT_DATA_ALBUM");
+        } catch (Exception e) {
+        }
+        try {
             cache.evictRegion("ALBUM_LIST");
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }
