@@ -2,6 +2,9 @@ package com.honor.back.honorwebapp;
 
 //import com.mchange.v2.c3p0.ComboPooledDataSource;
 //import org.apache.tomcat.dbcp.dbcp2.*;
+import Entities.GalleryAlbum;
+import Entities.GalleryImage;
+import com.coxautodev.graphql.tools.GraphQLResolver;
 import scalars.DateScalar;
 import scalars.DoubleScalar;
 import graphql.schema.idl.RuntimeWiring;
@@ -17,6 +20,7 @@ import org.springframework.util.unit.DataSize;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.servlet.MultipartConfigElement;
+import java.util.List;
 
 @Configuration
 @EnableTransactionManagement
@@ -44,6 +48,16 @@ public class ConfigClass {
     @Bean
     public RuntimeWiring getRuntimeWiring(){
         return RuntimeWiring.newRuntimeWiring().scalar(new DateScalar()).scalar(new DoubleScalar()).build();
+    }
+    @Bean
+    public GraphQLResolver<GalleryAlbum> imageResolver(){
+        return new GraphQLResolver<GalleryAlbum>() {
+          public List<GalleryImage> images(GalleryAlbum album,int limit){
+              List<GalleryImage> images=album.getImages();
+              int normalizedLimit = limit > 0 ? limit : images.size();
+              return images.subList(0, Math.min(normalizedLimit, images.size()));
+          }
+        };
     }
 //    @Bean
 //    public PostQuery postQuery(){

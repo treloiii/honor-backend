@@ -39,18 +39,27 @@ type Query{
 scalar DoubleScalar
 
 #---------------gallery
+type GalleryComments{
+    id:ID
+    nickname:String
+    time:DateScalar
+    email:String
+    comment:String
+    active:Boolean
+}
 type GalleryImage {
     id:ID
     name:String
     description:String
     url:String
+    comments:[GalleryComments]
 }
 type GalleryAlbum{
     id:ID
     name:String
     creation_date:DateScalar
     description:String
-    images:[GalleryImage]
+    images(limit:Int=0):[GalleryImage]
 }
 #---------------grid
 type GridObject{
