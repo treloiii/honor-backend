@@ -30,6 +30,8 @@ public class Post extends Redactable {
     private String coords;
     @Column
     private String title_image_mini;
+    @Column
+    private String description_short;
 
     public Post(int id, String title, String title_image,String coords,String title_image_mini) {
         this.id = id;
@@ -40,6 +42,14 @@ public class Post extends Redactable {
     }
 
     public Post() {
+    }
+
+    public void setDescription_short(String description_short) {
+        this.description_short = description_short;
+    }
+
+    public String getDescription_short() {
+        return description_short;
     }
 
     public void setTitle_image_mini(String title_image_mini) {

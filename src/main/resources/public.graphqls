@@ -5,6 +5,7 @@ type Redactable{
     id:ID!
     title:String!
     description:String!
+    description_short:String
     title_image:String!
     time:DateScalar!
     title_image_name:String!

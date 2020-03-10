@@ -180,7 +180,9 @@ public class AdminController {
     @RequestMapping(value = "/upload/{type}/{updatable}",method = RequestMethod.POST)
     public String uploadNews(@RequestParam("pic") MultipartFile[] images,@RequestParam(value = "title_pic",required = false) MultipartFile titleImage,
                              @RequestParam(value = "title_pic_mini",required = false) MultipartFile titleImage_mini,
-                             @RequestParam("title") String title,@RequestParam("description") String description,
+                             @RequestParam("title") String title,
+                             @RequestParam("description") String description,
+                             @RequestParam("description_short") String descriptionShort,
                              @RequestParam("picname") String titleImageName,@RequestParam(value = "news_id",required = false) Integer id,
                              @RequestParam(value = "time",required = false)
                              @DateTimeFormat(pattern = "yyyy-mm-dd") Date time,
@@ -285,6 +287,7 @@ public class AdminController {
                 section.setTitle(title);
                 section.setAuthor("Admin");
                 section.setDescription(finalStr);
+                section.setDescription_short(descriptionShort);
                 section.setCoords(coords);
                 if (updatable.equals("new")) {
                     section.setTime(new Date());
