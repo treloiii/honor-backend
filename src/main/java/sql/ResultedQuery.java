@@ -17,13 +17,27 @@ public class ResultedQuery {
     }
 
     public ResultSet getResultSet(String query) throws SQLException {
-        c=db.getConnection();
-        PreparedStatement ps=c.prepareStatement(query);
+        PreparedStatement ps;
+        try {
+            c = db.getConnection();
+            ps = c.prepareStatement(query);
+        }
+        catch (Exception e){
+            db.reconnect();
+            ps = c.prepareStatement(query);
+        }
         return ps.executeQuery();
     }
     public void VoidQuery(String query) throws SQLException{
-        c=db.getConnection();
-        PreparedStatement ps=c.prepareStatement(query);
+        PreparedStatement ps;
+        try {
+            c = db.getConnection();
+            ps = c.prepareStatement(query);
+        }
+        catch (Exception e){
+            db.reconnect();
+            ps = c.prepareStatement(query);
+        }
         ps.execute();
     }
 
