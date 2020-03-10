@@ -17,7 +17,8 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
+import java.util.*;
+import java.util.List;
 
 
 @Component("utils")
@@ -242,5 +243,51 @@ public class Utils {
     public String reverseTransliterate(String latMessage){
         Translit translit=new Translit(false);
         return translit.translit(latMessage);
+    }
+
+    public FolderFile getAllFiles(File folder){
+        FolderFile folderFile=new FolderFile();
+        folderFile.setName(folder.getName());
+        folderFile.setPath(folder.getAbsolutePath());
+        List<FolderFile> folderFiles=new ArrayList<>();
+        File[] files=folder.listFiles();
+
+//        Map<String,List<File>> notFolder=new TreeMap<>();
+        List<File> allFiles=new ArrayList<>();
+        for(File file:files){
+            if(file.isDirectory()){
+                folderFiles.add(getAllFiles(file));
+            }
+            else {
+                allFiles.add(file);
+            }
+        }
+        folderFile.setFiles(allFiles);
+        folderFile.setFolderFiles(folderFiles);
+        return folderFile;
+//        notFolder.put(folder.getName(),allFiles);
+    }
+    public Directory getDirContent(File file){
+        Directory folder=new Directory();
+        folder.setPath(file.getAbsolutePath());
+        folder.setRelativePath(file.getPath());
+        folder.setName(file.getName());
+        List<String> files=new ArrayList<>();
+        List<String> folders=new ArrayList<>();
+        if(file.isDirectory()) {
+            File[] files1 = file.listFiles();
+            for(File file1:files1){
+                if(file1.isDirectory())
+                    folders.add(file1.getName());
+                else
+                    files.add(file1.getName());
+            }
+        }
+        else {
+            throw new IllegalArgumentException("Not a directory");
+        }
+        folder.setFiles(files);
+        folder.setFolders(folders);
+        return folder;
     }
 }

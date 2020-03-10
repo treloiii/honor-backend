@@ -20,7 +20,7 @@ public class NewsService {
     }
 
     public List<Redactable> getAllnews(int page, Integer count){
-        if(count!=null){
+        if(count!=null&&!count.equals(0)){
             return dao.getAll(0, count);
         }
         else {

@@ -1,13 +1,12 @@
 package controllers;
 import Entities.*;
-import utils.GridObject;
-import utils.Utils;
-import utils.PaginationCountSize;
+import utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import services.*;
 import sql.ResultedQuery;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -185,5 +184,14 @@ public class PublicController {
         comment.setActive(false);
         galleryService.addComment(image,comment);
         return "Success";
+    }
+
+    @RequestMapping("/getTreeDir")
+    public FolderFile getDir(){
+        return utils.getAllFiles(new File("/home/ensler/honor-server/static"));
+    }
+    @RequestMapping("/getDirContent")
+    public Directory getDirContent(@RequestParam("path") String path){
+        return utils.getDirContent(new File(path));
     }
 }
