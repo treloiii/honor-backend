@@ -275,6 +275,7 @@ public class Utils {
         List<String> files=new ArrayList<>();
         List<String> folders=new ArrayList<>();
         if(file.isDirectory()) {
+            folder.setEmpty(false);
             File[] files1 = file.listFiles();
             for(File file1:files1){
                 if(file1.isDirectory())
@@ -286,6 +287,9 @@ public class Utils {
         else {
             throw new IllegalArgumentException("Not a directory");
         }
+        folder.setEmpty(false);
+        if(files.isEmpty()&&folders.isEmpty())
+            folder.setEmpty(true);
         folder.setFiles(files);
         folder.setFolders(folders);
         return folder;

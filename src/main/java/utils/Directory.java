@@ -9,6 +9,15 @@ public class Directory {
     private String name;
     private List<String> files;
     private List<String> folders;
+    private boolean isEmpty;
+
+    public boolean isEmpty() {
+        return isEmpty;
+    }
+
+    public void setEmpty(boolean empty) {
+        isEmpty = empty;
+    }
 
     public void setRelativePath(String relativePath) {
         this.relativePath = relativePath;

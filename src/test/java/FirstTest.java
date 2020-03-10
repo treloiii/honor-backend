@@ -19,7 +19,7 @@ public class FirstTest {
     }
     @Test
     public void testGetDirContent(){
-        String path="/home/ensler/honor-server/static/";
+        String path="/home/ensler/honor-server/static/news/ee/jhopa";
         Utils utils=new Utils();
         Directory folderFile=utils.getDirContent(new File(path));
         System.out.println(folderFile);
