@@ -23,16 +23,12 @@ public class PublicController {
 
     @Autowired
     private PostService postService;
-
-    @Autowired
-    private AlbumService albumService;
-
     @Autowired
     private NewsService newsService;
-
     @Autowired
     private ActionsService actionsService;
-
+    @Autowired
+    private AlbumService albumService;
     @Autowired
     private OrdensService ordensService;
     @Autowired
@@ -202,24 +198,20 @@ public class PublicController {
     @RequestMapping("/checkUses")
     public Set<String> checkUses(){
         Set<String> unused=new HashSet<>();
-        List<File> files=utils.scanFiles(new File("/home/ensler/honor-server/static"));
-        List<Redactable> redactables=new ArrayList<>();
-        redactables.addAll(postService.getAllPosts(0,1000));
-        redactables.addAll(newsService.getAllnews(0,1000));
-        redactables.addAll(actionsService.getAllRallies(0,1000,1));
-        redactables.addAll(actionsService.getAllRallies(0,1000,2));
+        List<File> files=utils.scanRedactables();
+        List<Redactable> redactables=utils.getAllRedactables();
         for(File f:files) {
+            int i =redactables.size();
             for (Redactable r : redactables) {
-                if (r.getTitle_image().contains(f.getName())){
-                    continue;
+                String s=utils.transliterate(r.getTitle());
+                System.out.println(s);
+                if (s.contains(f.getName())){
+                    break;
                 }
-                else if(r.getTitle_image_mini().contains(f.getName())){
-                    continue;
-                }
-                else {
-                    unused.add(f.getName());
-                }
+                i--;
             }
+            if(i==0)
+                unused.add(f.getName());
         }
         return unused;
     }

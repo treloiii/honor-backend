@@ -1,10 +1,14 @@
 package utils;
 
+import Entities.Redactable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import services.ActionsService;
+import services.NewsService;
+import services.PostService;
 import sql.ResultedQuery;
 
 import javax.imageio.IIOImage;
@@ -26,6 +30,12 @@ public class Utils {
     public int RESULT_PER_PAGE;
     @Autowired
     private ResultedQuery rq;
+    @Autowired
+    private PostService postService;
+    @Autowired
+    private NewsService newsService;
+    @Autowired
+    private ActionsService actionsService;
 
     public Integer setResultPerPage(int count) throws SQLException {
         rq.VoidQuery("UPDATE honor_pagination_settings set count="+count+" where id=1");
@@ -268,19 +278,36 @@ public class Utils {
 //        notFolder.put(folder.getName(),allFiles);
     }
 
-
-    public List<File> scanFiles(File folder){
+    public List<File> scanRedactables(){
+        File news=new File("/home/ensler/honor-server/static/news");
+        File post=new File("/home/ensler/honor-server/static/memo");
+        File events=new File("/home/ensler/honor-server/static/events");
+        File rally=new File("/home/ensler/honor-server/static/rally");
+        List<File> result=new ArrayList<>();
+        File[] arr={news,post,events,rally};
+        for(File f:arr){
+            result.addAll(scanFiles(f));
+        }
+        return result;
+    }
+    private List<File> scanFiles(File folder){
         List<File> returnFiles=new ArrayList<>();
         File[] files=folder.listFiles();
         for(File file:files){
             if(file.isDirectory()){
-                returnFiles.addAll((scanFiles(file)));
-            }
-            else {
                 returnFiles.add(file);
+                returnFiles.addAll((scanFiles(file)));
             }
         }
         return returnFiles;
+    }
+    public List<Redactable> getAllRedactables(){
+        List<Redactable> redactables=new ArrayList<>();
+        redactables.addAll(postService.getAllPosts(0,1000));
+        redactables.addAll(newsService.getAllnews(0,1000));
+        redactables.addAll(actionsService.getAllRallies(0,1000,1));
+        redactables.addAll(actionsService.getAllRallies(0,1000,2));
+        return redactables;
     }
     public Directory getDirContent(File file){
         Directory folder=new Directory();
