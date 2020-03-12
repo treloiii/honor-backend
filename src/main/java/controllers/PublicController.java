@@ -213,6 +213,9 @@ public class PublicController {
                 if (r.getTitle_image().contains(f.getName())){
                     continue;
                 }
+                else if(r.getTitle_image_mini().contains(f.getName())){
+                    continue;
+                }
                 else {
                     unused.add(f.getName());
                 }
