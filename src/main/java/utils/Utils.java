@@ -267,6 +267,21 @@ public class Utils {
         return folderFile;
 //        notFolder.put(folder.getName(),allFiles);
     }
+
+
+    public List<File> scanFiles(File folder){
+        List<File> returnFiles=new ArrayList<>();
+        File[] files=folder.listFiles();
+        for(File file:files){
+            if(file.isDirectory()){
+                returnFiles.addAll((scanFiles(file)));
+            }
+            else {
+                returnFiles.add(file);
+            }
+        }
+        return returnFiles;
+    }
     public Directory getDirContent(File file){
         Directory folder=new Directory();
         folder.setPath(file.getAbsolutePath());

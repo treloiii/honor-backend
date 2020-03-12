@@ -1,13 +1,20 @@
+import Entities.Redactable;
+import dao.PostDAO;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import services.PostService;
 import utils.Directory;
 import utils.FolderFile;
 import utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FirstTest {
+
     @Test
     public void testDeleteDir(){
         String path="/home/ensler/honor-server/static/news/AAA/";
@@ -23,5 +30,12 @@ public class FirstTest {
 //        Utils utils=new Utils();
 //        Directory folderFile=utils.getDirContent(new File(path));
 //        System.out.println(folderFile);
+    }
+    @Test
+    public void checkUsesTest(){
+        PostDAO dao=new PostDAO();
+        List<Redactable> all=new ArrayList<>();
+        all.addAll(dao.getAll(0,1000));
+        System.out.println(all);
     }
 }

@@ -191,11 +191,34 @@ public class PublicController {
     @RequestMapping("/getTreeDir")
     public FolderFile getDir(){
         return utils.getAllFiles(new File("/home/ensler/honor-server/static"));
+
     }
     @RequestMapping("/getDirContent")
     public Directory getDirContent(@RequestParam("path") String path){
         return utils.getDirContent(new File(path));
     }
 
+
+    @RequestMapping("/checkUses")
+    public Set<String> checkUses(){
+        Set<String> unused=new HashSet<>();
+        List<File> files=utils.scanFiles(new File("/home/ensler/honor-server/static"));
+        List<Redactable> redactables=new ArrayList<>();
+        redactables.addAll(postService.getAllPosts(0,1000));
+        redactables.addAll(newsService.getAllnews(0,1000));
+        redactables.addAll(actionsService.getAllRallies(0,1000,1));
+        redactables.addAll(actionsService.getAllRallies(0,1000,2));
+        for(File f:files) {
+            for (Redactable r : redactables) {
+                if (r.getTitle_image().contains(f.getName())){
+                    continue;
+                }
+                else {
+                    unused.add(f.getName());
+                }
+            }
+        }
+        return unused;
+    }
 
 }
