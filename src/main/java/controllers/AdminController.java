@@ -12,8 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import services.*;
 import sql.ResultedQuery;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Date;
@@ -354,6 +353,19 @@ public class AdminController {
         if(response.equals(""))
             response+="success";
         return response;
+    }
+    @RequestMapping("/lastIn")
+    public String saveLastInToLog(String address){
+        try {
+            File log = new File("/home/ensler/honor-server/lastIn.log");
+            PrintWriter writer = new PrintWriter(new FileWriter(log,true));
+            writer.println("last in by: "+address+" at "+new Date().toString());
+            writer.close();
+            return "success";
+        }
+        catch (Exception e){
+            return e.getMessage();
+        }
     }
 
 
