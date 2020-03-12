@@ -14,9 +14,7 @@ import sql.ResultedQuery;
 
 import java.io.*;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @CrossOrigin
 @RestController
@@ -366,6 +364,58 @@ public class AdminController {
         catch (Exception e){
             return e.getMessage();
         }
+    }
+
+    @RequestMapping("/clearTemp")
+    public String clearTemp(){
+        File temp =new File("/home/ensler/honor-server/static/temp");
+        try {
+            FileUtils.deleteDirectory(temp);
+            temp.mkdirs();
+        } catch (IOException e) {
+            return e.getMessage();
+        }
+        return "success";
+    }
+    @RequestMapping("/removeUnusedFiles")
+    public String checkUses(){
+        Set<File> unused=new HashSet<>();
+        List<File> files=utils.scanRedactables();
+        List<File> albumFiles=utils.scanGallery();
+        List<GalleryAlbum> albums=albumService.getAllAlbums(0,1000);
+        List<Redactable> redactables=utils.getAllRedactables();
+        for(File f:files) {
+            int i =redactables.size();
+            for (Redactable r : redactables) {
+                String s=utils.transliterate(r.getTitle());
+                System.out.println(s);
+                if (s.contains(f.getName())){
+                    break;
+                }
+                i--;
+            }
+            if(i==0)
+                unused.add(f);
+        }
+        for(File f:albumFiles) {
+            int i =albums.size();
+            for (GalleryAlbum album : albums) {
+                if (f.getName().equals(String.valueOf(album.getId()))){
+                    break;
+                }
+                i--;
+            }
+            if(i==0)
+                unused.add(f);
+        }
+        for(File deleted:unused){
+            try {
+                FileUtils.deleteDirectory(deleted);
+            } catch (IOException e) {
+                return e.getMessage();
+            }
+        }
+        return "success";
     }
 
 
