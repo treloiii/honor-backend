@@ -22,8 +22,14 @@ public class AlbumService {
     public AlbumService() {
     }
 
-    public List<GalleryAlbum> getAllAlbums(int page){
-        List<GalleryAlbum> albums=dao.getAll((page-1)*utils.RESULT_PER_PAGE,utils.RESULT_PER_PAGE);
+    public List<GalleryAlbum> getAllAlbums(int page,Integer count){
+        List<GalleryAlbum> albums=null;
+        if(count!=null&&!count.equals(0)){
+            albums =dao.getAll(0, count);
+        }
+        else {
+            albums =dao.getAll((page - 1) * utils.RESULT_PER_PAGE, utils.RESULT_PER_PAGE);
+        }
         for (GalleryAlbum album:albums){
             List<GalleryImage> imgs=album.getImages();
             for (GalleryImage img:imgs) {

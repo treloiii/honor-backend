@@ -1,5 +1,6 @@
 package controllers;
 import Entities.*;
+import org.apache.commons.io.FileUtils;
 import utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import sql.ResultedQuery;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.*;
@@ -79,7 +81,7 @@ public class PublicController {
 
     @RequestMapping("/get/all/albums/{page}")
     public List<GalleryAlbum> getAlbums(@PathVariable(required = false) int page){
-        return albumService.getAllAlbums(page);
+        return albumService.getAllAlbums(page,null);
     }
 
     @RequestMapping("/get/album")
@@ -196,9 +198,11 @@ public class PublicController {
 
 
     @RequestMapping("/checkUses")
-    public Set<String> checkUses(){
-        Set<String> unused=new HashSet<>();
+    public String checkUses(){
+        Set<File> unused=new HashSet<>();
         List<File> files=utils.scanRedactables();
+        List<File> albumFiles=utils.scanGallery();
+        List<GalleryAlbum> albums=albumService.getAllAlbums(0,1000);
         List<Redactable> redactables=utils.getAllRedactables();
         for(File f:files) {
             int i =redactables.size();
@@ -211,9 +215,27 @@ public class PublicController {
                 i--;
             }
             if(i==0)
-                unused.add(f.getName());
+                unused.add(f);
         }
-        return unused;
+        for(File f:albumFiles) {
+            int i =albums.size();
+            for (GalleryAlbum album : albums) {
+                if (f.getName().equals(String.valueOf(album.getId()))){
+                    break;
+                }
+                i--;
+            }
+            if(i==0)
+                unused.add(f);
+        }
+        for(File deleted:unused){
+            try {
+                FileUtils.deleteDirectory(deleted);
+            } catch (IOException e) {
+                return e.getMessage();
+            }
+        }
+        return "success";
     }
 
 }

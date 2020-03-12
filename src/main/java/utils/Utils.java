@@ -290,6 +290,12 @@ public class Utils {
         }
         return result;
     }
+    public List<File> scanGallery(){
+        File gallery=new File("/home/ensler/honor-server/static/gallery");
+        List<File> result=new ArrayList<>();
+        result.addAll(scanFiles(gallery));
+        return result;
+    }
     private List<File> scanFiles(File folder){
         List<File> returnFiles=new ArrayList<>();
         File[] files=folder.listFiles();

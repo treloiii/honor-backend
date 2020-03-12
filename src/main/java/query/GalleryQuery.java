@@ -22,7 +22,7 @@ public class GalleryQuery implements GraphQLQueryResolver {
     }
 
     public List<GalleryAlbum> getAllAlbums(int page){
-        return albumService.getAllAlbums(page);
+        return albumService.getAllAlbums(page,null);
     }
     public GalleryAlbum getAlbumById(int id){
         return albumService.getAlbum(id);
