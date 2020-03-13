@@ -267,7 +267,8 @@ public class Utils {
         for(int i=0;i< files.length;i++){
             files[i]=new File(fileRefs[i]);
         }
-        ZipOutputStream out=new ZipOutputStream(new FileOutputStream("/home/ensler/honor-server/static/temp/"+new Timestamp(System.currentTimeMillis()).getTime() +".zip"));
+        String zipName=new Timestamp(System.currentTimeMillis()).getTime() +".zip";
+        ZipOutputStream out=new ZipOutputStream(new FileOutputStream("/home/ensler/honor-server/static/temp/"+zipName));
         for(File f:files){
             FileInputStream in=new FileInputStream(f);
             out.putNextEntry(new ZipEntry(f.getName()));
@@ -279,7 +280,7 @@ public class Utils {
             in.close();
         }
         out.close();
-        return "success";
+        return zipName;
     }
     public String createZipFromDirs(String[] fileRefs) {
         String baseDir="/home/ensler/honor-server/static/temp/";
