@@ -418,5 +418,13 @@ public class AdminController {
         return "success";
     }
 
+    @RequestMapping("/download")
+    public String downloadZip(@RequestBody String[] files){
+        try {
+            return utils.createZipFromFiles(files);
+        } catch (IOException e) {
+            return e.getMessage();
+        }
+    }
 
 }

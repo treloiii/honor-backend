@@ -19,10 +19,18 @@ import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 @Component("utils")
@@ -255,6 +263,57 @@ public class Utils {
         return translit.translit(latMessage);
     }
 
+    public String createZipFromFiles(String[] fileRefs) throws IOException {
+//        File[] files=new File[fileRefs.length];
+//        for(int i=0;i< files.length;i++){
+//            files[i]=new File(fileRefs[i]);
+//        }
+//        ZipOutputStream out=new ZipOutputStream(new FileOutputStream("/home/ensler/honor-server/static/temp/"+new Timestamp(System.currentTimeMillis()).getTime() +".zip"));
+//        for(File f:files){
+//            FileInputStream in=new FileInputStream(f);
+//            out.putNextEntry(new ZipEntry(f.getName()));
+//            byte[] b=new byte[1024];
+//            int count;
+//            while((count=in.read(b))>0){
+//                out.write(b,0,count);
+//            }
+//            in.close();
+//        }
+//        out.close();
+//        return "success";
+        String baseDir="/home/ensler/honor-server/static/temp/";
+        String zipName=new Timestamp(System.currentTimeMillis()).getTime()+".zip";
+        String zipFileName = baseDir+zipName;
+        try {
+            final ZipOutputStream outputStream = new ZipOutputStream(new FileOutputStream(zipFileName));
+            for (String f:fileRefs) {
+                final Path sourceDir= Paths.get(f);
+                Files.walkFileTree(sourceDir, new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
+                        try {
+                            Path targetFile = sourceDir.relativize(file);
+                            outputStream.putNextEntry(new ZipEntry(targetFile.toString()));
+                            byte[] bytes = Files.readAllBytes(file);
+                            outputStream.write(bytes, 0, bytes.length);
+                            outputStream.closeEntry();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
+            }
+            outputStream.close();
+        } catch (IOException e) {
+           e.printStackTrace();
+        }
+        return zipName;
+    }
+
+    private void makeZip(ZipOutputStream out){
+
+    }
     public FolderFile getAllFiles(File folder){
         FolderFile folderFile=new FolderFile();
         folderFile.setName(folder.getName());
