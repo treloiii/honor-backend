@@ -262,25 +262,26 @@ public class Utils {
         Translit translit=new Translit(false);
         return translit.translit(latMessage);
     }
-
-    public String createZipFromFiles(String[] fileRefs) throws IOException {
-//        File[] files=new File[fileRefs.length];
-//        for(int i=0;i< files.length;i++){
-//            files[i]=new File(fileRefs[i]);
-//        }
-//        ZipOutputStream out=new ZipOutputStream(new FileOutputStream("/home/ensler/honor-server/static/temp/"+new Timestamp(System.currentTimeMillis()).getTime() +".zip"));
-//        for(File f:files){
-//            FileInputStream in=new FileInputStream(f);
-//            out.putNextEntry(new ZipEntry(f.getName()));
-//            byte[] b=new byte[1024];
-//            int count;
-//            while((count=in.read(b))>0){
-//                out.write(b,0,count);
-//            }
-//            in.close();
-//        }
-//        out.close();
-//        return "success";
+    public String createZipFromFiles(String[] fileRefs) throws IOException{
+        File[] files=new File[fileRefs.length];
+        for(int i=0;i< files.length;i++){
+            files[i]=new File(fileRefs[i]);
+        }
+        ZipOutputStream out=new ZipOutputStream(new FileOutputStream("/home/ensler/honor-server/static/temp/"+new Timestamp(System.currentTimeMillis()).getTime() +".zip"));
+        for(File f:files){
+            FileInputStream in=new FileInputStream(f);
+            out.putNextEntry(new ZipEntry(f.getName()));
+            byte[] b=new byte[1024];
+            int count;
+            while((count=in.read(b))>0){
+                out.write(b,0,count);
+            }
+            in.close();
+        }
+        out.close();
+        return "success";
+    }
+    public String createZipFromDirs(String[] fileRefs) {
         String baseDir="/home/ensler/honor-server/static/temp/";
         String zipName=new Timestamp(System.currentTimeMillis()).getTime()+".zip";
         String zipFileName = baseDir+zipName;

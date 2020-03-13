@@ -2,6 +2,8 @@ package controllers;
 
 import Entities.*;
 import org.apache.commons.io.FileUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import utils.FolderFile;
 import utils.Utils;
 import com.google.gson.Gson;
@@ -12,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import services.*;
 import sql.ResultedQuery;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
@@ -418,12 +422,27 @@ public class AdminController {
         return "success";
     }
 
-    @RequestMapping("/download")
-    public String downloadZip(@RequestBody String[] files){
-        try {
-            return utils.createZipFromFiles(files);
-        } catch (IOException e) {
-            return e.getMessage();
+    @RequestMapping("/download/{type}")
+    public String downloadZip(@RequestBody String[] files, @PathVariable String type,
+                              HttpServletRequest request, HttpServletResponse response){
+        if(type.equals("folder")) {
+            try {
+                return utils.createZipFromDirs(files);
+            } catch (Exception e) {
+                return e.getMessage();
+            }
+        }
+        else if(type.equals("files")){
+            try{
+                return utils.createZipFromFiles(files);
+            }
+            catch (IOException e){
+                return e.getMessage();
+            }
+        }
+        else {
+            response.setStatus(400);
+            return "Wrong type";
         }
     }
 
