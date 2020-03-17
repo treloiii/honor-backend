@@ -186,15 +186,13 @@ public class PublicController {
         return "Success";
     }
 
+    @Deprecated
     @RequestMapping("/getTreeDir")
     public FolderFile getDir(){
         return utils.getAllFiles(new File("/home/ensler/honor-server/static"));
 
     }
-    @RequestMapping("/getDirContent")
-    public Directory getDirContent(@RequestParam("path") String path){
-        return utils.getDirContent(new File(path));
-    }
+
 
 
 

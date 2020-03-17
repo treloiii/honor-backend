@@ -4,6 +4,7 @@ import Entities.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import utils.Directory;
 import utils.FolderFile;
 import utils.Utils;
 import com.google.gson.Gson;
@@ -356,6 +357,12 @@ public class AdminController {
             response+="success";
         return response;
     }
+
+    @RequestMapping("/getDirContent")
+    public Directory getDirContent(@RequestParam("path") String path){
+        return utils.getDirContent(new File(path));
+    }
+
     @RequestMapping("/lastIn")
     public String saveLastInToLog(String address){
         try {

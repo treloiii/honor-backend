@@ -316,6 +316,7 @@ public class Utils {
     private void makeZip(ZipOutputStream out){
 
     }
+    @Deprecated
     public FolderFile getAllFiles(File folder){
         FolderFile folderFile=new FolderFile();
         folderFile.setName(folder.getName());
