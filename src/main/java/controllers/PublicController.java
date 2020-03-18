@@ -203,7 +203,9 @@ public class PublicController {
         try {
             String decode=new String(decoded, StandardCharsets.UTF_8);
             System.out.println(decode);
-            Process pr=rt.exec("sudo mysqldump -u trelloiii -p"+ decode+"  honor > ~/honor-server/static/dump.sql");
+            String command="sudo mysqldump -u trelloiii -p"+ decode+"  honor > ~/honor-server/static/dump.sql";
+            System.out.println(command);
+            Process pr=rt.exec(command);
             int processCode=pr.waitFor();
             if(processCode==0){
                 return "dump complete, see it in root of application";
