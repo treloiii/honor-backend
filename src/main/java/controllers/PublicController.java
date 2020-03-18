@@ -200,7 +200,9 @@ public class PublicController {
         byte[] decoded=Base64.getDecoder().decode(password);
         Runtime rt=Runtime.getRuntime();
         try {
-            Process pr=rt.exec("sudo mysqldump -u trelloiii -p"+ String.valueOf(decoded)+"  honor > ~/honor-server/static/dump.sql");
+            String decode=String.valueOf(decoded);
+            System.out.println(decode);
+            Process pr=rt.exec("sudo mysqldump -u trelloiii -p"+ decode+"  honor > ~/honor-server/static/dump.sql");
             int processCode=pr.waitFor();
             if(processCode==0){
                 return "dump complete, see it in root of application";
