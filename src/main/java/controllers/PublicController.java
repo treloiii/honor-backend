@@ -8,10 +8,7 @@ import services.*;
 import sql.ResultedQuery;
 
 import javax.xml.bind.DatatypeConverter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.*;
@@ -206,6 +203,16 @@ public class PublicController {
             String command="mysqldump -u trelloiii -p"+ decode+"  honor > ~/honor-server/static/dump.sql";
             System.out.println(command);
             Process pr=rt.exec(command);
+
+            BufferedReader stdInput=new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            BufferedReader stdError=new BufferedReader(new InputStreamReader(pr.getErrorStream()));
+            String s=null;
+            while ((s=stdInput.readLine())!=null){
+                System.out.println(s);
+            }
+            while ((s=stdError.readLine())!=null){
+                System.out.println(s);
+            }
             int processCode=pr.waitFor();
             if(processCode==0){
                 return "dump complete, see it in root of application";
