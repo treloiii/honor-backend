@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -200,7 +201,7 @@ public class PublicController {
         byte[] decoded=Base64.getDecoder().decode(password);
         Runtime rt=Runtime.getRuntime();
         try {
-            String decode=String.valueOf(decoded);
+            String decode=new String(decoded, StandardCharsets.UTF_8);
             System.out.println(decode);
             Process pr=rt.exec("sudo mysqldump -u trelloiii -p"+ decode+"  honor > ~/honor-server/static/dump.sql");
             int processCode=pr.waitFor();
