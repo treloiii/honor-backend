@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import services.*;
 import sql.ResultedQuery;
 
+import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -194,6 +195,23 @@ public class PublicController {
     }
 
 
-
+    @RequestMapping("/databaseDump")
+    public String createDbDump(String password){
+        byte[] decoded=Base64.getDecoder().decode(password);
+        Runtime rt=Runtime.getRuntime();
+        try {
+            Process pr=rt.exec("sudo mysqldump -u trelloiii -p"+ String.valueOf(decoded)+"  honor > ~/honor-server/static/dump.sql");
+            int processCode=pr.waitFor();
+            if(processCode==0){
+                return "dump complete, see it in root of application";
+            }
+            else {
+                return "error, process code: "+processCode;
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+    }
 
 }
