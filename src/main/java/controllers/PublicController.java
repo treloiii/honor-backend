@@ -201,7 +201,7 @@ public class PublicController {
             String decode=new String(decoded, StandardCharsets.UTF_8);
             System.out.println(decode);
 //            String command="mysqldump -u trelloiii -p"+ decode+"  honor > ~/honor-server/static/dump.sql";
-            String command="~/honor-server/./dump.sh";
+            String command="/home/ensler/honor-server/./dump.sh";
             System.out.println(command);
             Process pr=rt.exec(command);
 
