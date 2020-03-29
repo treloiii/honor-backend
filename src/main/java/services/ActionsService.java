@@ -2,12 +2,14 @@ package services;
 
 import Entities.Actions;
 import Entities.ActionsType;
+import Entities.Comments;
 import Entities.Redactable;
 import utils.Utils;
 import dao.ActionsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 @Component("rallyService")
 
@@ -32,6 +34,12 @@ public class ActionsService {
         }else {
             return dao.getAllConcrete(type, (page - 1) * utils.RESULT_PER_PAGE, utils.RESULT_PER_PAGE);
         }
+    }
+
+    public void addComment(Actions actions, Comments comments){
+        comments.setTime(new Date());
+        comments.setRedactable(actions);
+        dao.save(comments);
     }
 
     public Actions getRallyById(int id){

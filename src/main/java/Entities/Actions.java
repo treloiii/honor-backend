@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name="honor_actions")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Actions extends Redactable {
+public class Actions implements Redactable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -113,8 +113,8 @@ public class Actions extends Redactable {
         this.description = description;
     }
 
-    public void setComments(List<ActionsComments> comments) {
-        this.comments = comments;
+    public void setComments(List<? extends Comments> comments) {
+        this.comments = (List<ActionsComments>)comments;
     }
 
     public void setTime(Date time) {
@@ -137,7 +137,7 @@ public class Actions extends Redactable {
         return description;
     }
 
-    public List<ActionsComments> getComments() {
+    public List<? extends Comments> getComments() {
         return comments;
     }
 

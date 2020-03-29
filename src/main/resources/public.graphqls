@@ -12,6 +12,13 @@ type Redactable{
     author:String!
     coords:String
     title_image_mini:String
+    comments:[Comments]
+}
+type Comments{
+    id:ID!
+    nickname:String
+    description:String
+    time:DateScalar
 }
 type PaginationCountSize{
     count:DoubleScalar!

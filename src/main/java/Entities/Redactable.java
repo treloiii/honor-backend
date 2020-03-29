@@ -1,25 +1,28 @@
 package Entities;
 
 import java.util.Date;
+import java.util.List;
 
-public abstract class Redactable {
-    public abstract void setTime(Date time);
-    public abstract void setDescription(String str);
-    public abstract void setTitle(String title);
-    public abstract void setAuthor(String author);
-    public abstract void setTitle_image_name(String title_image_name);
-    public abstract void setTitle_image(String title_image);
-    public abstract String getTitle_image_name();
-    public abstract String getTitle();
-    public abstract int getId();
-    public abstract String getDescription();
-    public abstract String getTitle_image();
-    public abstract Date getTime();
-    public abstract String getAuthor();
-    public abstract String getCoords();
-    public abstract void setCoords(String coords);
-    public abstract String getTitle_image_mini();
-    public abstract void setTitle_image_mini(String title_image_mini);
-    public abstract String getDescription_short();
-    public abstract void setDescription_short(String description_short);
+public interface Redactable {
+    void setTime(Date time);
+    void setDescription(String str);
+    void setTitle(String title);
+    void setAuthor(String author);
+    void setTitle_image_name(String title_image_name);
+    void setTitle_image(String title_image);
+    String getTitle_image_name();
+    String getTitle();
+    int getId();
+    String getDescription();
+    String getTitle_image();
+    Date getTime();
+    String getAuthor();
+    String getCoords();
+    void setCoords(String coords);
+    String getTitle_image_mini();
+    void setTitle_image_mini(String title_image_mini);
+    String getDescription_short();
+    void setDescription_short(String description_short);
+    List<? extends Comments> getComments();
+    void setComments(List<? extends Comments> comments);
 }

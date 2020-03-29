@@ -1,5 +1,6 @@
 package services;
 
+import Entities.Comments;
 import Entities.Post;
 import Entities.Redactable;
 import utils.Utils;
@@ -7,6 +8,7 @@ import dao.PostDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 @Component("postService")
@@ -31,6 +33,11 @@ public class PostService {
         }else {
             return dao.getAll((page - 1) * utils.RESULT_PER_PAGE, utils.RESULT_PER_PAGE);
         }
+    }
+    public void addComment(Post post, Comments comment){
+        comment.setTime(new Date());
+        comment.setRedactable(post);
+        dao.save(comment);
     }
     public void savePost(Post post){
         dao.save(post);

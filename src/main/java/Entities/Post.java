@@ -1,14 +1,17 @@
 package Entities;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="honor_main_posts")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Post extends Redactable {
+public class Post implements Redactable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -33,6 +36,11 @@ public class Post extends Redactable {
     @Column
     private String description_short;
 
+    @OneToMany(mappedBy = "post",fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private List<PostComments> comments;
+
     public Post(int id, String title, String title_image,String coords,String title_image_mini) {
         this.id = id;
         this.title = title;
@@ -46,6 +54,16 @@ public class Post extends Redactable {
 
     public void setDescription_short(String description_short) {
         this.description_short = description_short;
+    }
+
+    @Override
+    public List<? extends Comments> getComments() {
+        return comments;
+    }
+
+    @Override
+    public void setComments(List<? extends Comments> comments) {
+        this.comments=(List<PostComments>) comments;
     }
 
     public String getDescription_short() {

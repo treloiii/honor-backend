@@ -20,6 +20,8 @@ public class HibernateSessionFactory {
                     .addAnnotatedClass(ActionsAlbum.class)
                     .addAnnotatedClass(ActionsImage.class)
                     .addAnnotatedClass(ActionsComments.class)
+                    .addAnnotatedClass(PostComments.class)
+                    .addAnnotatedClass(NewsComments.class)
                     .addAnnotatedClass(ActionsType.class)
                     .addAnnotatedClass(Ordens.class)
                     .addAnnotatedClass(Veterans.class)

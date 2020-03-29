@@ -176,14 +176,34 @@ public class PublicController {
         return ordensService.getOrden(id);
     }
 
-    @RequestMapping("/add/comment/{photo_id}")
-    public String addComment(@RequestBody GalleryComments comment, @PathVariable int photo_id){
-        GalleryImage image=galleryService.getImageById(photo_id);
+    @RequestMapping("/add/comment/image/{id}")
+    public String addComment(@RequestBody GalleryComments comment, @PathVariable int id){
+        GalleryImage image=galleryService.getImageById(id);
         comment.setTime(new Date());
         comment.setActive(false);
         galleryService.addComment(image,comment);
         return "Success";
     }
+
+    @RequestMapping("/add/comment/news/{id}")
+    public String addComment(@PathVariable int id,@RequestBody NewsComments comment){
+       News news=newsService.getNewsById(id);
+       newsService.addComment(news,comment);
+       return "success";
+    }
+    @RequestMapping("/add/comment/actions/{id}")
+    public String addComment(@PathVariable int id,@RequestBody ActionsComments comment){
+        Actions action=actionsService.getRallyById(id);
+        actionsService.addComment(action,comment);
+        return "success";
+    }
+    @RequestMapping("/add/comment/post/{id}")
+    public String addComment(@PathVariable int id,@RequestBody PostComments comment){
+        Post post=postService.getPostById(id);
+        postService.addComment(post,comment);
+        return "success";
+    }
+
 
     @Deprecated
     @RequestMapping("/getTreeDir")

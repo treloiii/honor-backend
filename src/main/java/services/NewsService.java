@@ -1,5 +1,6 @@
 package services;
 
+import Entities.Comments;
 import Entities.News;
 import Entities.Redactable;
 import utils.Utils;
@@ -7,6 +8,7 @@ import dao.NewsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 @Component("newsService")
@@ -32,6 +34,11 @@ public class NewsService {
     }
     public void addNews(News news){
         dao.save(news);
+    }
+    public void addComment(News news, Comments comments){
+        comments.setRedactable(news);
+        comments.setTime(new Date());
+        dao.save(comments);
     }
     public void updateNews(News news){
         dao.update(news);

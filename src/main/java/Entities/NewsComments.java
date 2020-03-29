@@ -6,10 +6,9 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="honor_actions_comments")
+@Table(name="honor_news_comments")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ActionsComments implements Comments {
-
+public class NewsComments implements Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -22,42 +21,47 @@ public class ActionsComments implements Comments {
     @Temporal(value = TemporalType.DATE)
     private Date time;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "rally_id")
-    private Actions actions1;
-    public ActionsComments() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "news_id")
+    private News news;
 
-
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public String getNickname() {
         return nickname;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public Date getTime() {
         return time;
     }
 
+    @Override
     public void setNickname(String nickname) {
-        this.nickname = nickname;
+        this.nickname=nickname;
     }
 
+    @Override
     public void setDescription(String description) {
-        this.description = description;
+        this.description=description;
     }
 
+    @Override
     public void setTime(Date time) {
-        this.time = time;
+        this.time=time;
     }
 
-    public void setRedactable(Redactable actions1) {
-        this.actions1 = (Actions)actions1;
+    @Override
+    public void setRedactable(Redactable redactable) {
+        this.news=(News) redactable;
     }
 }
