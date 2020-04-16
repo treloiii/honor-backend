@@ -21,6 +21,9 @@ public class NewsComments implements Comments {
     @Temporal(value = TemporalType.DATE)
     private Date time;
 
+    @Column
+    private boolean active;
+
     @ManyToOne
     @JoinColumn(name = "news_id")
     private News news;
@@ -28,6 +31,14 @@ public class NewsComments implements Comments {
     @Override
     public int getId() {
         return id;
+    }
+    @Override
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    @Override
+    public boolean isActive() {
+        return active;
     }
 
     @Override

@@ -35,6 +35,12 @@ import java.util.zip.ZipOutputStream;
 
 @Component("utils")
 public class Utils {
+    //prod
+    public static final String BASE_SERVER_PATH="/var/www/honor/data/";
+    public static final String BACKEND_URL="http://server.veteran-chest.ru/";
+    //dev
+//    public static final String BASE_SERVER_PATH="/home/ensler/honor-server/";
+//    public static final String BACKEND_URL="http://database.ensler.ru/static/";
     public int RESULT_PER_PAGE;
     @Autowired
     private ResultedQuery rq;
@@ -97,11 +103,7 @@ public class Utils {
     }
 
     public static void copy(File src, File dest) throws IOException {
-        InputStream is = null;
-        OutputStream os = null;
-        try {
-            is = new FileInputStream(src);
-            os = new FileOutputStream(dest);
+        try (InputStream is = new FileInputStream(src); OutputStream os = new FileOutputStream(dest)) {
 
             // buffer size 1K
             byte[] buf = new byte[1024];
@@ -110,9 +112,9 @@ public class Utils {
             while ((bytesRead = is.read(buf)) > 0) {
                 os.write(buf, 0, bytesRead);
             }
-        } finally {
-            is.close();
-            os.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -147,7 +149,7 @@ public class Utils {
                             new BufferedOutputStream(new FileOutputStream(file1));
                     stream.write(bytes);
                     stream.close();
-                    res="http://database.ensler.ru/"+serverPath.substring("/home/ensler/honor-server/".length())+fileName + ".jpg";
+                    res=BACKEND_URL+serverPath.substring(BASE_SERVER_PATH.length())+fileName + ".jpg";
                     if(contentType.equals("jpg")) {
                         if(fileSizeKb>350)
                             compressJPEG(serverPath + fileName + postfix + "." + contentType, postfix);
@@ -268,7 +270,7 @@ public class Utils {
             files[i]=new File(fileRefs[i]);
         }
         String zipName=new Timestamp(System.currentTimeMillis()).getTime() +".zip";
-        ZipOutputStream out=new ZipOutputStream(new FileOutputStream("/home/ensler/honor-server/static/temp/"+zipName));
+        ZipOutputStream out=new ZipOutputStream(new FileOutputStream(BASE_SERVER_PATH+"static/temp/"+zipName));
         for(File f:files){
             FileInputStream in=new FileInputStream(f);
             out.putNextEntry(new ZipEntry(f.getName()));
@@ -283,7 +285,7 @@ public class Utils {
         return zipName;
     }
     public String createZipFromDirs(String[] fileRefs) {
-        String baseDir="/home/ensler/honor-server/static/temp/";
+        String baseDir=BASE_SERVER_PATH+"static/temp/";
         String zipName=new Timestamp(System.currentTimeMillis()).getTime()+".zip";
         String zipFileName = baseDir+zipName;
         try {
@@ -341,10 +343,10 @@ public class Utils {
     }
 
     public List<File> scanRedactables(){
-        File news=new File("/home/ensler/honor-server/static/news");
-        File post=new File("/home/ensler/honor-server/static/memo");
-        File events=new File("/home/ensler/honor-server/static/events");
-        File rally=new File("/home/ensler/honor-server/static/rally");
+        File news=new File(BASE_SERVER_PATH+"static/news");
+        File post=new File(BASE_SERVER_PATH+"static/memo");
+        File events=new File(BASE_SERVER_PATH+"static/events");
+        File rally=new File(BASE_SERVER_PATH+"static/rally");
         List<File> result=new ArrayList<>();
         File[] arr={news,post,events,rally};
         for(File f:arr){
@@ -353,7 +355,7 @@ public class Utils {
         return result;
     }
     public List<File> scanGallery(){
-        File gallery=new File("/home/ensler/honor-server/static/gallery");
+        File gallery=new File(BASE_SERVER_PATH+"static/gallery");
         List<File> result=new ArrayList<>();
         result.addAll(scanFiles(gallery));
         return result;

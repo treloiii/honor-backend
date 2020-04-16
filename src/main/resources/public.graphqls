@@ -19,6 +19,7 @@ type Comments{
     nickname:String
     description:String
     time:DateScalar
+    active:Boolean
 }
 type PaginationCountSize{
     count:DoubleScalar!

@@ -11,4 +11,6 @@ public interface Comments {
     void setDescription(String description);
     void setTime(Date time);
     void setRedactable(Redactable redactable);
+    void setActive(boolean acitve);
+    boolean isActive();
 }

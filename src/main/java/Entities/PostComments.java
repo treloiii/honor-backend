@@ -20,7 +20,8 @@ public class PostComments implements Comments {
     @Column
     @Temporal(value = TemporalType.DATE)
     private Date time;
-
+    @Column
+    private boolean active;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id")
     private Post post;
@@ -28,6 +29,15 @@ public class PostComments implements Comments {
     @Override
     public int getId() {
         return id;
+    }
+
+    @Override
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    @Override
+    public boolean isActive() {
+        return active;
     }
 
     @Override

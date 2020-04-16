@@ -1,9 +1,6 @@
 package services;
 
-import Entities.Actions;
-import Entities.ActionsType;
-import Entities.Comments;
-import Entities.Redactable;
+import Entities.*;
 import utils.Utils;
 import dao.ActionsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Component("rallyService")
 
 public class ActionsService {
@@ -29,11 +28,18 @@ public class ActionsService {
         dao.update(action);
     }
     public List<Redactable> getAllRallies(int page, Integer count,int type){
+        List<Redactable> res;
         if(count!=null&&!count.equals(0)){
-            return dao.getAllConcrete(type,0,count);
+            res=dao.getAllConcrete(type,0,count);
         }else {
-            return dao.getAllConcrete(type, (page - 1) * utils.RESULT_PER_PAGE, utils.RESULT_PER_PAGE);
+            res=dao.getAllConcrete(type, (page - 1) * utils.RESULT_PER_PAGE, utils.RESULT_PER_PAGE);
         }
+        return res.stream().map(redactable -> {
+            List<? extends Comments> comments=redactable.getComments();
+            comments=comments.stream().filter(Comments::isActive).collect(Collectors.toList());
+            redactable.setComments(comments);
+            return redactable;
+        }).collect(Collectors.toList());
     }
 
     public void addComment(Actions actions, Comments comments){
@@ -43,7 +49,11 @@ public class ActionsService {
     }
 
     public Actions getRallyById(int id){
-        return dao.get(id);
+        Actions redactable= dao.get(id);
+        List<? extends Comments> comments=redactable.getComments();
+        comments=comments.stream().filter(Comments::isActive).collect(Collectors.toList());
+        redactable.setComments(comments);
+        return redactable;
     }
     public Actions getLast(int type){
         return dao.getLast(type);

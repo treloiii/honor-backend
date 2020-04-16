@@ -1,4 +1,5 @@
 package dao;
+import Entities.Comments;
 import Entities.Redactable;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import Entities.News;
@@ -14,6 +15,8 @@ import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Component("newsDao")
 public class NewsDAO implements DAOSkeleton {
     @Autowired
@@ -65,7 +68,7 @@ public class NewsDAO implements DAOSkeleton {
         Query query=session.createQuery("From News n",News.class).setFirstResult(from).setMaxResults(to);
         query.setCacheable(true);
         query.setCacheRegion("NEWS_LIST");
-        List<Redactable> allNews=query.list();
+        List<Redactable> allNews= query.list();
         session.getTransaction().commit();
         session.close();
         return allNews;

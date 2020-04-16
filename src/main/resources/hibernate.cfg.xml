@@ -5,8 +5,10 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://ensler.ru/honor?useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;useUnicode=yes&amp;characterEncoding=UTF-8</property>
-        <property name="hibernate.connection.username">trelloiii</property>
+        <property name="hibernate.connection.url">jdbc:mysql://151.248.112.108/honor-admin?useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;useUnicode=yes&amp;characterEncoding=UTF-8</property>
+        <property name="hibernate.connection.username">honor</property>
+<!--        <property name="hibernate.connection.url">jdbc:mysql://ensler.ru/honor?useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;useUnicode=yes&amp;characterEncoding=UTF-8</property>-->
+<!--        <property name="hibernate.connection.username">trelloiii</property>-->
         <property name="hibernate.connection.password">b4uld103</property>
         <property name="hibernate.connection.CharSet">utf8</property>
         <property name="hibernate.connection.characterEncoding">utf8</property>

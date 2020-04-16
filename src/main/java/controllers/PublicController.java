@@ -60,7 +60,7 @@ public class PublicController {
     }
 
     @RequestMapping("/get/all/posts/{page}")
-    public List<Redactable> getMain(@RequestParam(value = "count",required = false) Integer count,@PathVariable(required = false) int page) throws SQLException {
+    public List<Redactable> getMain(@RequestParam(value = "count",required = false) Integer count,@PathVariable(required = false) int page) {
         return postService.getAllPosts(page,count);
     }
     @RequestMapping("/get/post")
@@ -179,8 +179,6 @@ public class PublicController {
     @RequestMapping("/add/comment/image/{id}")
     public String addComment(@RequestBody GalleryComments comment, @PathVariable int id){
         GalleryImage image=galleryService.getImageById(id);
-        comment.setTime(new Date());
-        comment.setActive(false);
         galleryService.addComment(image,comment);
         return "Success";
     }
@@ -209,7 +207,6 @@ public class PublicController {
     @RequestMapping("/getTreeDir")
     public FolderFile getDir(){
         return utils.getAllFiles(new File("/home/ensler/honor-server/static"));
-
     }
 
 
@@ -221,7 +218,7 @@ public class PublicController {
             String decode=new String(decoded, StandardCharsets.UTF_8);
             System.out.println(decode);
 //            String command="mysqldump -u trelloiii -p"+ decode+"  honor > ~/honor-server/static/dump.sql";
-            String command="/home/ensler/honor-server/./dump.sh";
+            String command=Utils.BASE_SERVER_PATH+"./dump.sh";
             System.out.println(command);
             Process pr=rt.exec(command);
 

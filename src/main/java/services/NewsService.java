@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component("newsService")
 public class NewsService {
@@ -22,15 +23,26 @@ public class NewsService {
     }
 
     public List<Redactable> getAllnews(int page, Integer count){
+        List<Redactable> res;
         if(count!=null&&!count.equals(0)){
-            return dao.getAll(0, count);
+            res= dao.getAll(0, count);
         }
         else {
-            return dao.getAll((page - 1) * utils.RESULT_PER_PAGE, utils.RESULT_PER_PAGE);
+            res=dao.getAll((page - 1) * utils.RESULT_PER_PAGE, utils.RESULT_PER_PAGE);
         }
+        return res.stream().map(redactable -> {
+            List<? extends Comments> comments=redactable.getComments();
+            comments=comments.stream().filter(Comments::isActive).collect(Collectors.toList());
+            redactable.setComments(comments);
+            return redactable;
+        }).collect(Collectors.toList());
     }
     public News getNewsById(int id){
-        return dao.get(id);
+        News redactable= dao.get(id);
+        List<? extends Comments> comments=redactable.getComments();
+        comments=comments.stream().filter(Comments::isActive).collect(Collectors.toList());
+        redactable.setComments(comments);
+        return redactable;
     }
     public void addNews(News news){
         dao.save(news);

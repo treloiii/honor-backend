@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.Date;
 import java.util.List;
 
 @Component("galleryService")
@@ -48,7 +49,8 @@ public class GalleryService {
     }
     public void addComment(GalleryImage image, GalleryComments comment){
         comment.setImage(image);
-        //image.addComment(comment);
+        comment.setTime(new Date());
+        comment.setActive(false);
         dao.save(comment);
     }
     public List<GalleryImage> getLastFive(){

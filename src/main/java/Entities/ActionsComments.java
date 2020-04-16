@@ -21,16 +21,26 @@ public class ActionsComments implements Comments {
     @Column
     @Temporal(value = TemporalType.DATE)
     private Date time;
-
+    @Column
+    private boolean active;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rally_id")
     private Actions actions1;
     public ActionsComments() {
     }
 
-
+    @Override
     public int getId() {
         return id;
+    }
+
+    @Override
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    @Override
+    public boolean isActive() {
+        return active;
     }
 
     public String getNickname() {
