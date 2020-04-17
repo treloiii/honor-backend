@@ -358,6 +358,47 @@ public class AdminController {
         return response;
     }
 
+    @RequestMapping("/redact/comment/{type}")
+    public String redactComment(@PathVariable(name="type") String type,
+                                @RequestParam(name="active") boolean active,
+                                @RequestParam(name="id") int id,
+                                @RequestParam(name="red") int redId){
+        switch (type){
+            case "news":
+                newsService.redactComment(id,active,redId);
+                break;
+            case "memo":
+                postService.redactComment(id,active,redId);
+                break;
+            case "events":
+            case "rally":
+                actionsService.redactComment(id,active,redId);
+                break;
+            default:
+                return "error type";
+        }
+        return "success";
+    }
+    @RequestMapping("/delete/comment/{type}")
+    public String deleteComment(@PathVariable(name="type") String type,
+                                @RequestParam(name="id") int id,
+                                @RequestParam(name="red") int redId){
+        switch (type){
+            case "news":
+                newsService.deleteComment(id,redId);
+                break;
+            case "memo":
+                postService.deleteComment(id,redId);
+                break;
+            case "events":
+            case "rally":
+                actionsService.deleteComment(id,redId);
+                break;
+            default:
+                return "error type";
+        }
+        return "success";
+    }
     @RequestMapping("/getDirContent")
     public Directory getDirContent(@RequestParam("path") String path){
         return utils.getDirContent(new File(path));

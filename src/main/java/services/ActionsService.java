@@ -34,12 +34,7 @@ public class ActionsService {
         }else {
             res=dao.getAllConcrete(type, (page - 1) * utils.RESULT_PER_PAGE, utils.RESULT_PER_PAGE);
         }
-        return res.stream().map(redactable -> {
-            List<? extends Comments> comments=redactable.getComments();
-            comments=comments.stream().filter(Comments::isActive).collect(Collectors.toList());
-            redactable.setComments(comments);
-            return redactable;
-        }).collect(Collectors.toList());
+        return res;
     }
 
     public void addComment(Actions actions, Comments comments){
@@ -48,12 +43,33 @@ public class ActionsService {
         dao.save(comments);
     }
 
+    public void addComment(News news, Comments comments){
+        comments.setRedactable(news);
+        comments.setTime(new Date());
+        dao.save(comments);
+    }
+    public void redactComment(int id,boolean active,int newsId){
+        Actions actions=dao.get(newsId);
+        actions.getComments().forEach(comment->{
+            if(comment.getId()==id) {
+                comment.setActive(active);
+                dao.update(comment);
+                dao.clearCache();
+            }
+        });
+    }
+    public void deleteComment(int commentId,int newsId){
+        Actions actions=dao.get(newsId);
+        Comments comment=actions.getComments().stream().filter(c->c.getId()==commentId).collect(Collectors.toList()).get(0);
+        if(comment!=null) {
+            dao.delete(comment);
+            dao.update(actions);
+            dao.clearCache();
+        }
+    }
+
     public Actions getRallyById(int id){
-        Actions redactable= dao.get(id);
-        List<? extends Comments> comments=redactable.getComments();
-        comments=comments.stream().filter(Comments::isActive).collect(Collectors.toList());
-        redactable.setComments(comments);
-        return redactable;
+        return dao.get(id);
     }
     public Actions getLast(int type){
         return dao.getLast(type);

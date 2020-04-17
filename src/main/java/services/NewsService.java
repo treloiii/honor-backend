@@ -30,19 +30,10 @@ public class NewsService {
         else {
             res=dao.getAll((page - 1) * utils.RESULT_PER_PAGE, utils.RESULT_PER_PAGE);
         }
-        return res.stream().map(redactable -> {
-            List<? extends Comments> comments=redactable.getComments();
-            comments=comments.stream().filter(Comments::isActive).collect(Collectors.toList());
-            redactable.setComments(comments);
-            return redactable;
-        }).collect(Collectors.toList());
+        return res;
     }
     public News getNewsById(int id){
-        News redactable= dao.get(id);
-        List<? extends Comments> comments=redactable.getComments();
-        comments=comments.stream().filter(Comments::isActive).collect(Collectors.toList());
-        redactable.setComments(comments);
-        return redactable;
+        return dao.get(id);
     }
     public void addNews(News news){
         dao.save(news);
@@ -51,6 +42,25 @@ public class NewsService {
         comments.setRedactable(news);
         comments.setTime(new Date());
         dao.save(comments);
+    }
+    public void redactComment(int id,boolean active,int newsId){
+        News news=dao.get(newsId);
+        news.getComments().forEach(comment->{
+            if(comment.getId()==id) {
+                comment.setActive(active);
+                dao.update(comment);
+                dao.clearCache();
+            }
+        });
+    }
+    public void deleteComment(int commentId,int newsId){
+        News news=dao.get(newsId);
+        Comments comment=news.getComments().stream().filter(c->c.getId()==commentId).collect(Collectors.toList()).get(0);
+        if(comment!=null) {
+            dao.delete(comment);
+            dao.update(news);
+            dao.clearCache();
+        }
     }
     public void updateNews(News news){
         dao.update(news);

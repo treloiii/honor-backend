@@ -27,11 +27,7 @@ public class PostService {
         dao.update(post);
     }
     public Post getPostById(int id){
-        Post redactable= dao.get(id);
-        List<? extends Comments> comments=redactable.getComments();
-        comments=comments.stream().filter(Comments::isActive).collect(Collectors.toList());
-        redactable.setComments(comments);
-        return redactable;
+        return dao.get(id);
     }
     public List<Redactable> getAllPosts(int page, Integer count){
         List<Redactable> res;
@@ -40,17 +36,36 @@ public class PostService {
         }else {
             res=dao.getAll((page - 1) * utils.RESULT_PER_PAGE, utils.RESULT_PER_PAGE);
         }
-        return res.stream().map(redactable -> {
-            List<? extends Comments> comments=redactable.getComments();
-            comments=comments.stream().filter(Comments::isActive).collect(Collectors.toList());
-            redactable.setComments(comments);
-            return redactable;
-        }).collect(Collectors.toList());
+        return res;
     }
     public void addComment(Post post, Comments comment){
         comment.setTime(new Date());
         comment.setRedactable(post);
         dao.save(comment);
+    }
+    public void addComment(News news, Comments comments){
+        comments.setRedactable(news);
+        comments.setTime(new Date());
+        dao.save(comments);
+    }
+    public void redactComment(int id,boolean active,int newsId){
+        Post post=dao.get(newsId);
+        post.getComments().forEach(comment->{
+            if(comment.getId()==id) {
+                comment.setActive(active);
+                dao.update(comment);
+                dao.clearCache();
+            }
+        });
+    }
+    public void deleteComment(int commentId,int newsId){
+        Post post=dao.get(newsId);
+        Comments comment=post.getComments().stream().filter(c->c.getId()==commentId).collect(Collectors.toList()).get(0);
+        if(comment!=null) {
+            dao.delete(comment);
+            dao.update(post);
+            dao.clearCache();
+        }
     }
     public void savePost(Post post){
         dao.save(post);
