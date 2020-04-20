@@ -21,8 +21,8 @@ public class GalleryComments {
     @Column
     @Temporal(value = TemporalType.DATE)
     private Date time;
-    @Column
-    private String email;
+//    @Column
+//    private String email;
     @Column
     private String comment;
     @Column
@@ -42,13 +42,13 @@ public class GalleryComments {
         this.active = active;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getEmail() {
-        return email;
-    }
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
+//
+//    public String getEmail() {
+//        return email;
+//    }
 
     public int getId() {
         return id;

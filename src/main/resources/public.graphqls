@@ -52,7 +52,7 @@ type GalleryComments{
     id:ID
     nickname:String
     time:DateScalar
-    email:String
+   # email:String
     comment:String
     active:Boolean
 }
