@@ -5,6 +5,8 @@ package com.honor.back.honorwebapp;
 import Entities.GalleryAlbum;
 import Entities.GalleryImage;
 import com.coxautodev.graphql.tools.GraphQLResolver;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import scalars.DateScalar;
 import scalars.DoubleScalar;
 import graphql.schema.idl.RuntimeWiring;
@@ -21,6 +23,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.servlet.MultipartConfigElement;
 import java.util.List;
+import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
@@ -35,7 +38,6 @@ public class ConfigClass {
         factory.setMaxRequestSize(DataSize.parse("200MB"));
         return factory.createMultipartConfig();
     }
-
     @Bean
     public FilterRegistrationBean filterRegistrationBean() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();

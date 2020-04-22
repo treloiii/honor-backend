@@ -1,6 +1,8 @@
 package controllers;
 import Entities.*;
 import org.apache.commons.io.FileUtils;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +37,11 @@ public class PublicController {
     @Autowired
     private ResultedQuery query;
 
+    @Autowired
+    private MailService mailService;
     @RequestMapping("/test")
-    public String testBug(){
-        return "Works";
+    public void testBug(){
+        mailService.doMailing();
     }
     @RequestMapping("/get/count/{type}")
     public PaginationCountSize getCountEntity(@PathVariable("type") String type){

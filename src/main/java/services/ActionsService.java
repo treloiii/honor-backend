@@ -22,6 +22,7 @@ public class ActionsService {
     }
     public void saveAction(Actions action){
         dao.save(action);
+        //TODO сделать рассылку
     }
 
     public void updateAction(Actions action){

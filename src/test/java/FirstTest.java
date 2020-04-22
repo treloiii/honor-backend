@@ -3,6 +3,7 @@ import dao.PostDAO;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import services.MailService;
 import services.PostService;
 import utils.Directory;
 import utils.FolderFile;
