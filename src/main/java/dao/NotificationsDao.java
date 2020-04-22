@@ -21,7 +21,6 @@ public class NotificationsDao implements DAOSkeleton<Notifications> {
         session.update(updatedObject);
         session.getTransaction().commit();
         session.close();
-        this.clearCache();
     }
 
     @Override
@@ -31,7 +30,6 @@ public class NotificationsDao implements DAOSkeleton<Notifications> {
         session.save(savedObject);
         session.getTransaction().commit();
         session.close();
-        this.clearCache();
     }
 
     @Override

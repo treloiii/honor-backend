@@ -43,6 +43,14 @@ public class PublicController {
     public void testBug(){
         mailService.doMailing();
     }
+    @RequestMapping("/subscribe")
+    public void subscribe(@RequestParam("email") String email,@RequestParam("name") String name){
+        mailService.subscribe(email,name);
+    }
+    @RequestMapping("/unsubscribe")
+    public void subscribe(@RequestParam("id") int id){
+        mailService.unsubscribe(id);
+    }
     @RequestMapping("/get/count/{type}")
     public PaginationCountSize getCountEntity(@PathVariable("type") String type){
         switch (type) {
