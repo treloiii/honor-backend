@@ -1,18 +1,13 @@
 package controllers;
 import Entities.*;
-import org.apache.commons.io.FileUtils;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import services.*;
 import sql.ResultedQuery;
 
-import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 import java.util.*;
 
 @CrossOrigin
@@ -40,8 +35,8 @@ public class PublicController {
     @Autowired
     private MailService mailService;
     @RequestMapping("/test")
-    public void testBug(){
-        mailService.doMailing();
+    public String testBug(){
+        return utils.BACKEND_URL;
     }
     @RequestMapping("/subscribe")
     public void subscribe(@RequestParam("email") String email,@RequestParam("name") String name){
@@ -230,7 +225,7 @@ public class PublicController {
             String decode=new String(decoded, StandardCharsets.UTF_8);
             System.out.println(decode);
 //            String command="mysqldump -u trelloiii -p"+ decode+"  honor > ~/honor-server/static/dump.sql";
-            String command=Utils.BASE_SERVER_PATH+"./dump.sh";
+            String command=utils.BASE_SERVER_PATH+"./dump.sh";
             System.out.println(command);
             Process pr=rt.exec(command);
 

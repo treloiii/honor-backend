@@ -2,10 +2,7 @@ package controllers;
 
 import Entities.*;
 import org.apache.commons.io.FileUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import utils.Directory;
-import utils.FolderFile;
 import utils.Utils;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +70,7 @@ public class AdminController {
 //                rs.next();
 //                String title = rs.getString("title");
                 String title=redactable.getTitle();
-                String delPath=Utils.BASE_SERVER_PATH+"static/" + type + "/" + utils.transliterate(title)+"/";
+                String delPath= utils.BASE_SERVER_PATH+"static/" + type + "/" + utils.transliterate(title)+"/";
                 System.out.println(title);
 //                FileUtils.deleteDirectory(new File(delPath));
 //                Utils.deleteDirectory(new File(delPath));
@@ -132,7 +129,7 @@ public class AdminController {
     @RequestMapping(value="/upload/story", method= RequestMethod.POST)
     public @ResponseBody String handleFileUpload(@RequestParam("post") String posted,
                                                  @RequestParam("file") MultipartFile file){
-        String serverPath = Utils.BASE_SERVER_PATH+"static/memo/";
+        String serverPath = utils.BASE_SERVER_PATH+"static/memo/";
         Gson gson =new Gson();
         Post post=gson.fromJson(posted,Post.class);
         String fileUploadResult=utils.fileUpload(serverPath,post.getTitle(),file);
@@ -226,24 +223,26 @@ public class AdminController {
             File currentTitleImageMini;
             File tempFile=null;
             File tempFile1=null;
-            if (!updatable.equals("new")) {
+            if (updatable.equals("update")) {
+                System.err.println("UPDATE");
                 try {
-                    String tempDir=Utils.BASE_SERVER_PATH+"static/temp/"+section.getTitle_image_name()+".jpg";
-                    String tempDir1=Utils.BASE_SERVER_PATH+"static/temp/"+section.getTitle_image_name()+"_cropped.jpg";
+                    String tempDir= utils.BASE_SERVER_PATH+"static/temp/"+section.getTitle_image_name()+".jpg";
+                    String tempDir1= utils.BASE_SERVER_PATH+"static/temp/"+section.getTitle_image_name()+"_cropped.jpg";
                     tempFile=new File(tempDir);
                     tempFile1=new File(tempDir1);
-                    currentTitleImage=new File(Utils.BASE_SERVER_PATH+"static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"+section.getTitle_image_name()+".jpg");
-                    currentTitleImageMini=new File(Utils.BASE_SERVER_PATH+"static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"+section.getTitle_image_name()+"_cropped.jpg");
-                    Utils.copy(currentTitleImage,tempFile);
-                    Utils.copy(currentTitleImageMini,tempFile1);
-                    FileUtils.deleteDirectory(new File(Utils.BASE_SERVER_PATH+"/" + type + "/" + utils.transliterate(section.getTitle()) + "/"));
+                    currentTitleImage=new File(utils.BASE_SERVER_PATH+"static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"+section.getTitle_image_name()+".jpg");
+                    currentTitleImageMini=new File(utils.BASE_SERVER_PATH+"static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"+section.getTitle_image_name()+"_cropped.jpg");
+                    utils.copy(currentTitleImage,tempFile);
+                    utils.copy(currentTitleImageMini,tempFile1);
+                    System.err.println("DELETING DIR");
+                    FileUtils.deleteDirectory(new File(utils.BASE_SERVER_PATH+"static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"));
                 } catch (Exception e) {
                     System.out.println("cannot find dir");
                 }
             }
 
             titleImageName = utils.transliterate(titleImageName);
-            String uploadPath = Utils.BASE_SERVER_PATH+"static/" + type + "/" + utils.transliterate(title) + "/";
+            String uploadPath = utils.BASE_SERVER_PATH+"static/" + type + "/" + utils.transliterate(title) + "/";
             new File(uploadPath.substring(0, uploadPath.length() - 1)).mkdirs();
             String[] buf = description.split("_paste_");
             String finalStr = "";
@@ -278,8 +277,8 @@ public class AdminController {
                 File uploadOld=new File(uploadPath+section.getTitle_image_name()+".jpg");
                 File uploadOld1=new File(uploadPath+section.getTitle_image_name()+"_cropped.jpg");
                 try {
-                    Utils.copy(tempFile,uploadOld);
-                    Utils.copy(tempFile1,uploadOld1);
+                    utils.copy(tempFile,uploadOld);
+                    utils.copy(tempFile1,uploadOld1);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -337,14 +336,14 @@ public class AdminController {
         imagesList= Arrays.asList(gson.fromJson(images,GalleryImage[].class));
         GalleryAlbum album=albumService.getAlbum(album_id);
         String response="";
-        String serverPath = Utils.BASE_SERVER_PATH+"static/gallery/" + album.getId()+"/";
+        String serverPath = utils.BASE_SERVER_PATH+"static/gallery/" + album.getId()+"/";
         int index=0;
         for (GalleryImage image:imagesList) {
             image.setName(utils.transliterate(image.getName()));
             String fileUploadResult=utils.fileUpload(serverPath,image.getName(),files[index]);
             if(!fileUploadResult.equals("file exists")&&!fileUploadResult.equals("file empty")){
                 image.setServer_path(serverPath);
-                image.setUrl(Utils.BACKEND_URL+"static/gallery/" + album.getId() + "/" + image.getName() + ".jpg");
+                image.setUrl(utils.BACKEND_URL+"static/gallery/" + album.getId() + "/" + image.getName() + ".jpg");
                 image.setAlbum(album);
                 galleryService.addGalleryPhoto(image);
             }
@@ -407,7 +406,7 @@ public class AdminController {
     @RequestMapping("/lastIn")
     public String saveLastInToLog(String address){
         try {
-            File log = new File(Utils.BASE_SERVER_PATH+"lastIn.log");
+            File log = new File(utils.BASE_SERVER_PATH+"lastIn.log");
             PrintWriter writer = new PrintWriter(new FileWriter(log,true));
             writer.println("last in by: "+address+" at "+new Date().toString());
             writer.close();
@@ -420,7 +419,7 @@ public class AdminController {
 
     @RequestMapping("/clearTemp")
     public String clearTemp(){
-        File temp =new File(Utils.BASE_SERVER_PATH+"static/temp");
+        File temp =new File(utils.BASE_SERVER_PATH+"static/temp");
         try {
             FileUtils.deleteDirectory(temp);
             temp.mkdirs();

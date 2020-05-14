@@ -10,11 +10,9 @@ public class Veterans {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column
-    private String name;
+    private String fio;
     @Column
-    private String surname;
-    @Column
-    private String patronomyc;
+    private String post;
     @Column
     private String rank;
     @ManyToMany(cascade = {CascadeType.ALL},fetch = FetchType.EAGER)
@@ -34,16 +32,13 @@ public class Veterans {
     public Veterans() {
     }
 
-    public void setName(String name) {
-        this.name = name;
+
+    public void setFio(String fio) {
+        this.fio = fio;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public void setPatronomyc(String patronomyc) {
-        this.patronomyc = patronomyc;
+    public void setPost(String post) {
+        this.post = post;
     }
 
     public void setRank(String rank) {
@@ -54,16 +49,12 @@ public class Veterans {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFio() {
+        return fio;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public String getPatronomyc() {
-        return patronomyc;
+    public String getPost() {
+        return post;
     }
 
     public String getRank() {

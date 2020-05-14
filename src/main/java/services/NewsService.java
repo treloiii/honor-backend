@@ -74,10 +74,10 @@ public class NewsService {
     }
 
     public Double getCount(){
-        if(dao.getCount()%utils.RESULT_PER_PAGE==0)
-            return Math.floor(dao.getCount()/utils.RESULT_PER_PAGE);
+        if(dao.getCount()% utils.RESULT_PER_PAGE==0)
+            return Math.floor(dao.getCount()/ utils.RESULT_PER_PAGE);
         else
-            return Math.floor(dao.getCount()/utils.RESULT_PER_PAGE)+1;
+            return Math.floor(dao.getCount()/ utils.RESULT_PER_PAGE)+1;
     }
     public void clearCache(){
         dao.clearCache();

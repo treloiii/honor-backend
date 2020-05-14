@@ -51,7 +51,7 @@ public class AlbumService {
     public void addAlbum(GalleryAlbum album){
         album.setCreation_date(new Date());
         dao.save(album);
-        new File(Utils.BASE_SERVER_PATH+"static/gallery/"+album.getId()).mkdirs();
+        new File(utils.BASE_SERVER_PATH+"static/gallery/"+album.getId()).mkdirs();
     }
 
     public void updateAlbum(int id,String name){
@@ -62,7 +62,7 @@ public class AlbumService {
 
     public String deleteAlbum(int id){
         try {
-            FileUtils.deleteDirectory(new File(Utils.BASE_SERVER_PATH+"static/gallery/" + id + "/"));
+            FileUtils.deleteDirectory(new File(utils.BASE_SERVER_PATH+"static/gallery/" + id + "/"));
             dao.delete(dao.get(id));
             return "success";
         }

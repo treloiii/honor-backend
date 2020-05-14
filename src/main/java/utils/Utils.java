@@ -2,6 +2,7 @@ package utils;
 
 import Entities.Redactable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -36,10 +37,14 @@ import java.util.zip.ZipOutputStream;
 @Component("utils")
 public class Utils {
     //prod
-    public static final String BASE_SERVER_PATH="/var/www/honor/data/";
-    public static final String BACKEND_URL="http://server.veteran-chest.ru/";
+    @Value("${base.server.path}")
+    public String BASE_SERVER_PATH;//="/var/www/honor/data/";
+    @Value("${backend.url}")
+    public String BACKEND_URL;//="http://server.veteran-chest.ru/";
     //dev
+//    @Value("${base.server.path}")
 //    public static final String BASE_SERVER_PATH="/home/ensler/honor-server/";
+//    @Value("${backend.url}")
 //    public static final String BACKEND_URL="http://database.ensler.ru/static/";
     public int RESULT_PER_PAGE;
     @Autowired

@@ -1,7 +1,5 @@
 package query;
 
-import Entities.News;
-import Entities.Post;
 import Entities.Redactable;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
