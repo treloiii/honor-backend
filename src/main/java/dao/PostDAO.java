@@ -1,6 +1,7 @@
 package dao;
 
-import Entities.Redactable;
+import Entities.Comments;
+import Entities.deprecated.Redactable;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
 import Entities.Post;
 import org.hibernate.Session;
@@ -11,16 +12,20 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import sql.ResultedQuery;
 
-import java.math.BigInteger;
-import java.sql.ResultSet;
 import java.util.List;
 @Component("postDao")
 @Scope("prototype")
-public class PostDAO implements DAOSkeleton {
-    @Autowired
-    private ResultedQuery rq;
+public class PostDAO implements DAOSkeleton<Post> {
     @Override
-    public void update(Object updatedObject) {
+    public void update(Post updatedObject) {
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        session.update(updatedObject);
+        session.getTransaction().commit();
+        session.close();
+        this.clearCache();
+    }
+    public void updateComment(Comments updatedObject) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         session.update(updatedObject);
@@ -30,7 +35,7 @@ public class PostDAO implements DAOSkeleton {
     }
 
     @Override
-    public void save(Object savedObject) {
+    public void save(Post savedObject) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         session.save(savedObject);
@@ -50,7 +55,15 @@ public class PostDAO implements DAOSkeleton {
     }
 
     @Override
-    public void delete(Object updatedObject) {
+    public void delete(Post updatedObject) {
+        Session session= HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        session.delete(updatedObject);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public void deleteComment(Comments updatedObject) {
         Session session= HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         session.delete(updatedObject);
@@ -59,13 +72,16 @@ public class PostDAO implements DAOSkeleton {
     }
 
     @Override
-    public List<Redactable> getAll(int from, int to) {
+    public List<Post> getAll(int from, int to,String type) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        Query query=session.createQuery("From Post p", Post.class).setFirstResult(from).setMaxResults(to);
+        Query<Post> query=session.createQuery("From Post p where p.type=:type", Post.class)
+                .setParameter("type",type)
+                .setFirstResult(from)
+                .setMaxResults(to);
         query.setCacheable(true);
         query.setCacheRegion("POST_LIST");
-        List<Redactable> posts=query.list();
+        List<Post> posts=query.list();
         session.getTransaction().commit();
         session.close();
         return posts;
@@ -85,27 +101,19 @@ public class PostDAO implements DAOSkeleton {
         return retVal;
     }
 
-    public Post getLast(){
+    public Post getLast(String type){
         Session session= HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
         Post post;
-        Query<Post> query=session.createQuery("select new Post(id,title,title_image,coords,title_image_mini) from Post order by id desc",Post.class).setMaxResults(1);
+        Query<Post> query=session
+                .createQuery("select new Post(id,title,title_image,title_image_mini) from Post p where p.type=:type order by id desc",Post.class)
+                .setParameter("type",type)
+                .setMaxResults(1);
         query.setCacheable(true);
         query.setCacheRegion("LAST_POST");
         post=query.getSingleResult();
         session.getTransaction().commit();
         session.close();
-//        Post post=new Post();
-//        try {
-//            ResultSet rs = rq.getResultSet("select id,title, title_image from honor_main_posts order by id desc");
-//            rs.next();
-//            post.setTitle_image(rs.getString("title_image"));
-//            post.setTitle(rs.getString("title"));
-//            post.setId(rs.getInt("id"));
-//        }
-//        catch (Exception e){
-//            e.printStackTrace();
-//        }
         return post;
     }
 

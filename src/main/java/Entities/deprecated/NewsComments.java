@@ -1,4 +1,4 @@
-package Entities;
+package Entities.deprecated;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 

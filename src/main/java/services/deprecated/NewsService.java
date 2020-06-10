@@ -1,10 +1,10 @@
-package services;
+package services.deprecated;
 
-import Entities.Comments;
-import Entities.News;
-import Entities.Redactable;
+import Entities.deprecated.Comments;
+import Entities.deprecated.News;
+import Entities.deprecated.Redactable;
 import utils.Utils;
-import dao.NewsDAO;
+import dao.deprecated.NewsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,12 +14,13 @@ import java.util.stream.Collectors;
 
 @Component("newsService")
 public class NewsService {
-    @Autowired
-    private NewsDAO dao;
-    @Autowired
-    private Utils utils;
+    private final NewsDAO dao;
+    private final Utils utils;
 
-    public NewsService() {
+    @Autowired
+    public NewsService(NewsDAO dao, Utils utils) {
+        this.dao = dao;
+        this.utils = utils;
     }
 
     public List<Redactable> getAllnews(int page, Integer count){

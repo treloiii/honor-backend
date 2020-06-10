@@ -1,7 +1,7 @@
 package com.honor.back.honorwebapp;
 
 import Entities.*;
-import org.aspectj.weaver.ast.Not;
+import Entities.deprecated.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 

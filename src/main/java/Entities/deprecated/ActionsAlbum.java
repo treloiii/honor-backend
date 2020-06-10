@@ -1,4 +1,4 @@
-package Entities;
+package Entities.deprecated;
 
 import javax.persistence.*;
 import java.util.List;

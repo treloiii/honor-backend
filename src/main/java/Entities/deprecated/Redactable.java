@@ -1,4 +1,6 @@
-package Entities;
+package Entities.deprecated;
+
+import Entities.deprecated.Comments;
 
 import java.util.Date;
 import java.util.List;

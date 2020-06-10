@@ -1,6 +1,7 @@
-package Entities;
+package Entities.deprecated;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -24,7 +25,7 @@ public class Actions implements Redactable {
     @Column
     private String description;
     @Column
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     private Date time;
     @Column
     private String author;
@@ -42,6 +43,7 @@ public class Actions implements Redactable {
     @OneToMany(mappedBy = "actions1",fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonTypeInfo(use= JsonTypeInfo.Id.CLASS)
     private List<ActionsComments> comments;
 
     @JsonIgnore

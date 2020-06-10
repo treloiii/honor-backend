@@ -1,5 +1,6 @@
-package Entities;
+package Entities.deprecated;
 
+import Entities.Post;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;

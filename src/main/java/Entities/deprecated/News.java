@@ -1,4 +1,4 @@
-package Entities;
+package Entities.deprecated;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
@@ -41,7 +41,30 @@ public class News implements Redactable {
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<NewsComments> comments;
 
-    public News(int id, String title, String title_image,String coords,String title_image_mini) {
+    public News(String description, Date time, String author, String title_image_name, String description_short, List<NewsComments> comments) {
+        this.description = description;
+        this.time = time;
+        this.author = author;
+        this.title_image_name = title_image_name;
+        this.description_short = description_short;
+        this.comments = comments;
+    }
+
+    public News(int id, String title, String description, Date time, String author, String title_image, String title_image_name, String coords, String title_image_mini, String description_short, List<NewsComments> comments) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.time = time;
+        this.author = author;
+        this.title_image = title_image;
+        this.title_image_name = title_image_name;
+        this.coords = coords;
+        this.title_image_mini = title_image_mini;
+        this.description_short = description_short;
+        this.comments = comments;
+    }
+
+    public News(int id, String title, String title_image, String coords, String title_image_mini) {
         this.id = id;
         this.title = title;
         this.title_image = title_image;

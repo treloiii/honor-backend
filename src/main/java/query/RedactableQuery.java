@@ -1,12 +1,12 @@
 package query;
 
-import Entities.Redactable;
+import Entities.deprecated.Redactable;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import services.ActionsService;
+import services.deprecated.ActionsService;
 import services.AlbumService;
-import services.NewsService;
+import services.deprecated.NewsService;
 import services.PostService;
 import utils.PaginationCountSize;
 import utils.Utils;

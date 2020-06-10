@@ -1,9 +1,7 @@
 package services;
 
 import Entities.Comments;
-import Entities.News;
 import Entities.Post;
-import Entities.Redactable;
 import utils.Utils;
 import dao.PostDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +13,13 @@ import java.util.stream.Collectors;
 
 @Component("postService")
 public class PostService {
-    @Autowired
-    private PostDAO dao;
-    @Autowired
+    private final PostDAO dao;
+    final
     Utils utils;
 
-    public PostService() {
+    public PostService(PostDAO dao, Utils utils) {
+        this.dao = dao;
+        this.utils = utils;
     }
 
     public void updatePost(Post post){
@@ -29,31 +28,26 @@ public class PostService {
     public Post getPostById(int id){
         return dao.get(id);
     }
-    public List<Redactable> getAllPosts(int page, Integer count){
-        List<Redactable> res;
+    public List<Post> getAllPosts(int page, Integer count,String type){
+        List<Post> res;
         if(count!=null&&!count.equals(0)){
-            res=dao.getAll(0, count);
+            res=dao.getAll(0, count,type);
         }else {
-            res=dao.getAll((page - 1) * utils.RESULT_PER_PAGE, utils.RESULT_PER_PAGE);
+            res=dao.getAll((page - 1) * utils.RESULT_PER_PAGE, utils.RESULT_PER_PAGE,type);
         }
         return res;
     }
     public void addComment(Post post, Comments comment){
         comment.setTime(new Date());
-        comment.setRedactable(post);
-        dao.save(comment);
+        comment.setPost(post);
+        dao.save(post);
     }
-    public void addComment(News news, Comments comments){
-        comments.setRedactable(news);
-        comments.setTime(new Date());
-        dao.save(comments);
-    }
-    public void redactComment(int id,boolean active,int newsId){
-        Post post=dao.get(newsId);
+    public void redactComment(int id,boolean active,int postId){
+        Post post=dao.get(postId);
         post.getComments().forEach(comment->{
             if(comment.getId()==id) {
                 comment.setActive(active);
-                dao.update(comment);
+                dao.updateComment(comment);
                 dao.clearCache();
             }
         });
@@ -62,7 +56,7 @@ public class PostService {
         Post post=dao.get(newsId);
         Comments comment=post.getComments().stream().filter(c->c.getId()==commentId).collect(Collectors.toList()).get(0);
         if(comment!=null) {
-            dao.delete(comment);
+            dao.deleteComment(comment);
             dao.update(post);
             dao.clearCache();
         }
@@ -79,9 +73,7 @@ public class PostService {
         else
             return Math.floor(dao.getCount()/ utils.RESULT_PER_PAGE)+1;
     }
-    public void delete(Object deletedObject){
-        dao.delete(deletedObject);
-    }
+
     public void clearCache(){
         dao.clearCache();
     }

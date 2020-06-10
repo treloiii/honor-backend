@@ -1,4 +1,4 @@
-import Entities.Redactable;
+import Entities.deprecated.Redactable;
 import dao.PostDAO;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;

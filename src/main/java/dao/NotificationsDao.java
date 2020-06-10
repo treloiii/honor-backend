@@ -1,13 +1,9 @@
 package dao;
 
-import Entities.News;
 import Entities.Notifications;
-import Entities.Redactable;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
-import org.aspectj.weaver.ast.Not;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

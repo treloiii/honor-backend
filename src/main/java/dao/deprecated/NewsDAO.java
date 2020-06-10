@@ -1,8 +1,8 @@
-package dao;
-import Entities.Comments;
-import Entities.Redactable;
+package dao.deprecated;
+import Entities.deprecated.Redactable;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
-import Entities.News;
+import Entities.deprecated.News;
+import dao.DAOSkeleton;
 import org.hibernate.Session;
 import org.hibernate.cache.internal.EnabledCaching;
 import org.hibernate.query.Query;
@@ -10,12 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sql.ResultedQuery;
 
-import javax.persistence.TypedQuery;
-import java.math.BigInteger;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component("newsDao")
 public class NewsDAO implements DAOSkeleton {

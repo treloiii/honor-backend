@@ -1,13 +1,15 @@
 package query;
 
-import Entities.Actions;
+import Entities.deprecated.Actions;
 import Entities.GalleryImage;
-import Entities.News;
+import Entities.deprecated.News;
 import Entities.Post;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import services.*;
+import services.deprecated.ActionsService;
+import services.deprecated.NewsService;
 import utils.GridObject;
 
 import java.util.ArrayList;

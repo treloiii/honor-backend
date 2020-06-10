@@ -4,11 +4,16 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface DAOSkeleton <T>{
-    public void update(T updatedObject);
-    public void save(T savedObject);
-    public T get(int id);
-    public void delete(T updatedObject);
-    public List<T> getAll(int from,int to);
-    public Long getCount();
-    public void clearCache();
+    void update(T updatedObject);
+    void save(T savedObject);
+    T get(int id);
+    void delete(T updatedObject);
+    default List<T> getAll(int from,int to){
+        throw new IllegalStateException("getAll is unsupported");
+    }
+    default List<T> getAll(int from,int to,String type){
+        throw new IllegalStateException("getAll is unsupported");
+    }
+    Long getCount();
+    void clearCache();
 }

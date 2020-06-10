@@ -1,4 +1,4 @@
-package Entities;
+package Entities.deprecated;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -27,6 +27,15 @@ public class ActionsComments implements Comments {
     @JoinColumn(name = "rally_id")
     private Actions actions1;
     public ActionsComments() {
+    }
+
+    public ActionsComments(int id,String nickname, String description, Date time, boolean active, Actions actions1) {
+        this.id=id;
+        this.nickname = nickname;
+        this.description = description;
+        this.time = time;
+        this.active = active;
+        this.actions1 = actions1;
     }
 
     @Override

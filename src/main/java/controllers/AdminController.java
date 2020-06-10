@@ -1,7 +1,12 @@
 package controllers;
 
 import Entities.*;
+import Entities.deprecated.Actions;
+import Entities.deprecated.News;
+import Entities.deprecated.Redactable;
 import org.apache.commons.io.FileUtils;
+import services.deprecated.ActionsService;
+import services.deprecated.NewsService;
 import utils.Directory;
 import utils.Utils;
 import com.google.gson.Gson;
@@ -187,6 +192,7 @@ public class AdminController {
                              @DateTimeFormat(pattern = "yyyy-mm-dd") Date time,
                              @RequestParam("coords") String coords,
                              @PathVariable("updatable") String updatable,
+                             @RequestParam(value = "newType",required = false) String newType,
                              @PathVariable(value = "type") String type){//type:{news,memo,events,rally}
         if(type.equals("news")||type.equals("memo")||type.equals("events")||type.equals("rally")) {
             System.out.println(type);
@@ -225,6 +231,10 @@ public class AdminController {
             File tempFile1=null;
             if (updatable.equals("update")) {
                 System.err.println("UPDATE");
+                if(!type.equals(newType)){
+                    // тут надо поменять тип
+
+                }
                 try {
                     String tempDir= utils.BASE_SERVER_PATH+"static/temp/"+section.getTitle_image_name()+".jpg";
                     String tempDir1= utils.BASE_SERVER_PATH+"static/temp/"+section.getTitle_image_name()+"_cropped.jpg";

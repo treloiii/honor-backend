@@ -1,14 +1,14 @@
 package utils;
 
-import Entities.Redactable;
+import Entities.deprecated.Redactable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import services.ActionsService;
-import services.NewsService;
+import services.deprecated.ActionsService;
+import services.deprecated.NewsService;
 import services.PostService;
 import sql.ResultedQuery;
 
@@ -25,9 +25,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -107,7 +104,7 @@ public class Utils {
         return dir.delete();
     }
 
-    public static void copy(File src, File dest) throws IOException {
+    public void copy(File src, File dest) throws IOException {
         try (InputStream is = new FileInputStream(src); OutputStream os = new FileOutputStream(dest)) {
 
             // buffer size 1K

@@ -1,5 +1,8 @@
 package controllers;
 import Entities.*;
+import Entities.deprecated.*;
+import services.deprecated.ActionsService;
+import services.deprecated.NewsService;
 import utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

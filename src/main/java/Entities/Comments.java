@@ -1,16 +1,28 @@
 package Entities;
 
+import Entities.deprecated.News;
+import lombok.Data;
 
+import javax.persistence.*;
 import java.util.Date;
-public interface Comments {
-    int getId();
-    String getNickname();
-    String getDescription();
-    Date getTime();
-    void setNickname(String nickname);
-    void setDescription(String description);
-    void setTime(Date time);
-    void setRedactable(Redactable redactable);
-    void setActive(boolean acitve);
-    boolean isActive();
+
+@Entity
+@Data
+@Table(name = "comments")
+public class Comments {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column
+    private String nickname;
+    @Column
+    private String description;
+    @Column
+    @Temporal(value = TemporalType.DATE)
+    private Date time;
+    @Column
+    private boolean active;
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 }

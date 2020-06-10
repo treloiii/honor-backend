@@ -1,21 +1,18 @@
-package dao;
+package dao.deprecated;
 
-import Entities.Actions;
-import Entities.ActionsType;
-import Entities.Redactable;
+import Entities.deprecated.Actions;
+import Entities.deprecated.ActionsType;
+import Entities.deprecated.Redactable;
 import com.honor.back.honorwebapp.HibernateSessionFactory;
-import org.hibernate.Criteria;
+import dao.DAOSkeleton;
 import org.hibernate.Session;
 import org.hibernate.cache.internal.EnabledCaching;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import sql.ResultedQuery;
 
-import java.math.BigInteger;
-import java.sql.ResultSet;
 import java.util.List;
 @Component("rallyDao")
 @Scope("prototype")

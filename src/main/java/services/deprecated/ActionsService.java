@@ -1,8 +1,8 @@
-package services;
+package services.deprecated;
 
-import Entities.*;
+import Entities.deprecated.*;
 import utils.Utils;
-import dao.ActionsDAO;
+import dao.deprecated.ActionsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +28,7 @@ public class ActionsService {
     public void updateAction(Actions action){
         dao.update(action);
     }
-    public List<Redactable> getAllRallies(int page, Integer count,int type){
+    public List<Redactable> getAllRallies(int page, Integer count, int type){
         List<Redactable> res;
         if(count!=null&&!count.equals(0)){
             res=dao.getAllConcrete(type,0,count);
