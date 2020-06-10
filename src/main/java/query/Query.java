@@ -14,6 +14,9 @@ import utils.GridObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Component
 public class Query implements GraphQLQueryResolver {
     @Autowired
@@ -30,33 +33,30 @@ public class Query implements GraphQLQueryResolver {
     }
 
     public List<GridObject> getGrid(){
-        List<GridObject> grid=new ArrayList<>();
-        Actions rally=actionsService.getLast(1);
-        String coords=rally.getCoords();
-        if(coords==null)
-            grid.add(new GridObject(rally.getTitle_image(),rally.getTitle(),rally.getId(),"/rally","Автопробеги","null",rally.getTitle_image_mini()));
-        else
-            grid.add(new GridObject(rally.getTitle_image(),rally.getTitle(),rally.getId(),"/rally","Автопробеги",coords,rally.getTitle_image_mini()));
-        News news=newsService.getLast();
-        coords=news.getCoords();
-        if(coords==null)
-            grid.add(new GridObject(news.getTitle_image(),news.getTitle(),news.getId(),"/news","Новости","null",news.getTitle_image_mini()));
-        else
-            grid.add(new GridObject(news.getTitle_image(),news.getTitle(),news.getId(),"/news","Новости",coords,news.getTitle_image_mini()));
-        Post post=postService.getLast();
-        coords=post.getCoords();
-        if(coords==null)
-            grid.add(new GridObject(post.getTitle_image(),post.getTitle(),post.getId(),"/memories","Воспоминания","null",post.getTitle_image_mini()));
-        else
-            grid.add(new GridObject(post.getTitle_image(),post.getTitle(),post.getId(),"/memories","Воспоминания",coords,post.getTitle_image_mini()));
-        Actions event=actionsService.getLast(2);
-        coords=event.getCoords();
-        if(coords==null)
-            grid.add(new GridObject(event.getTitle_image(),event.getTitle(),event.getId(),"/events","Мероприятия","null",event.getTitle_image_mini()));
-        else
-            grid.add(new GridObject(event.getTitle_image(),event.getTitle(),event.getId(),"/events","Мероприятия",coords,event.getTitle_image_mini()));
-        GalleryImage image=galleryService.getLast();
-        grid.add(new GridObject(image.getUrl(),image.getAlbum().getName(),image.getId(),"/gallery","Галерея","null","not set"));
+        List<GridObject> grid = Stream.of("memo","news","rally","events")
+                .map(s->{
+                    Post post=postService.getLast(s);
+                    String type=mapType(s);
+                    s=s.equals("memo")?"/memories":"/"+s;
+                    return new GridObject(post.getTitle_image(),post.getTitle(),post.getId(),s,type,post.getTitle_image_mini());
+                })
+                .collect(Collectors.toList());
+        GalleryImage image = galleryService.getLast();
+        grid.add(new GridObject(image.getUrl(), image.getAlbum().getName(), image.getId(), "/gallery", "Галерея", "not set"));
         return grid;
+    }
+    private String mapType(String s) {
+        switch (s){
+            case "rally":
+                return "Автопробеги";
+            case "events":
+                return "Мероприятия";
+            case "news":
+                return "Новости";
+            case "memo":
+                return "Воспоминания";
+            default:
+                throw new IllegalArgumentException("cant map "+s);
+        }
     }
 }

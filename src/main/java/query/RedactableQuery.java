@@ -1,5 +1,6 @@
 package query;
 
+import Entities.Post;
 import Entities.deprecated.Redactable;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,38 +30,35 @@ public class RedactableQuery implements GraphQLQueryResolver {
     public RedactableQuery() {
     }
 
-    public List<Redactable> getAll(int page, int count,int type){//type:[1-Rally,2-Events,3...-Post,4-News
-        if(type==1||type==2)
-            return actionsService.getAllRallies(page,count,type);
-        else if(type==4)
-            return newsService.getAllnews(page,count);
-        else
-            return postService.getAllPosts(page,count);
+    public String mapType(int type) {
+        switch (type) {
+            case 1:
+                return "rally";
+            case 2:
+                return "events";
+            case 3:
+                return "memo";
+            case 4:
+                return "news";
+            default:
+                throw new IllegalArgumentException("bad type");
+        }
     }
-    public PaginationCountSize getCount(int type){//type:5 - albums
-        if(type==1||type==2)
-            return new PaginationCountSize(actionsService.getCount(type),utils.RESULT_PER_PAGE,"none");
-        else if(type==4)
-            return new PaginationCountSize(newsService.getCount(),utils.RESULT_PER_PAGE,"none");
-        else if(type==5)
-            return new PaginationCountSize(albumService.getCount(),utils.RESULT_PER_PAGE,"none");
-        else
-            return new PaginationCountSize(postService.getCount(),utils.RESULT_PER_PAGE,"none");
+
+    public List<Post> getAll(int page, int count, int type) {//type:[1-Rally,2-Events,3...-Post,4-News
+        String mType = mapType(type);
+        return postService.getAllPosts(page, count, mType);
     }
-    public Redactable getLast(int type){
-        if(type==1||type==2)
-            return actionsService.getLast(type);
-        else if(type==4)
-            return newsService.getLast();
-        else
-            return postService.getLast();
+
+    public PaginationCountSize getCount(int type) {//type:5 - albums
+        return new PaginationCountSize(postService.getCount(mapType(type)), utils.RESULT_PER_PAGE, "none");
     }
-    public Redactable getById(int id,int type){
-        if(type==1||type==2)
-            return actionsService.getRallyById(id);
-        else if(type==4)
-            return newsService.getNewsById(id);
-        else
-            return postService.getPostById(id);
+
+    public Post getLast(int type) {
+        return postService.getLast(mapType(type));
+    }
+
+    public Post getById(int id, int type) {
+        return postService.getPostById(id);
     }
 }

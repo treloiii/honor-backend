@@ -39,117 +39,88 @@ public class AdminController {
     private AlbumService albumService;
 
     @Autowired
-    private NewsService newsService;
-
-    @Autowired
-    private ActionsService actionsService;
-
-    @Autowired
     private OrdensService ordensService;
     @Autowired
     private ResultedQuery query;
+
     @RequestMapping("/add/post")
-    public void addPost(@RequestBody Post post){
+    public void addPost(@RequestBody Post post) {
         postService.savePost(post);
     }
 
     @RequestMapping("/delete/{type}")
-    public String deleteNews(@RequestBody int id,@PathVariable("type") String type) throws SQLException {//type={news,memo,events}
-        if(type.equals("news")||type.equals("memo")||type.equals("events")||type.equals("rally")) {
+    public String deleteNews(@RequestBody int id, @PathVariable("type") String type) throws SQLException {//type={news,memo,events}
+        if (type.equals("news") || type.equals("memo") || type.equals("events") || type.equals("rally")) {
             try {
-                Redactable redactable = null;
-                switch (type) {
-                    case "news":
-                        redactable = newsService.getNewsById(id);
-                        break;
-                    case "memo":
-                        redactable = postService.getPostById(id);
-                        break;
-                    case "events":
-                    case "rally":
-                        redactable = actionsService.getRallyById(id);
-                        break;
-                }
+                Post post = postService.getPostById(id);
+
                 //rs = this.query.getResultSet("SELECT title FROM honor_news WHERE id=" + id);
 //                assert rs != null;
 //                rs.next();
 //                String title = rs.getString("title");
-                String title=redactable.getTitle();
-                String delPath= utils.BASE_SERVER_PATH+"static/" + type + "/" + utils.transliterate(title)+"/";
+                String title = post.getTitle();
+                String delPath = utils.BASE_SERVER_PATH + "static/" + type + "/" + utils.transliterate(title) + "/";
                 System.out.println(title);
 //                FileUtils.deleteDirectory(new File(delPath));
 //                Utils.deleteDirectory(new File(delPath));
                 FileUtils.deleteDirectory(new File(delPath));
-                switch (type) {
-                    case "news":
-                        newsService.delete(redactable);
-                        newsService.clearCache();
-                        break;
-                    case "memo":
-                        postService.delete(redactable);
-                        postService.clearCache();
-                        break;
-                    case "events":
-                    case "rally":
-                        actionsService.delete(redactable);
-                        actionsService.clearCache();
-                        break;
-                }
+                postService.delete(post);
                 return "success";
             } catch (Exception e) {
                 e.printStackTrace();
                 return e + "error";
             }
-        }
-        else {
+        } else {
             return "invalid type";
         }
     }
 
 
     @RequestMapping("/delete/post")
-    public String deletePosts(@RequestBody int id) throws SQLException{
-        this.query.VoidQuery("DELETE FROM honor_main_posts WHERE id="+id);
+    public String deletePosts(@RequestBody int id) throws SQLException {
+        this.query.VoidQuery("DELETE FROM honor_main_posts WHERE id=" + id);
         return "success";
     }
 
     @RequestMapping("/delete/img")
-    public String deleteGalleryImage(@RequestBody int id){
-        if(this.galleryService.deletePhoto(id)){
+    public String deleteGalleryImage(@RequestBody int id) {
+        if (this.galleryService.deletePhoto(id)) {
             return "success";
-        }
-        else{
+        } else {
             return "error";
         }
     }
+
     @RequestMapping("/update/album")
-    public String updateAlbum(@RequestParam("id") int id,@RequestParam("name") String name){
-        albumService.updateAlbum(id,name);
+    public String updateAlbum(@RequestParam("id") int id, @RequestParam("name") String name) {
+        albumService.updateAlbum(id, name);
         return "success";
     }
+
     @RequestMapping("/delete/album")
-    public String deleteAlbum(@RequestBody int id){
+    public String deleteAlbum(@RequestBody int id) {
         return albumService.deleteAlbum(id);
     }
-    @RequestMapping(value="/upload/story", method= RequestMethod.POST)
-    public @ResponseBody String handleFileUpload(@RequestParam("post") String posted,
-                                                 @RequestParam("file") MultipartFile file){
-        String serverPath = utils.BASE_SERVER_PATH+"static/memo/";
-        Gson gson =new Gson();
-        Post post=gson.fromJson(posted,Post.class);
-        String fileUploadResult=utils.fileUpload(serverPath,post.getTitle(),file);
-        if(!fileUploadResult.equals("file exists")&&!fileUploadResult.equals("file empty")){
+
+    @RequestMapping(value = "/upload/story", method = RequestMethod.POST)
+    public @ResponseBody
+    String handleFileUpload(@RequestParam("post") String posted,
+                            @RequestParam("file") MultipartFile file) {
+        String serverPath = utils.BASE_SERVER_PATH + "static/memo/";
+        Gson gson = new Gson();
+        Post post = gson.fromJson(posted, Post.class);
+        String fileUploadResult = utils.fileUpload(serverPath, post.getTitle(), file);
+        if (!fileUploadResult.equals("file exists") && !fileUploadResult.equals("file empty")) {
             post.setTitle_image(fileUploadResult);
             postService.savePost(post);
             return "success";
-        }
-        else{
+        } else {
             return fileUploadResult;
         }
     }
 
     @RequestMapping("/set/pagination/{count}")
-    public Integer setPagiation(@PathVariable int count){
+    public Integer setPagination(@PathVariable int count) {
         try {
             return this.utils.setResultPerPage(count);
         } catch (SQLException e) {
@@ -157,102 +128,64 @@ public class AdminController {
             return -1;
         }
     }
+
     @RequestMapping("/clear/cache/{type}")
-    public String clearCache(@PathVariable("type") String type){
+    public String clearCache(@PathVariable("type") String type) {
         System.out.println(type);
-        switch (type) {
-            case "events":
-            case "rally":
-                actionsService.clearCache();
-                break;
-            case "news":
-                newsService.clearCache();
-                break;
-            case "memo":
-                postService.clearCache();
-                break;
-            case "gallery":
-                albumService.clearCache();
-                break;
-            default:
-                System.out.println("invalid type "+type);
-        }
+        postService.clearCache();
         return "success";
     }
 
 
-    @RequestMapping(value = "/upload/{type}/{updatable}",method = RequestMethod.POST)
-    public String uploadNews(@RequestParam("pic") MultipartFile[] images,@RequestParam(value = "title_pic",required = false) MultipartFile titleImage,
-                             @RequestParam(value = "title_pic_mini",required = false) MultipartFile titleImage_mini,
+    @RequestMapping(value = "/upload/{type}/{updatable}", method = RequestMethod.POST)
+    public String uploadNews(@RequestParam("pic") MultipartFile[] images, @RequestParam(value = "title_pic", required = false) MultipartFile titleImage,
+                             @RequestParam(value = "title_pic_mini", required = false) MultipartFile titleImage_mini,
                              @RequestParam("title") String title,
                              @RequestParam("description") String description,
                              @RequestParam("description_short") String descriptionShort,
-                             @RequestParam("picname") String titleImageName,@RequestParam(value = "news_id",required = false) Integer id,
-                             @RequestParam(value = "time",required = false)
+                             @RequestParam("picname") String titleImageName, @RequestParam(value = "news_id", required = false) Integer id,
+                             @RequestParam(value = "time", required = false)
                              @DateTimeFormat(pattern = "yyyy-mm-dd") Date time,
                              @RequestParam("coords") String coords,
                              @PathVariable("updatable") String updatable,
-                             @RequestParam(value = "newType",required = false) String newType,
-                             @PathVariable(value = "type") String type){//type:{news,memo,events,rally}
-        if(type.equals("news")||type.equals("memo")||type.equals("events")||type.equals("rally")) {
+                             @RequestParam(value = "newType", required = false) String newType,
+                             @PathVariable(value = "type") String type) {//type:{news,memo,events,rally}
+        if (type.equals("news") || type.equals("memo") || type.equals("events") || type.equals("rally")) {
             System.out.println(type);
-            Redactable section = null;
+            Post section = null;
             try {
-                switch (type) {
-                    case "news":
-                        section = newsService.getNewsById(id);
-                        break;
-                    case "memo":
-                        section = postService.getPostById(id);
-                        break;
-                    case "events":
-                    case "rally":
-                        section = actionsService.getRallyById(id);
-                        break;
-                }
+                postService.getPostById(id);
             } catch (Exception e) {
-                switch (type) {
-                    case "news":
-                        section = new News();
-                        break;
-                    case "memo":
-                        section = new Post();
-                        break;
-                    case "events":
-                    case "rally":
-                        section = new Actions();
-                        break;
-                }
-
+                section = new Post();
             }
             File currentTitleImage;
             File currentTitleImageMini;
-            File tempFile=null;
-            File tempFile1=null;
+            File tempFile = null;
+            File tempFile1 = null;
             if (updatable.equals("update")) {
                 System.err.println("UPDATE");
-                if(!type.equals(newType)){
-                    // тут надо поменять тип
-
+                if (!type.equals(newType)) {
+                    if (newType != null)
+                        section.setType(newType);
                 }
                 try {
-                    String tempDir= utils.BASE_SERVER_PATH+"static/temp/"+section.getTitle_image_name()+".jpg";
-                    String tempDir1= utils.BASE_SERVER_PATH+"static/temp/"+section.getTitle_image_name()+"_cropped.jpg";
-                    tempFile=new File(tempDir);
-                    tempFile1=new File(tempDir1);
-                    currentTitleImage=new File(utils.BASE_SERVER_PATH+"static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"+section.getTitle_image_name()+".jpg");
-                    currentTitleImageMini=new File(utils.BASE_SERVER_PATH+"static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"+section.getTitle_image_name()+"_cropped.jpg");
-                    utils.copy(currentTitleImage,tempFile);
-                    utils.copy(currentTitleImageMini,tempFile1);
+                    String tempDir = utils.BASE_SERVER_PATH + "static/temp/" + section.getTitle_image_name() + ".jpg";
+                    String tempDir1 = utils.BASE_SERVER_PATH + "static/temp/" + section.getTitle_image_name() + "_cropped.jpg";
+                    tempFile = new File(tempDir);
+                    tempFile1 = new File(tempDir1);
+                    currentTitleImage = new File(utils.BASE_SERVER_PATH + "static/" + type + "/" + utils.transliterate(section.getTitle()) + "/" + section.getTitle_image_name() + ".jpg");
+                    currentTitleImageMini = new File(utils.BASE_SERVER_PATH + "static/" + type + "/" + utils.transliterate(section.getTitle()) + "/" + section.getTitle_image_name() + "_cropped.jpg");
+                    utils.copy(currentTitleImage, tempFile);
+                    utils.copy(currentTitleImageMini, tempFile1);
                     System.err.println("DELETING DIR");
-                    FileUtils.deleteDirectory(new File(utils.BASE_SERVER_PATH+"static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"));
+                    FileUtils.deleteDirectory(new File(utils.BASE_SERVER_PATH + "static/" + type + "/" + utils.transliterate(section.getTitle()) + "/"));
                 } catch (Exception e) {
                     System.out.println("cannot find dir");
                 }
             }
 
             titleImageName = utils.transliterate(titleImageName);
-            String uploadPath = utils.BASE_SERVER_PATH+"static/" + type + "/" + utils.transliterate(title) + "/";
+            String uploadPath = utils.BASE_SERVER_PATH + "static/" + type + "/" + utils.transliterate(title) + "/";
             new File(uploadPath.substring(0, uploadPath.length() - 1)).mkdirs();
             String[] buf = description.split("_paste_");
             String finalStr = "";
@@ -268,168 +201,125 @@ public class AdminController {
                 }
                 i++;
             }
-            System.out.println("title"+titleImage);
+            System.out.println("title" + titleImage);
             String titleRes = "";
-            String titleMini="";
+            String titleMini = "";
             if (titleImage != null) {
                 titleRes = utils.fileUpload(uploadPath, titleImageName, titleImage);
-                titleMini=utils.fileUpload(uploadPath,titleImageName+"_cropped",titleImage_mini);
+                titleMini = utils.fileUpload(uploadPath, titleImageName + "_cropped", titleImage_mini);
                 if (!titleRes.equals("file exists")) {
                     System.out.println("SET TITLE IMAGE");
                     section.setTitle_image_name(titleImageName);
                     section.setTitle_image(titleRes);
                 }
-                if(!titleMini.equals("file exists")){
+                if (!titleMini.equals("file exists")) {
                     section.setTitle_image_mini(titleMini);
                 }
-            }
-            else{
-                File uploadOld=new File(uploadPath+section.getTitle_image_name()+".jpg");
-                File uploadOld1=new File(uploadPath+section.getTitle_image_name()+"_cropped.jpg");
+            } else {
+                File uploadOld = new File(uploadPath + section.getTitle_image_name() + ".jpg");
+                File uploadOld1 = new File(uploadPath + section.getTitle_image_name() + "_cropped.jpg");
                 try {
-                    utils.copy(tempFile,uploadOld);
-                    utils.copy(tempFile1,uploadOld1);
+                    utils.copy(tempFile, uploadOld);
+                    utils.copy(tempFile1, uploadOld1);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-           // if (!titleRes.equals("file exists") && !titleRes.equals("file empty")) {
+            // if (!titleRes.equals("file exists") && !titleRes.equals("file empty")) {
 
-                section.setTitle(title);
-                section.setAuthor("Admin");
-                section.setDescription(finalStr);
-                section.setDescription_short(descriptionShort);
-                section.setCoords(coords);
-                if (updatable.equals("new")) {
-                    section.setTime(new Date());
-                    if (section instanceof News) {
-                        newsService.addNews((News) section);
-                    } else if (section instanceof Post) {
-                        postService.savePost((Post) section);
-                    } else if (section instanceof Actions) {
-                        if(type.equals("rally"))
-                            ((Actions) section).setType(actionsService.getType(1));
-                        else
-                            ((Actions) section).setType(actionsService.getType(2));
-                        actionsService.saveAction((Actions) section);
-                    }
-                } else {
-                    section.setTime(time);
-                    if (section instanceof News) {
-                        newsService.updateNews((News) section);
-                    } else if (section instanceof Post) {
-                        postService.updatePost((Post) section);
-                    } else if (section instanceof Actions) {
-                        actionsService.updateAction((Actions) section);
-                    }
-                }
-          //  }
+            section.setTitle(title);
+            section.setAuthor("Admin");
+            section.setDescription(finalStr);
+            section.setDescription_short(descriptionShort);
+            if (updatable.equals("new")) {
+                section.setTime(new Date());
+                postService.savePost(section);
+            } else {
+                section.setTime(time);
+                postService.updatePost(section);
+            }
+            //  }
             System.out.println(finalStr);
             return "success";
-        }
-        else {
+        } else {
             return "invalid type";
         }
     }
 
 
     @RequestMapping("/add/album")
-    public String addAlbum(@RequestBody GalleryAlbum album){
+    public String addAlbum(@RequestBody GalleryAlbum album) {
         albumService.addAlbum(album);
-        return "Album with id:"+album.getId();
+        return "Album with id:" + album.getId();
     }
+
     @RequestMapping("/add/album/images/{album_id}")
-    public String addImages(@RequestParam("images") String images,@RequestParam("files") MultipartFile[] files,
-                            @PathVariable int album_id){
-        Gson gson=new Gson();
+    public String addImages(@RequestParam("images") String images, @RequestParam("files") MultipartFile[] files,
+                            @PathVariable int album_id) {
+        Gson gson = new Gson();
         List<GalleryImage> imagesList = null;
-        imagesList= Arrays.asList(gson.fromJson(images,GalleryImage[].class));
-        GalleryAlbum album=albumService.getAlbum(album_id);
-        String response="";
-        String serverPath = utils.BASE_SERVER_PATH+"static/gallery/" + album.getId()+"/";
-        int index=0;
-        for (GalleryImage image:imagesList) {
+        imagesList = Arrays.asList(gson.fromJson(images, GalleryImage[].class));
+        GalleryAlbum album = albumService.getAlbum(album_id);
+        String response = "";
+        String serverPath = utils.BASE_SERVER_PATH + "static/gallery/" + album.getId() + "/";
+        int index = 0;
+        for (GalleryImage image : imagesList) {
             image.setName(utils.transliterate(image.getName()));
-            String fileUploadResult=utils.fileUpload(serverPath,image.getName(),files[index]);
-            if(!fileUploadResult.equals("file exists")&&!fileUploadResult.equals("file empty")){
+            String fileUploadResult = utils.fileUpload(serverPath, image.getName(), files[index]);
+            if (!fileUploadResult.equals("file exists") && !fileUploadResult.equals("file empty")) {
                 image.setServer_path(serverPath);
-                image.setUrl(utils.BACKEND_URL+"static/gallery/" + album.getId() + "/" + image.getName() + ".jpg");
+                image.setUrl(utils.BACKEND_URL + "static/gallery/" + album.getId() + "/" + image.getName() + ".jpg");
                 image.setAlbum(album);
                 galleryService.addGalleryPhoto(image);
-            }
-            else{
-                response+=fileUploadResult;
+            } else {
+                response += fileUploadResult;
             }
             index++;
         }
-        if(response.equals(""))
-            response+="success";
+        if (response.equals(""))
+            response += "success";
         return response;
     }
 
     @RequestMapping("/redact/comment/{type}")
-    public String redactComment(@PathVariable(name="type") String type,
-                                @RequestParam(name="active") boolean active,
-                                @RequestParam(name="id") int id,
-                                @RequestParam(name="red") int redId){
-        switch (type){
-            case "news":
-                newsService.redactComment(id,active,redId);
-                break;
-            case "memo":
-                postService.redactComment(id,active,redId);
-                break;
-            case "events":
-            case "rally":
-                actionsService.redactComment(id,active,redId);
-                break;
-            default:
-                return "error type";
-        }
+    public String redactComment(@PathVariable(name = "type") String type,
+                                @RequestParam(name = "active") boolean active,
+                                @RequestParam(name = "id") int id,
+                                @RequestParam(name = "red") int redId) {
+        postService.redactComment(id, active, redId);
         return "success";
     }
+
     @RequestMapping("/delete/comment/{type}")
-    public String deleteComment(@PathVariable(name="type") String type,
-                                @RequestParam(name="id") int id,
-                                @RequestParam(name="red") int redId){
-        switch (type){
-            case "news":
-                newsService.deleteComment(id,redId);
-                break;
-            case "memo":
-                postService.deleteComment(id,redId);
-                break;
-            case "events":
-            case "rally":
-                actionsService.deleteComment(id,redId);
-                break;
-            default:
-                return "error type";
-        }
+    public String deleteComment(@PathVariable(name = "type") String type,
+                                @RequestParam(name = "id") int id,
+                                @RequestParam(name = "red") int redId) {
+
+        postService.deleteComment(id, redId);
         return "success";
     }
+
     @RequestMapping("/getDirContent")
-    public Directory getDirContent(@RequestParam("path") String path){
+    public Directory getDirContent(@RequestParam("path") String path) {
         return utils.getDirContent(new File(path));
     }
 
     @RequestMapping("/lastIn")
-    public String saveLastInToLog(String address){
+    public String saveLastInToLog(String address) {
         try {
-            File log = new File(utils.BASE_SERVER_PATH+"lastIn.log");
-            PrintWriter writer = new PrintWriter(new FileWriter(log,true));
-            writer.println("last in by: "+address+" at "+new Date().toString());
+            File log = new File(utils.BASE_SERVER_PATH + "lastIn.log");
+            PrintWriter writer = new PrintWriter(new FileWriter(log, true));
+            writer.println("last in by: " + address + " at " + new Date().toString());
             writer.close();
             return "success";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return e.getMessage();
         }
     }
 
     @RequestMapping("/clearTemp")
-    public String clearTemp(){
-        File temp =new File(utils.BASE_SERVER_PATH+"static/temp");
+    public String clearTemp() {
+        File temp = new File(utils.BASE_SERVER_PATH + "static/temp");
         try {
             FileUtils.deleteDirectory(temp);
             temp.mkdirs();
@@ -438,38 +328,39 @@ public class AdminController {
         }
         return "success";
     }
+
     @RequestMapping("/removeUnusedFiles")
-    public String checkUses(){
-        Set<File> unused=new HashSet<>();
-        List<File> files=utils.scanRedactables();
-        List<File> albumFiles=utils.scanGallery();
-        List<GalleryAlbum> albums=albumService.getAllAlbums(0,1000);
-        List<Redactable> redactables=utils.getAllRedactables();
-        for(File f:files) {
-            int i =redactables.size();
+    public String checkUses() {
+        Set<File> unused = new HashSet<>();
+        List<File> files = utils.scanRedactables();
+        List<File> albumFiles = utils.scanGallery();
+        List<GalleryAlbum> albums = albumService.getAllAlbums(0, 1000);
+        List<Redactable> redactables = utils.getAllRedactables();
+        for (File f : files) {
+            int i = redactables.size();
             for (Redactable r : redactables) {
-                String s=utils.transliterate(r.getTitle());
+                String s = utils.transliterate(r.getTitle());
                 System.out.println(s);
-                if (s.contains(f.getName())){
+                if (s.contains(f.getName())) {
                     break;
                 }
                 i--;
             }
-            if(i==0)
+            if (i == 0)
                 unused.add(f);
         }
-        for(File f:albumFiles) {
-            int i =albums.size();
+        for (File f : albumFiles) {
+            int i = albums.size();
             for (GalleryAlbum album : albums) {
-                if (f.getName().equals(String.valueOf(album.getId()))){
+                if (f.getName().equals(String.valueOf(album.getId()))) {
                     break;
                 }
                 i--;
             }
-            if(i==0)
+            if (i == 0)
                 unused.add(f);
         }
-        for(File deleted:unused){
+        for (File deleted : unused) {
             try {
                 FileUtils.deleteDirectory(deleted);
             } catch (IOException e) {
@@ -481,28 +372,24 @@ public class AdminController {
 
     @RequestMapping("/download/{type}")
     public String downloadZip(@RequestBody String[] files, @PathVariable String type,
-                              HttpServletRequest request, HttpServletResponse response){
-        if(type.equals("folder")) {
+                              HttpServletRequest request, HttpServletResponse response) {
+        if (type.equals("folder")) {
             try {
                 return utils.createZipFromDirs(files);
             } catch (Exception e) {
                 return e.getMessage();
             }
-        }
-        else if(type.equals("files")){
-            try{
+        } else if (type.equals("files")) {
+            try {
                 return utils.createZipFromFiles(files);
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 return e.getMessage();
             }
-        }
-        else {
+        } else {
             response.setStatus(400);
             return "Wrong type";
         }
     }
-
 
 
 }

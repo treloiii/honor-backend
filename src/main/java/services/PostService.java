@@ -66,6 +66,9 @@ public class PostService {
     public Post getLast(String type){
         return dao.getLast(type);
     }
+    public void delete(Post post){
+        dao.delete(post);
+    }
     public Double getCount(String type){
         if(dao.getCount()% utils.RESULT_PER_PAGE==0)
             return Math.floor(dao.getCount(type)/ utils.RESULT_PER_PAGE);
