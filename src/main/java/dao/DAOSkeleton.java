@@ -14,6 +14,8 @@ public interface DAOSkeleton <T>{
     default List<T> getAll(int from,int to,String type){
         throw new IllegalStateException("getAll is unsupported");
     }
-    Long getCount();
+    default Long getCount(){
+        throw new IllegalStateException("getCount is unsupported");
+    };
     void clearCache();
 }

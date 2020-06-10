@@ -87,11 +87,11 @@ public class PostDAO implements DAOSkeleton<Post> {
         return posts;
     }
 
-    @Override
-    public Long getCount() {
+    public Long getCount(String type) {
         Session session =HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        Query query=session.createQuery("SELECT COUNT(*) FROM Post");
+        Query query=session.createQuery("SELECT COUNT(*) FROM Post p where p.type=:type")
+                .setParameter("type",type);
         query.setCacheable(true);
         query.setCacheRegion("COUNT_DATA_POSTS");
         System.out.println(query.getSingleResult());

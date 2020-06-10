@@ -14,8 +14,7 @@ import java.util.stream.Collectors;
 @Component("postService")
 public class PostService {
     private final PostDAO dao;
-    final
-    Utils utils;
+    private final Utils utils;
 
     public PostService(PostDAO dao, Utils utils) {
         this.dao = dao;
@@ -64,14 +63,14 @@ public class PostService {
     public void savePost(Post post){
         dao.save(post);
     }
-    public Post getLast(){
-        return dao.getLast();
+    public Post getLast(String type){
+        return dao.getLast(type);
     }
-    public Double getCount(){
+    public Double getCount(String type){
         if(dao.getCount()% utils.RESULT_PER_PAGE==0)
-            return Math.floor(dao.getCount()/ utils.RESULT_PER_PAGE);
+            return Math.floor(dao.getCount(type)/ utils.RESULT_PER_PAGE);
         else
-            return Math.floor(dao.getCount()/ utils.RESULT_PER_PAGE)+1;
+            return Math.floor(dao.getCount(type)/ utils.RESULT_PER_PAGE)+1;
     }
 
     public void clearCache(){

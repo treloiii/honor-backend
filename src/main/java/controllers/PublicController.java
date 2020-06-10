@@ -1,5 +1,7 @@
 package controllers;
+
 import Entities.*;
+import Entities.Comments;
 import Entities.deprecated.*;
 import services.deprecated.ActionsService;
 import services.deprecated.NewsService;
@@ -12,6 +14,8 @@ import sql.ResultedQuery;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @CrossOrigin
 @RestController
@@ -24,10 +28,7 @@ public class PublicController {
 
     @Autowired
     private PostService postService;
-    @Autowired
-    private NewsService newsService;
-    @Autowired
-    private ActionsService actionsService;
+
     @Autowired
     private AlbumService albumService;
     @Autowired
@@ -37,216 +38,205 @@ public class PublicController {
 
     @Autowired
     private MailService mailService;
+
     @RequestMapping("/test")
-    public String testBug(){
+    public String testBug() {
         return utils.BACKEND_URL;
     }
+
     @RequestMapping("/subscribe")
-    public void subscribe(@RequestParam("email") String email,@RequestParam("name") String name){
-        mailService.subscribe(email,name);
+    public void subscribe(@RequestParam("email") String email, @RequestParam("name") String name) {
+        mailService.subscribe(email, name);
     }
+
     @RequestMapping("/unsubscribe")
-    public void subscribe(@RequestParam("id") int id){
+    public void subscribe(@RequestParam("id") int id) {
         mailService.unsubscribe(id);
     }
+
     @RequestMapping("/get/count/{type}")
-    public PaginationCountSize getCountEntity(@PathVariable("type") String type){
-        switch (type) {
-            case "events":
-                return new PaginationCountSize(actionsService.getCount(2),utils.RESULT_PER_PAGE,"none");
-            case "rally":
-                return new PaginationCountSize(actionsService.getCount(1),utils.RESULT_PER_PAGE,"none");
-            case "news":
-                return new PaginationCountSize(newsService.getCount(),utils.RESULT_PER_PAGE,"none");
-            case "memo":
-                return new PaginationCountSize(postService.getCount(),utils.RESULT_PER_PAGE,"none");
-            default:
-                return new PaginationCountSize(-1,-1,"invalid type");
-        }
+    public PaginationCountSize getCountEntity(@PathVariable("type") String type) {
+        return new PaginationCountSize(postService.getCount(type), utils.RESULT_PER_PAGE, "none");
     }
+
     @RequestMapping("/get/page/size")
-    public Integer getPagePerSize(){
+    public Integer getPagePerSize() {
         return utils.RESULT_PER_PAGE;
     }
 
     @RequestMapping("/get/all/posts/{page}")
-    public List<Redactable> getMain(@RequestParam(value = "count",required = false) Integer count,@PathVariable(required = false) int page) {
-        return postService.getAllPosts(page,count);
+    public List<Post> getMain(@RequestParam(value = "count", required = false) Integer count, @PathVariable(required = false) int page) {
+        return postService.getAllPosts(page, count,"memo");
     }
+
     @RequestMapping("/get/post")
-    public Post getPost(@RequestParam("id") int id){
+    public Post getPost(@RequestParam("id") int id) {
         return postService.getPostById(id);
     }
 
     @RequestMapping("/get/gallery")
-    public List<GalleryImage> getImages(){
-       // galleryDao=new GalleryImageDAO();
+    public List<GalleryImage> getImages() {
+        // galleryDao=new GalleryImageDAO();
         return galleryService.getAllGallery();
     }
+
     @RequestMapping("/get/image")
-    public GalleryImage getImage(@RequestParam("id") int id){
+    public GalleryImage getImage(@RequestParam("id") int id) {
         return galleryService.getImageById(id);
     }
 
     @RequestMapping("/get/all/albums/{page}")
-    public List<GalleryAlbum> getAlbums(@PathVariable(required = false) int page){
-        return albumService.getAllAlbums(page,null);
+    public List<GalleryAlbum> getAlbums(@PathVariable(required = false) int page) {
+        return albumService.getAllAlbums(page, null);
     }
 
     @RequestMapping("/get/album")
-    public GalleryAlbum getAlbumById(@RequestParam("id") int id){
+    public GalleryAlbum getAlbumById(@RequestParam("id") int id) {
         return albumService.getAlbum(id);
     }
 
 
     @RequestMapping("/get/all/news/{page}")
-    public List<Redactable> getAllNews(@RequestParam(value = "count",required = false) Integer count,@PathVariable(required = false) int page){
-        return newsService.getAllnews(page,count);
+    public List<Post> getAllNews(@RequestParam(value = "count", required = false) Integer count, @PathVariable(required = false) int page) {
+        return postService.getAllPosts(page, count,"news");
     }
+
     @RequestMapping("/get/news")
-    public News getNews(@RequestParam("id") int id){
-        return newsService.getNewsById(id);
+    public Post getNews(@RequestParam("id") int id) {
+        return postService.getPostById(id);
     }
 
     @RequestMapping("/get/last/news")
-    public News getLastNews(){
-        return newsService.getLast();
+    public Post getLastNews() {
+        return postService.getLast("news");
     }
+
     @RequestMapping("/get/last/post")
-    public Post getLastPost(){
-        return postService.getLast();
+    public Post getLastPost() {
+        return postService.getLast("post");
     }
+
     @RequestMapping("/get/last/rally")
-    public Actions getLastRally(){
-        return actionsService.getLast(1);
+    public Post getLastRally() {
+        return postService.getLast("rally");
     }
+
     @RequestMapping("/get/last/event")
-    public Actions getLastEvent(){
-        return actionsService.getLast(2);
+    public Post getLastEvent() {
+        return postService.getLast("post");
     }
+
     @RequestMapping("/get/last/photos")
-    public List<GalleryImage> getLastPhotos(){
+    public List<GalleryImage> getLastPhotos() {
         return galleryService.getLastFive();
     }
+
     @RequestMapping("/get/last/all")
-    public List<GridObject> getLasts(){
-        List<GridObject> grid=new ArrayList<>();
-        Actions rally=actionsService.getLast(1);
-        String coords=rally.getCoords();
-        if(coords==null)
-            grid.add(new GridObject(rally.getTitle_image(),rally.getTitle(),rally.getId(),"/rally","Автопробеги","null",rally.getTitle_image_mini()));
-        else
-            grid.add(new GridObject(rally.getTitle_image(),rally.getTitle(),rally.getId(),"/rally","Автопробеги",coords,rally.getTitle_image_mini()));
-        News news=newsService.getLast();
-        coords=news.getCoords();
-        if(coords==null)
-            grid.add(new GridObject(news.getTitle_image(),news.getTitle(),news.getId(),"/news","Новости","null",news.getTitle_image_mini()));
-        else
-            grid.add(new GridObject(news.getTitle_image(),news.getTitle(),news.getId(),"/news","Новости",coords,news.getTitle_image_mini()));
-        Post post=postService.getLast();
-        coords=post.getCoords();
-        if(coords==null)
-            grid.add(new GridObject(post.getTitle_image(),post.getTitle(),post.getId(),"/memories","Воспоминания","null",post.getTitle_image_mini()));
-        else
-            grid.add(new GridObject(post.getTitle_image(),post.getTitle(),post.getId(),"/memories","Воспоминания",coords,post.getTitle_image_mini()));
-        Actions event=actionsService.getLast(2);
-        coords=event.getCoords();
-        if(coords==null)
-            grid.add(new GridObject(event.getTitle_image(),event.getTitle(),event.getId(),"/events","Мероприятия","null",event.getTitle_image_mini()));
-        else
-            grid.add(new GridObject(event.getTitle_image(),event.getTitle(),event.getId(),"/events","Мероприятия",coords,event.getTitle_image_mini()));
-        GalleryImage image=galleryService.getLast();
-        grid.add(new GridObject(image.getUrl(),image.getAlbum().getName(),image.getId(),"/gallery","Галерея","null","not set"));
+    public List<GridObject> getLasts() {
+        List<GridObject> grid =Stream.of("memo","news","rally","events")
+                .map(s->{
+                    Post post=postService.getLast(s);
+                    String type=mapType(s);
+                    s=s.equals("memo")?"/memories":"/"+s;
+                    return new GridObject(post.getTitle_image(),post.getTitle(),post.getId(),s,type,post.getTitle_image_mini());
+                })
+                .collect(Collectors.toList());
+        GalleryImage image = galleryService.getLast();
+        grid.add(new GridObject(image.getUrl(), image.getAlbum().getName(), image.getId(), "/gallery", "Галерея", "not set"));
         return grid;
+    }
+
+    private String mapType(String s) {
+        switch (s){
+            case "rally":
+                return "Автопробеги";
+            case "events":
+                return "Мероприятия";
+            case "news":
+                return "Новости";
+            case "memo":
+                return "Воспоминания";
+            default:
+                throw new IllegalArgumentException("cant map "+s);
+        }
     }
 
 
     @RequestMapping("/get/actions/{action}/{page}")
-    public List<Redactable> getRallies(@PathVariable String action,@PathVariable(required = false) int page){
-        if(action.equals("rallies"))
-            return actionsService.getAllRallies(page,0,1);
-        else if(action.equals("events"))
-            return actionsService.getAllRallies(page,0,2);
+    public List<Post> getRallies(@PathVariable String action, @PathVariable(required = false) int page) {
+        if (action.equals("rallies"))
+            return postService.getAllPosts(page, 0, "rally");
+        else if (action.equals("events"))
+            return postService.getAllPosts(page, 0, action);
         else
             return null;
     }
 
     @RequestMapping("/get/action")
-    public Actions getRally(@RequestParam("id") int id){
-        return actionsService.getRallyById(id);
+    public Post getRally(@RequestParam("id") int id) {
+        return postService.getPostById(id);
     }
 
     @RequestMapping("/get/all/ordens")
-    public List<Ordens> getOrdens(){
+    public List<Ordens> getOrdens() {
         return ordensService.getAllOrdens();
     }
 
     @RequestMapping("/get/orden")
-    public Ordens getOrden(@RequestParam("id")int id){
+    public Ordens getOrden(@RequestParam("id") int id) {
         return ordensService.getOrden(id);
     }
 
     @RequestMapping("/add/comment/image/{id}")
-    public String addComment(@RequestBody GalleryComments comment, @PathVariable int id){
-        GalleryImage image=galleryService.getImageById(id);
-        galleryService.addComment(image,comment);
+    public String addComment(@RequestBody GalleryComments comment, @PathVariable int id) {
+        GalleryImage image = galleryService.getImageById(id);
+        galleryService.addComment(image, comment);
         return "Success";
     }
 
-    @RequestMapping("/add/comment/news/{id}")
-    public String addComment(@PathVariable int id,@RequestBody NewsComments comment){
-       News news=newsService.getNewsById(id);
-       newsService.addComment(news,comment);
-       return "success";
-    }
-    @RequestMapping("/add/comment/actions/{id}")
-    public String addComment(@PathVariable int id,@RequestBody ActionsComments comment){
-        Actions action=actionsService.getRallyById(id);
-        actionsService.addComment(action,comment);
+    @RequestMapping("/add/comment/{type}/{id}")
+    public String addComment(@PathVariable int id,@PathVariable String type, @RequestBody Comments comment) {
+        Post news = postService.getPostById(id);
+        postService.addComment(news, comment);
         return "success";
     }
-    @RequestMapping("/add/comment/post/{id}")
-    public String addComment(@PathVariable int id,@RequestBody PostComments comment){
-        Post post=postService.getPostById(id);
-        postService.addComment(post,comment);
-        return "success";
-    }
+
+
 
 
     @Deprecated
     @RequestMapping("/getTreeDir")
-    public FolderFile getDir(){
+    public FolderFile getDir() {
         return utils.getAllFiles(new File("/home/ensler/honor-server/static"));
     }
 
 
     @RequestMapping("/databaseDump")
-    public String createDbDump(String password){
-        byte[] decoded=Base64.getDecoder().decode(password);
-        Runtime rt=Runtime.getRuntime();
+    public String createDbDump(String password) {
+        byte[] decoded = Base64.getDecoder().decode(password);
+        Runtime rt = Runtime.getRuntime();
         try {
-            String decode=new String(decoded, StandardCharsets.UTF_8);
+            String decode = new String(decoded, StandardCharsets.UTF_8);
             System.out.println(decode);
 //            String command="mysqldump -u trelloiii -p"+ decode+"  honor > ~/honor-server/static/dump.sql";
-            String command=utils.BASE_SERVER_PATH+"./dump.sh";
+            String command = utils.BASE_SERVER_PATH + "./dump.sh";
             System.out.println(command);
-            Process pr=rt.exec(command);
+            Process pr = rt.exec(command);
 
-            BufferedReader stdInput=new BufferedReader(new InputStreamReader(pr.getInputStream()));
-            BufferedReader stdError=new BufferedReader(new InputStreamReader(pr.getErrorStream()));
-            String s=null;
-            while ((s=stdInput.readLine())!=null){
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            BufferedReader stdError = new BufferedReader(new InputStreamReader(pr.getErrorStream()));
+            String s = null;
+            while ((s = stdInput.readLine()) != null) {
                 System.out.println(s);
             }
-            while ((s=stdError.readLine())!=null){
+            while ((s = stdError.readLine()) != null) {
                 System.out.println(s);
             }
-            int processCode=pr.waitFor();
-            if(processCode==0){
+            int processCode = pr.waitFor();
+            if (processCode == 0) {
                 return "dump complete, see it in root of application";
-            }
-            else {
-                return "error, process code: "+processCode;
+            } else {
+                return "error, process code: " + processCode;
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
