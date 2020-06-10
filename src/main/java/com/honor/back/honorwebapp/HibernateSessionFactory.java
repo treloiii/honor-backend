@@ -1,6 +1,7 @@
 package com.honor.back.honorwebapp;
 
 import Entities.*;
+import Entities.Comments;
 import Entities.deprecated.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -30,6 +31,7 @@ public class HibernateSessionFactory {
                     .addAnnotatedClass(OrdenAlbum.class)
                     .addAnnotatedClass(User.class)
                     .addAnnotatedClass(Notifications.class)
+                    .addAnnotatedClass(Comments.class)
                     .addAnnotatedClass(GalleryAlbum.class).buildSessionFactory();
         }
         catch (Throwable ex) {

@@ -36,6 +36,9 @@ public class PostService {
         }
         return res;
     }
+    public List<Post> getAll(){
+        return dao.getAll();
+    }
     public void addComment(Post post, Comments comment){
         comment.setTime(new Date());
         comment.setPost(post);

@@ -1,7 +1,7 @@
 schema {
     query: Query
 }
-type Redactable{
+type Post{
     id:ID!
     title:String!
     description:String!
@@ -10,7 +10,6 @@ type Redactable{
     time:DateScalar!
     title_image_name:String!
     author:String!
-    coords:String
     title_image_mini:String
     comments:[Comments]
 }
@@ -28,11 +27,11 @@ type PaginationCountSize{
 }
 scalar DateScalar
 type Query{
-    getAll(page:Int,count:Int,type:Int):[Redactable]! #type:[1-Rally,2-Events,3-Post,4-News
+    getAll(page:Int,count:Int,type:Int):[Post]! #type:[1-Rally,2-Events,3-Post,4-News
 
-    getLast(type:Int):Redactable
+    getLast(type:Int):Post
 
-    getById(id:Int,type:Int):Redactable
+    getById(id:Int,type:Int):Post
 
     getCount(type:Int):PaginationCountSize!#type:5-albums
 
@@ -77,6 +76,5 @@ type GridObject{
     id:Int
     url:String
     type:String
-    coords:String
     title_image_mini:String
 }

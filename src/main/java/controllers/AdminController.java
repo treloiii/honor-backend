@@ -335,10 +335,10 @@ public class AdminController {
         List<File> files = utils.scanRedactables();
         List<File> albumFiles = utils.scanGallery();
         List<GalleryAlbum> albums = albumService.getAllAlbums(0, 1000);
-        List<Redactable> redactables = utils.getAllRedactables();
+        List<Post> redactables = utils.getAllRedactables();
         for (File f : files) {
             int i = redactables.size();
-            for (Redactable r : redactables) {
+            for (Post r : redactables) {
                 String s = utils.transliterate(r.getTitle());
                 System.out.println(s);
                 if (s.contains(f.getName())) {

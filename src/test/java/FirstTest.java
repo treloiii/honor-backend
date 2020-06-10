@@ -26,11 +26,4 @@ public class FirstTest {
 //        Directory folderFile=utils.getDirContent(new File(path));
 //        System.out.println(folderFile);
     }
-    @Test
-    public void checkUsesTest(){
-        PostDAO dao=new PostDAO();
-        List<Redactable> all=new ArrayList<>();
-        all.addAll(dao.getAll(0,1000));
-        System.out.println(all);
-    }
 }

@@ -134,5 +134,21 @@ public class PostDAO implements DAOSkeleton<Post> {
             cache.evictRegion("LAST_POST");
         } catch (Exception e) {
         }
+        try {
+            cache.evictRegion("POST_ALL");
+        } catch (Exception e) {
+        }
+    }
+
+    public List<Post> getAll() {
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        Query<Post> query=session.createQuery("From Post p", Post.class);
+        query.setCacheable(true);
+        query.setCacheRegion("POST_ALL");
+        List<Post> posts=query.list();
+        session.getTransaction().commit();
+        session.close();
+        return posts;
     }
 }

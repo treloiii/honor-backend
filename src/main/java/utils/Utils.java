@@ -1,5 +1,6 @@
 package utils;
 
+import Entities.Post;
 import Entities.deprecated.Redactable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -373,13 +374,8 @@ public class Utils {
         }
         return returnFiles;
     }
-    public List<Redactable> getAllRedactables(){
-        List<Redactable> redactables=new ArrayList<>();
-        redactables.addAll(postService.getAllPosts(0,1000));
-        redactables.addAll(newsService.getAllnews(0,1000));
-        redactables.addAll(actionsService.getAllRallies(0,1000,1));
-        redactables.addAll(actionsService.getAllRallies(0,1000,2));
-        return redactables;
+    public List<Post> getAllRedactables(){
+        return postService.getAll();
     }
     public Directory getDirContent(File file){
         Directory folder=new Directory();
