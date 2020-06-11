@@ -33,7 +33,7 @@ public class Query implements GraphQLQueryResolver {
     }
 
     public List<GridObject> getGrid(){
-        List<GridObject> grid = Stream.of("memo","news","rally","events")
+        List<GridObject> grid = Stream.of("rally","news","memo","events")
                 .map(s->{
                     Post post=postService.getLast(s);
                     String type=mapType(s);
