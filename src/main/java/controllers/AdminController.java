@@ -152,9 +152,9 @@ public class AdminController {
                              @PathVariable(value = "type") String type) {//type:{news,memo,events,rally}
         if (type.equals("news") || type.equals("memo") || type.equals("events") || type.equals("rally")) {
             System.out.println(type);
-            Post section = null;
+            Post section;
             try {
-                postService.getPostById(id);
+                section=postService.getPostById(id);
             } catch (Exception e) {
                 section = new Post();
             }
@@ -224,6 +224,8 @@ public class AdminController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                section.setTitle_image(utils.BACKEND_URL+"static/"+type+"/"+utils.transliterate(title)+"/"+section.getTitle_image_name()+".jpg");
+                section.setTitle_image_mini(utils.BACKEND_URL+"static/"+type+"/"+utils.transliterate(title)+"/"+section.getTitle_image_name()+"_cropped.jpg");
             }
             // if (!titleRes.equals("file exists") && !titleRes.equals("file empty")) {
 
@@ -233,6 +235,7 @@ public class AdminController {
             section.setDescription_short(descriptionShort);
             if (updatable.equals("new")) {
                 section.setTime(new Date());
+                section.setType(type);
                 postService.savePost(section);
             } else {
                 section.setTime(time);
@@ -335,7 +338,7 @@ public class AdminController {
         List<File> files = utils.scanRedactables();
         List<File> albumFiles = utils.scanGallery();
         List<GalleryAlbum> albums = albumService.getAllAlbums(0, 1000);
-        List<Post> redactables = utils.getAllRedactables();
+        List<Post> redactables = postService.getAll();
         for (File f : files) {
             int i = redactables.size();
             for (Post r : redactables) {

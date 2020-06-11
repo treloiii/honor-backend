@@ -75,7 +75,7 @@ public class PostDAO implements DAOSkeleton<Post> {
     public List<Post> getAll(int from, int to,String type) {
         Session session=HibernateSessionFactory.getSession().openSession();
         session.beginTransaction();
-        Query<Post> query=session.createQuery("From Post p where p.type=:type", Post.class)
+        Query<Post> query=session.createQuery("From Post p where p.type=:type order by id desc", Post.class)
                 .setParameter("type",type)
                 .setFirstResult(from)
                 .setMaxResults(to);

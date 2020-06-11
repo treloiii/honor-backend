@@ -73,7 +73,7 @@ public class PostService {
         dao.delete(post);
     }
     public Double getCount(String type){
-        if(dao.getCount()% utils.RESULT_PER_PAGE==0)
+        if(dao.getCount(type)% utils.RESULT_PER_PAGE==0)
             return Math.floor(dao.getCount(type)/ utils.RESULT_PER_PAGE);
         else
             return Math.floor(dao.getCount(type)/ utils.RESULT_PER_PAGE)+1;

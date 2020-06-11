@@ -47,12 +47,6 @@ public class Utils {
     public int RESULT_PER_PAGE;
     @Autowired
     private ResultedQuery rq;
-    @Autowired
-    private PostService postService;
-    @Autowired
-    private NewsService newsService;
-    @Autowired
-    private ActionsService actionsService;
 
     public Integer setResultPerPage(int count) throws SQLException {
         rq.VoidQuery("UPDATE honor_pagination_settings set count="+count+" where id=1");
@@ -373,9 +367,6 @@ public class Utils {
             }
         }
         return returnFiles;
-    }
-    public List<Post> getAllRedactables(){
-        return postService.getAll();
     }
     public Directory getDirContent(File file){
         Directory folder=new Directory();
