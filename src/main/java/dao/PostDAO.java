@@ -44,6 +44,18 @@ public class PostDAO implements DAOSkeleton<Post> {
         this.clearCache();
     }
 
+
+
+    //костыль лютейший костыль, я знаю что так писать нельзя, перепишу потом ваще все
+    public void saveComment(Object savedObject) {
+        Session session=HibernateSessionFactory.getSession().openSession();
+        session.beginTransaction();
+        session.save(savedObject);
+        session.getTransaction().commit();
+        session.close();
+        this.clearCache();
+    }
+
     @Override
     public Post get(int id) {
         Session session=HibernateSessionFactory.getSession().openSession();

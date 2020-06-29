@@ -1,6 +1,7 @@
 package Entities;
 
 import Entities.deprecated.News;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Comments {
     private Date time;
     @Column
     private boolean active;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;

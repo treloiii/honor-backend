@@ -4,7 +4,6 @@ import Entities.Comments;
 import Entities.Post;
 import utils.Utils;
 import dao.PostDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -41,10 +40,8 @@ public class PostService {
     }
     public void addComment(Post post, Comments comment){
         comment.setTime(new Date());
-        List<Comments> comments=post.getComments();
-        comments.add(comment);
-        post.setComments(comments);
-        dao.save(post);
+        comment.setPost(post);
+        dao.saveComment(comment);
     }
     public void redactComment(int id,boolean active,int postId){
         Post post=dao.get(postId);
