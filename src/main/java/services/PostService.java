@@ -41,7 +41,9 @@ public class PostService {
     }
     public void addComment(Post post, Comments comment){
         comment.setTime(new Date());
-        comment.setPost(post);
+        List<Comments> comments=post.getComments();
+        comments.add(comment);
+        post.setComments(comments);
         dao.save(post);
     }
     public void redactComment(int id,boolean active,int postId){
